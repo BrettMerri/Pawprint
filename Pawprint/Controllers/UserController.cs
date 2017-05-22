@@ -24,5 +24,19 @@ namespace Pawprint.Controllers
             ViewBag.PetList = PetList;
             return View(UserProfile);
         }
+
+        public ActionResult AddNewPet()
+        {
+
+            return View();
+
+        }
+
+
     }
+
+   
+
 }
+
+
