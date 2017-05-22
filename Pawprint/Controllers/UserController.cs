@@ -51,6 +51,20 @@ namespace Pawprint.Controllers
 
             return View();
         }
+
+        public ActionResult SaveNewPet(Pet NewPet)
+        {
+
+
+
+            NewPet.OwnerID = User.Identity.GetUserId();
+                        // to DO: Validation!!
+            PawprintEntities PE = new PawprintEntities();
+            PE.Pets.Add(NewPet);
+            PE.SaveChanges();
+                       return RedirectToAction("Profile");
+
+        }
     }
 }
 
