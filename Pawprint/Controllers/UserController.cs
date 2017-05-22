@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Pawprint.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Pawprint.Controllers
 {
@@ -32,10 +33,25 @@ namespace Pawprint.Controllers
 
         }
 
+        public ActionResult SaveNewPet(Pet NewPet)
+
+        {
+            NewPet.OwnerID = User.Identity.GetUserId();
+            // to DO: Validation!!
+            PawprintEntities PE = new PawprintEntities();
+            PE.Pets.Add(NewPet);
+            PE.SaveChanges();
+            return RedirectToAction("Profile");
+
+
+
+        }
+
+
 
     }
 
-   
+
 
 }
 
