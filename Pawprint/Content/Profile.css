@@ -1,5 +1,6 @@
 ﻿.mainbody {
     background:#f0f0f0;
+    margin-top:10px;
 }
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
 .navbar-wrapper {

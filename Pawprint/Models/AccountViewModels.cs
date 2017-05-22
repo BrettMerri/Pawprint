@@ -73,8 +73,8 @@ namespace Pawprint.Models
         public string LastName { get; set; }
 
         [Required]
-        [Display(Name = "Username")]
-        public string Username { get; set; }
+        [Display(Name = "Display name")]
+        public string DisplayName { get; set; }
 
         [Required]
         [EmailAddress]
