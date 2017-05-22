@@ -21,7 +21,7 @@ namespace Pawprint.Models
             this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
-        public string PetID { get; set; }
+        public int PetID { get; set; }
         public string Breed { get; set; }
         public string Name { get; set; }
         public System.DateTime BirthDay { get; set; }
