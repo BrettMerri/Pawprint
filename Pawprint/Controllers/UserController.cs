@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Pawprint.Models;
+using Microsoft.AspNet.Identity;
+using System.Data.SqlClient;
+
 
 namespace Pawprint.Controllers
 {
@@ -35,25 +38,21 @@ namespace Pawprint.Controllers
         }
 
 
+
         // List of Your Animals
         public ActionResult YourAnimals()
         {
+
             PawprintEntities DB = new PawprintEntities();
-            //Pet PetProfile = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
-
-            //if (PetProfile == null)
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
-
-
-            List<Pet> PetList = DB.Pets.Where(x => x.PetID == Name.PetID).ToList();
+            string UserID = User.Identity.GetUserId();
+            List<Pet> PetList = DB.Pets.Where(x => x.OwnerID == UserID).ToList();
 
             ViewBag.PetList = PetList;
 
-            return View(PetProfile);
+            return View();
         }
     }
 }
+
 
 

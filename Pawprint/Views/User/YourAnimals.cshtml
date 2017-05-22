@@ -4,5 +4,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>YourAnimals</h2>
+<h2>Your Animals</h2>
+
+<table >
+    @foreach (var element in ViewBag.PetList)
+    {
+        <tr>
+            <td>@element.Name</td>
+            
+        </tr>
+    }
+
+</table>
 
