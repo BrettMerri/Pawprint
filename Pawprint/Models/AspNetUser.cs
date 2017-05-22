@@ -40,6 +40,7 @@ namespace Pawprint.Models
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string DisplayName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
@@ -55,7 +56,5 @@ namespace Pawprint.Models
         public virtual ICollection<Pet> Pets1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Posts { get; set; }
-        public string PetName { get; internal set; }
-        public string Name { get; internal set; }
     }
 }

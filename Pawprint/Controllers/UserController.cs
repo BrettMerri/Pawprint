@@ -22,7 +22,6 @@ namespace Pawprint.Controllers
             List<Pet> PetList = DB.Pets.Where(x => x.OwnerID == UserProfile.ID).ToList();
 
             ViewBag.PetList = PetList;
-
             return View(UserProfile);
         }
     }
