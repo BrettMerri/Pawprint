@@ -172,6 +172,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PetsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -183,6 +184,10 @@
     <Compile Include="Migrations\201705192024318_AddName.cs" />
     <Compile Include="Migrations\201705192024318_AddName.Designer.cs">
       <DependentUpon>201705192024318_AddName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705221649129_AddDisplayName.cs" />
+    <Compile Include="Migrations\201705221649129_AddDisplayName.Designer.cs">
+      <DependentUpon>201705221649129_AddDisplayName.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -285,7 +290,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -338,6 +345,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705192024318_AddName.resx">
       <DependentUpon>201705192024318_AddName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705221649129_AddDisplayName.resx">
+      <DependentUpon>201705221649129_AddDisplayName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\Pawprint.Migrations.AddName.resources" />
     <EmbeddedResource Include="obj\Debug\Pawprint.Migrations.InitialCreate.resources" />

@@ -14,7 +14,6 @@ namespace Pawprint.Controllers
         {
             PawprintEntities DB = new PawprintEntities();
             AspNetUser UserProfile = DB.AspNetUsers.SingleOrDefault(x => x.UserName == Username);
-
             if (UserProfile == null)
             {
                 return RedirectToAction("Index", "Home");

@@ -151,8 +151,9 @@ namespace Pawprint.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username,
+                var user = new ApplicationUser { UserName = model.Email,
                                                  Email = model.Email,
+                                                 DisplayName = model.DisplayName,
                                                  FirstName = model.FirstName,
                                                  LastName = model.LastName };
 
