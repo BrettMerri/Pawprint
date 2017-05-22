@@ -13,10 +13,10 @@ namespace Pawprint.Controllers
     public class UserController : Controller
     {
         // /User/Profile/[username]
-        public ActionResult Profile(string Username)
+        public ActionResult Profile(string DisplayName)
         {
             PawprintEntities DB = new PawprintEntities();
-            AspNetUser UserProfile = DB.AspNetUsers.SingleOrDefault(x => x.UserName == Username);
+            AspNetUser UserProfile = DB.AspNetUsers.SingleOrDefault(x => x.DisplayName == DisplayName);
             if (UserProfile == null)
             {
                 return RedirectToAction("Index", "Home");
