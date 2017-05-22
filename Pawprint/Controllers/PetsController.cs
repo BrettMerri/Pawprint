@@ -10,10 +10,10 @@ namespace Pawprint.Controllers
     public class PetsController : Controller
     {
         // GET: Pets
-        public ActionResult Profile(int ID)
+        public ActionResult Profile(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
-            Pet PetProfile = DB.Pets.SingleOrDefault(x => x.PetID == ID);
+            Pet PetProfile = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
 
             if (PetProfile == null)
             {
