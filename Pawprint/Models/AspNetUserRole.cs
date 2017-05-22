@@ -12,9 +12,11 @@ namespace Pawprint.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class AspNetRole
+    public partial class AspNetUserRole
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
+        public string UserId { get; set; }
+        public string RoleId { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Pawprint.Models
         public string PostID { get; set; }
         public System.DateTime Date { get; set; }
         public string FilePath { get; set; }
-        public string PetID { get; set; }
+        public int PetID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
