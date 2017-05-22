@@ -55,5 +55,7 @@ namespace Pawprint.Models
         public virtual ICollection<Pet> Pets1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Post> Posts { get; set; }
+        public string PetName { get; internal set; }
+        public string Name { get; internal set; }
     }
 }
