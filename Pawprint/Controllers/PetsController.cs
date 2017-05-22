@@ -22,5 +22,12 @@ namespace Pawprint.Controllers
 
             return View(PetProfile);
         }
+
+        public ActionResult AddNewPost()
+        {
+
+
+            return View();
+        }
     }
 }
