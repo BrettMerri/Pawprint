@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Pawprint.Models;
-using Microsoft.AspNet.Identity;
 
 namespace Pawprint.Controllers
 {
@@ -26,6 +25,8 @@ namespace Pawprint.Controllers
             return View(UserProfile);
         }
 
+
+        // Add New Pet to User Profile
         public ActionResult AddNewPet()
         {
 
@@ -33,26 +34,26 @@ namespace Pawprint.Controllers
 
         }
 
-        public ActionResult SaveNewPet(Pet NewPet)
 
+        // List of Your Animals
+        public ActionResult YourAnimals()
         {
-            NewPet.OwnerID = User.Identity.GetUserId();
-            // to DO: Validation!!
-            PawprintEntities PE = new PawprintEntities();
-            PE.Pets.Add(NewPet);
-            PE.SaveChanges();
-            return RedirectToAction("Profile");
+            PawprintEntities DB = new PawprintEntities();
+            //Pet PetProfile = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
+
+            //if (PetProfile == null)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
 
+            List<Pet> PetList = DB.Pets.Where(x => x.PetID == Name.PetID).ToList();
 
+            ViewBag.PetList = PetList;
+
+            return View(PetProfile);
         }
-
-
-
     }
-
-
-
 }
 
 
