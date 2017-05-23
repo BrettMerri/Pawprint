@@ -66,11 +66,11 @@ namespace Pawprint.Controllers
         }
 
 
-        public ActionResult DeletePet(string Name)
+        public ActionResult DeletePet(int PetID)
 
         {
             PawprintEntities DB = new PawprintEntities();
-            Pet SelectedPet = DB.Pets.SingleOrDefault(x => x.Name == Name);
+            Pet SelectedPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
             DB.Pets.Remove(SelectedPet);
             DB.SaveChanges();
             return RedirectToAction("YourAnimals");
