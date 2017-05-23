@@ -33,9 +33,7 @@ namespace Pawprint.Controllers
         // Add New Pet to User Profile
         public ActionResult AddNewPet()
         {
-
             return View ();
-
         }
 
 
@@ -43,7 +41,6 @@ namespace Pawprint.Controllers
         // List of Your Animals
         public ActionResult YourAnimals()
         {
-
             PawprintEntities DB = new PawprintEntities();
 
             string UserID = User.Identity.GetUserId();
@@ -56,9 +53,6 @@ namespace Pawprint.Controllers
 
         public ActionResult SaveNewPet(Pet NewPet)
         {
-
-
-
             NewPet.OwnerID = User.Identity.GetUserId();
                         // to DO: Validation!!
             PawprintEntities PE = new PawprintEntities();
