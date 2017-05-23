@@ -34,26 +34,37 @@ namespace Pawprint.Controllers
         public ActionResult SaveNewPost(Post NewPost, HttpPostedFileBase uploadFile)
         {
             NewPost.Date = DateTime.Now;
+            NewPost.FilePath = "img/posts/" + uploadFile.FileName;
+            Upload(uploadFile);
 
-            if (uploadFile != null && uploadFile.ContentLength > 0)
-            {
-                string FileName = uploadFile.FileName;
-                string PostID = Guid.NewGuid().ToString().Replace("-", "");
-                string PetID = NewPost.PetID.ToString();
 
-                string path = Path.Combine(Server.MapPath("~/App_Data/"), FileName);
-
-                Directory.CreateDirectory(path);
-
-                NewPost.FilePath = path;
-
-                uploadFile.SaveAs(path);
-
-                PawprintEntities PE = new PawprintEntities();
+            PawprintEntities PE = new PawprintEntities();
                 PE.Posts.Add(NewPost);
                 PE.SaveChanges();
-            }
+
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase file)
+        {
+            if (file != null && file.ContentLength > 0)
+                try
+                {
+                    string path = Path.Combine(Server.MapPath("~/img/posts"),
+                                               Path.GetFileName(file.FileName));
+                    file.SaveAs(path);
+                    ViewBag.Message = "File uploaded successfully";
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                }
+            else
+            {
+                ViewBag.Message = "You have not specified a file.";
+            }
+            return View("Index");
         }
     }
 }
