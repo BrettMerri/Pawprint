@@ -6,16 +6,28 @@
 
 <h2>Your Animals</h2>
 
-<table >
-    @foreach (var element in ViewBag.PetList)
-    {
+
+    <table class="table">
+        
+
+        <thead>
+            <tr>
+                <th>Pet ID</th>
+                <th>Name</th>
+                <th>Breed</th>
+            </tr>
+        </thead>
+        @foreach (var element in ViewBag.PetList)
+        {
         <tr>
+            <td>@element.PetID</td>
             <td>@element.Name</td>
+            <td>@element.Breed</td>
             <td><a href="/User/DeletePet?Name=@element.Name" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-remove"></span></a></td>
 
-            
-        </tr>
-    }
 
-</table>
+        </tr>
+        }
+
+    </table>
 
