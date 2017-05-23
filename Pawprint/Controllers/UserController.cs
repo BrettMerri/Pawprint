@@ -6,7 +6,8 @@ using System.Web.Mvc;
 using Pawprint.Models;
 using Microsoft.AspNet.Identity;
 using System.Data.SqlClient;
-
+using Microsoft.Owin.Security.Google;
+using Owin;
 
 namespace Pawprint.Controllers
 {
@@ -17,7 +18,7 @@ namespace Pawprint.Controllers
         public ActionResult Profile(string DisplayName)
         {
             PawprintEntities DB = new PawprintEntities();
-            AspNetUser UserProfile = DB.AspNetUsers.SingleOrDefault(x => x.DisplayName == DisplayName);
+            AspNetUser UserProfile = DB.AspNetUsers.FirstOrDefault(x => x.DisplayName == DisplayName);
             if (UserProfile == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -74,7 +75,6 @@ namespace Pawprint.Controllers
             DB.Pets.Remove(SelectedPet);
             DB.SaveChanges();
             return RedirectToAction("YourAnimals");
-
         }
     }
 }
