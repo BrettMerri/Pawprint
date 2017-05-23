@@ -11,6 +11,12 @@ namespace Pawprint.Controllers
     {
         public ActionResult Index()
         {
+            PawprintEntities PE = new PawprintEntities();
+
+            List<Post> PostList = PE.Posts.ToList();
+
+            ViewBag.PostList = PostList;
+
             return View();
         }
 
