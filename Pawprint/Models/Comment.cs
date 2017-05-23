@@ -16,7 +16,7 @@ namespace Pawprint.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string PostID { get; set; }
+        public int PostID { get; set; }
         public string UserID { get; set; }
         public string CommentID { get; set; }
     
