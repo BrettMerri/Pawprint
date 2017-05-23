@@ -31,7 +31,7 @@ namespace Pawprint.Controllers
         public ActionResult SaveNewPost(Post NewPost)
         {
             NewPost.Date = DateTime.Now;
-            NewPost.FilePath = "img/example.jpg";
+            NewPost.FilePath = "~/img/posts/example.jpg";
 
             PawprintEntities PE = new PawprintEntities();
             PE.Posts.Add(NewPost);
