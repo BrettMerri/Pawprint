@@ -11,6 +11,8 @@
     {
         <tr>
             <td>@element.Name</td>
+            <td><a href="/User/DeletePet?Name=@element.Name" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-remove"></span></a></td>
+
             
         </tr>
     }

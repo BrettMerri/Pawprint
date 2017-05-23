@@ -64,6 +64,18 @@ namespace Pawprint.Controllers
 
             return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
         }
+
+
+        public ActionResult DeletePet(string Name)
+
+        {
+            PawprintEntities DB = new PawprintEntities();
+            Pet SelectedPet = DB.Pets.SingleOrDefault(x => x.Name == Name);
+            DB.Pets.Remove(SelectedPet);
+            DB.SaveChanges();
+            return RedirectToAction("YourAnimals");
+
+        }
     }
 }
 
