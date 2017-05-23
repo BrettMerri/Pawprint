@@ -75,7 +75,7 @@
           </Key>
           <Property Name="FirstName" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="LastName" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="PostID" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PostID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CommentID" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
@@ -92,14 +92,14 @@
             <PropertyRef Name="PostID" />
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="PostID" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PostID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="Pets">
           <Key>
             <PropertyRef Name="PetID" />
           </Key>
-          <Property Name="PetID" Type="int" Nullable="false" />
+          <Property Name="PetID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Breed" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="BirthDay" Type="date" Nullable="false" />
@@ -111,10 +111,11 @@
           <Key>
             <PropertyRef Name="PostID" />
           </Key>
-          <Property Name="PostID" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Date" Type="date" Nullable="false" />
           <Property Name="FilePath" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PetID" Type="int" Nullable="false" />
+          <Property Name="Caption" Type="varchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -407,7 +408,7 @@
           </Key>
           <Property Name="FirstName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="LastName" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PostID" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PostID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CommentID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Comments_UserID" FromRole="Comments" ToRole="AspNetUsers" />
@@ -417,7 +418,7 @@
           <Key>
             <PropertyRef Name="PetID" />
           </Key>
-          <Property Name="PetID" Type="Int32" Nullable="false" />
+          <Property Name="PetID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Breed" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="BirthDay" Type="DateTime" Nullable="false" Precision="0" />
@@ -432,10 +433,11 @@
           <Key>
             <PropertyRef Name="PostID" />
           </Key>
-          <Property Name="PostID" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="FilePath" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PetID" Type="Int32" Nullable="false" />
+          <Property Name="Caption" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_PostID" FromRole="Posts" ToRole="Comments" />
           <NavigationProperty Name="Pet" Relationship="Self.FK_Posts_PetID" FromRole="Posts" ToRole="Pets" />
           <NavigationProperty Name="AspNetUsers" Relationship="Self.Likes" FromRole="Posts" ToRole="AspNetUsers" />
@@ -699,6 +701,7 @@
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="FilePath" ColumnName="FilePath" />
                 <ScalarProperty Name="PetID" ColumnName="PetID" />
+                <ScalarProperty Name="Caption" ColumnName="Caption" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

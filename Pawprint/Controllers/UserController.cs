@@ -12,6 +12,7 @@ namespace Pawprint.Controllers
 {
     public class UserController : Controller
     {
+
         // /User/Profile/[username]
         public ActionResult Profile(string DisplayName)
         {
@@ -33,7 +34,7 @@ namespace Pawprint.Controllers
         public ActionResult AddNewPet()
         {
 
-            return View();
+            return View ();
 
         }
 
@@ -44,12 +45,30 @@ namespace Pawprint.Controllers
         {
 
             PawprintEntities DB = new PawprintEntities();
+
             string UserID = User.Identity.GetUserId();
             List<Pet> PetList = DB.Pets.Where(x => x.OwnerID == UserID).ToList();
 
             ViewBag.PetList = PetList;
 
             return View();
+        }
+
+        public ActionResult SaveNewPet(Pet NewPet)
+        {
+
+
+
+            NewPet.OwnerID = User.Identity.GetUserId();
+                        // to DO: Validation!!
+            PawprintEntities PE = new PawprintEntities();
+            PE.Pets.Add(NewPet);
+            PE.SaveChanges();
+
+            ApplicationDbContext UserDB = new ApplicationDbContext();
+            ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
+
+            return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
         }
     }
 }
