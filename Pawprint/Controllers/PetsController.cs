@@ -1,6 +1,8 @@
 ﻿using Pawprint.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -28,15 +30,29 @@ namespace Pawprint.Controllers
             return View();
         }
 
-        public ActionResult SaveNewPost(Post NewPost)
+        [HttpPost]
+        public ActionResult SaveNewPost(Post NewPost, HttpPostedFileBase uploadFile)
         {
             NewPost.Date = DateTime.Now;
-            NewPost.FilePath = "~/img/posts/example.jpg";
 
-            PawprintEntities PE = new PawprintEntities();
-            PE.Posts.Add(NewPost);
-            PE.SaveChanges();
+            if (uploadFile != null && uploadFile.ContentLength > 0)
+            {
+                string FileName = uploadFile.FileName;
+                string PostID = Guid.NewGuid().ToString().Replace("-", "");
+                string PetID = NewPost.PetID.ToString();
 
+                string path = Path.Combine(Server.MapPath("~/App_Data/"), FileName);
+
+                Directory.CreateDirectory(path);
+
+                NewPost.FilePath = path;
+
+                uploadFile.SaveAs(path);
+
+                PawprintEntities PE = new PawprintEntities();
+                PE.Posts.Add(NewPost);
+                PE.SaveChanges();
+            }
             return RedirectToAction("Index", "Home");
         }
     }
