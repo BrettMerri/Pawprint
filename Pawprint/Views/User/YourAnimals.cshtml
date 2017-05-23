@@ -20,8 +20,9 @@
         @foreach (var element in ViewBag.PetList)
         {
         <tr>
+            
             <td>@element.PetID</td>
-            <td>@element.Name</td>
+            <td><a href="/Pets/Profile?PetID=@element.PetID">@element.Name</a></td>
             <td>@element.Breed</td>
             <td><a href="/User/DeletePet?PetID=@element.PetID" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-remove"></span></a></td>
 
