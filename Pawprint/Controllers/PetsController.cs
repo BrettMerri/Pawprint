@@ -25,9 +25,19 @@ namespace Pawprint.Controllers
 
         public ActionResult AddNewPost()
         {
-
-
             return View();
+        }
+
+        public ActionResult SaveNewPost(Post NewPost)
+        {
+            NewPost.Date = DateTime.Now;
+            NewPost.FilePath = "img/example.jpg";
+
+            PawprintEntities PE = new PawprintEntities();
+            PE.Posts.Add(NewPost);
+            PE.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

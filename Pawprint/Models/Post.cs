@@ -21,10 +21,11 @@ namespace Pawprint.Models
             this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
-        public string PostID { get; set; }
+        public int PostID { get; set; }
         public System.DateTime Date { get; set; }
         public string FilePath { get; set; }
         public int PetID { get; set; }
+        public string Caption { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
