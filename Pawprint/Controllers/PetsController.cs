@@ -46,14 +46,31 @@ namespace Pawprint.Controllers
             return View(PetProfile);
         }
 
-        public ActionResult AddNewPost()
+        public ActionResult AddNewPost(int PetID)
         {
+            PawprintEntities DB = new PawprintEntities();
+            Pet AddPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
+
+            if (User.Identity.GetUserId() != AddPet.OwnerID)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ViewBag.PetID = PetID;
             return View();
         }
 
         [HttpPost]
         public ActionResult SaveNewPost(Post NewPost, HttpPostedFileBase uploadFile)
         {
+            PawprintEntities DB = new PawprintEntities();
+            Pet AddPet = DB.Pets.SingleOrDefault(x => x.PetID == NewPost.PetID);
+
+            if (User.Identity.GetUserId() != AddPet.OwnerID)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             NewPost.Date = DateTime.Now;
 
             //Create unique identifier
@@ -67,10 +84,8 @@ namespace Pawprint.Controllers
 
             Upload(uploadFile, FilePath);
 
-
-            PawprintEntities PE = new PawprintEntities();
-                PE.Posts.Add(NewPost);
-                PE.SaveChanges();
+                DB.Posts.Add(NewPost);
+                DB.SaveChanges();
 
             return RedirectToAction("Index", "Home");
         }

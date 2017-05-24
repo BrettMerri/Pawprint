@@ -56,13 +56,21 @@
                         <h4>This pet has no posts! :(</h4>
                         @if (ViewBag.EditProfile == true)
                         {
-                            <h4><a href="/Pets/AddNewPost">Add your first Post!</a></h4>
+                            <h4><a href="/Pets/AddNewPost?PetID=@Model.PetID">Add your first Post!</a></h4>
                         }
                     </div>
                 </div>
             }
             else
             {
+                if (ViewBag.EditProfile == true)
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                           <h4><a href="/Pets/AddNewPost?PetID=@Model.PetID">Add your first Post!</a></h4>
+                        </div>
+                    </div>
+                }
                 foreach (var item in ViewBag.PostList)
                 {
                     <div class="panel panel-default">
