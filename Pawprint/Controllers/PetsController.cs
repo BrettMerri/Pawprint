@@ -46,40 +46,55 @@ namespace Pawprint.Controllers
             return View(PetProfile);
         }
 
+
+
+        // Add a New Post
         public ActionResult AddNewPost(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
             Pet AddPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
 
+            // When User ID and Pet Owner ID Do Not Match
             if (User.Identity.GetUserId() != AddPet.OwnerID)
             {
-                return RedirectToAction("Index", "Home");
+                ViewBag.Message = "Can Not Post Under a Pet That is Not Your Own";
+                return View("Error");
             }
 
             ViewBag.PetID = PetID;
             return View();
         }
 
+
+
+        // Save New Post
         [HttpPost]
         public ActionResult SaveNewPost(Post NewPost, HttpPostedFileBase uploadFile)
         {
             PawprintEntities DB = new PawprintEntities();
             Pet AddPet = DB.Pets.SingleOrDefault(x => x.PetID == NewPost.PetID);
 
+            // When User ID and Pet Owner ID Do Not Match
             if (User.Identity.GetUserId() != AddPet.OwnerID)
             {
-                return RedirectToAction("Index", "Home");
+                ViewBag.Message = "Can Not Post Under a Pet That is Not Your Own";
+                return View("Error");
             }
 
+
+            // Time Stamp for Post
             NewPost.Date = DateTime.Now;
 
-            //Create unique identifier
+
+            //Create Unique Identifier
             string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
 
-            //This file path gets saved to the database
+
+            //This File Path Gets Saved To The Database
             NewPost.FilePath = $"{NewPost.PetID}/{UniqueID}/{uploadFile.FileName}";
 
-            //This file path will be used to save the file
+
+            //This File Path Will Be Used To Save The File
             string FilePath = $"~/img/posts/{NewPost.PetID}/{UniqueID}";
 
             Upload(uploadFile, FilePath);
@@ -90,6 +105,9 @@ namespace Pawprint.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
+
+        // Upload Photo
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase file, string filePath)
         {
@@ -112,7 +130,7 @@ namespace Pawprint.Controllers
                 }
             else
             {
-                ViewBag.Message = "You have not specified a file.";
+                ViewBag.Message = "You Have Not Specified a File.";
             }
             return View("Index");
         }
