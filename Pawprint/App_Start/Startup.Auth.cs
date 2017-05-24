@@ -62,8 +62,8 @@ namespace Pawprint
             // Login with Google API
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "613273954205-k1bo3ajdmj1heu0l7qgvgqaqf0o41t33.apps.googleusercontent.com",
-                ClientSecret = "XTStbm58sRTT5431RVSrgJOa"
+                ClientId = "",
+                ClientSecret = ""
 
             });
         }
