@@ -24,6 +24,25 @@ namespace Pawprint.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            if (Request.IsAuthenticated)
+            {
+                ApplicationDbContext UserDB = new ApplicationDbContext();
+                ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
+
+                if (CurrentUserInfo.DisplayName == UserProfile.DisplayName)
+                {
+                    ViewBag.EditProfile = true;
+                }
+                else
+                {
+                    ViewBag.EditProfile = false;
+                }
+            }
+            else
+            {
+                ViewBag.EditProfile = false;
+            }
+
             List<Pet> PetList = DB.Pets.Where(x => x.OwnerID == UserProfile.ID).ToList();
 
             ViewBag.PetList = PetList;
@@ -31,15 +50,15 @@ namespace Pawprint.Controllers
         }
 
 
-        // Add New Pet to User Profile
+        [Authorize]
         public ActionResult AddNewPet()
         {
-            return View ();
+            return View();
         }
 
 
 
-        // List of Your Animals
+        [Authorize]
         public ActionResult YourAnimals()
         {
             PawprintEntities DB = new PawprintEntities();
@@ -52,6 +71,7 @@ namespace Pawprint.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult SaveNewPet(Pet NewPet)
         {
             NewPet.OwnerID = User.Identity.GetUserId();

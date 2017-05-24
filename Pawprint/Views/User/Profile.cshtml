@@ -2,10 +2,8 @@
     ViewBag.Title = "Profile";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<br />
-<a href="/User/AddNewPet">Add a new Pet!</a>
-<br />
+@using Microsoft.AspNet.Identity;
+@using Pawprint.Models;
 
 <link rel="stylesheet" href="~/Content/Profile.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -18,19 +16,28 @@
                         <div align="center">
                             <img class="thumbnail img-responsive" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" />
                         </div>
+                        @if (ViewBag.EditProfile == true)
+                        {
+                            <h3 class="small-header"><a href="#">Change avatar</a></h3>
+                        }
                         <div class="media-body">
-                            <hr>
+                            <hr class="small-hr">
                             <h3><strong>Bio</strong></h3>
                             <p>Unknown</p>
-                            <hr>
+                            <hr class="small-hr">
                             <h3><strong>Location</strong></h3>
                             <p>Unknown</p>
-                            <hr>
+                            <hr class="small-hr">
                             <h3><strong>Gender</strong></h3>
                             <p>Unknown</p>
-                            <hr>
+                            <hr class="small-hr">
                             <h3><strong>Birthday</strong></h3>
                             <p>Unknown</p>
+                            @if (ViewBag.EditProfile == true)
+                            {
+                                <hr class="small-hr" />
+                                <h4 class="small-header"><a href="#">Edit Profile</a></h4>
+                            }
                         </div>
                     </div>
                 </div>
@@ -39,8 +46,14 @@
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h3 style="margin:0;">Pets</h3>
-                    <hr />
+                    <div style="height:28px">
+                        <h3 class="pull-left small-header">Pets</h3>
+                        @if (ViewBag.EditProfile == true)
+                        {
+                            <h3 class="pull-right small-header"><a href="/User/AddNewPet">Add a new Pet!</a></h3>
+                        }
+                    </div>
+                    <hr class="small-hr" />
                     @if (ViewBag.PetList.Count == 0)
                     {
                         <h4>You have no pets!</h4>

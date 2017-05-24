@@ -28,3 +28,13 @@ textarea {
     margin-top:10px;
     padding-bottom:0;
 }
+
+hr.small-hr
+{
+    margin:5px 0;
+}
+
+.small-header
+{
+    margin:0;
+}
