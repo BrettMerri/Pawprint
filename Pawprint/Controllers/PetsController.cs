@@ -11,7 +11,6 @@ namespace Pawprint.Controllers
 {
     public class PetsController : Controller
     {
-        // GET: Pets
         public ActionResult Profile(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -21,6 +20,12 @@ namespace Pawprint.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+
+            List<Post> PostList = DB.Posts.Where(x => x.PetID == PetProfile.PetID).ToList();
+
+            PostList.Reverse();
+
+            ViewBag.PostList = PostList;
 
             return View(PetProfile);
         }
@@ -35,10 +40,14 @@ namespace Pawprint.Controllers
         {
             NewPost.Date = DateTime.Now;
 
+            //Create unique identifier
             string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
+
+            //This file path gets saved to the database
             NewPost.FilePath = $"{NewPost.PetID}/{UniqueID}/{uploadFile.FileName}";
 
-            string FilePath = $"{NewPost.PetID}/{UniqueID}";
+            //This file path will be used to save the file
+            string FilePath = $"~/img/posts/{NewPost.PetID}/{UniqueID}";
 
             Upload(uploadFile, FilePath);
 
@@ -56,16 +65,15 @@ namespace Pawprint.Controllers
             if (file != null && file.ContentLength > 0)
                 try
                 {
-                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath($"~/img/posts/{filePath}"));
+                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));
                     if (!dir.Exists)
                     {
                         dir.Create();
                     }
 
-                    string path = Path.Combine(Server.MapPath($"~/img/posts/{filePath}"),
+                    string path = Path.Combine(Server.MapPath(filePath),
                                                Path.GetFileName(file.FileName));
                     file.SaveAs(path);
-                    ViewBag.Message = "File uploaded successfully";
                 }
                 catch (Exception ex)
                 {
