@@ -13,9 +13,7 @@ namespace Pawprint.Controllers
         {
             PawprintEntities PE = new PawprintEntities();
 
-            List<Post> PostList = PE.Posts.ToList();
-
-            PostList.Reverse();
+            List<Post> PostList = PE.Posts.OrderByDescending(x => x.Date).ToList();
 
             ViewBag.PostList = PostList;
 
