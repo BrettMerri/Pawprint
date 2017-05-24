@@ -4,7 +4,6 @@
 }
 
 <br />
-<br />
 <a href="/Pets/AddNewPost">Add a new Post!</a>
 <br />
 
@@ -17,21 +16,27 @@
                 <div class="panel-body">
                     <div class="media">
                         <div align="center">
-                            <img class="thumbnail img-responsive" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" width="300px" height="300px">
+                            <img class="thumbnail img-responsive" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" />
                         </div>
                         <div class="media-body">
-                            <hr>
-                            <h3><strong>Bio</strong></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel gravida metus, non ultrices sapien. Morbi odio metus, dapibus non nibh id amet.</p>
-                            <hr>
-                            <h3><strong>Location</strong></h3>
-                            <p>Earth</p>
-                            <hr>
-                            <h3><strong>Gender</strong></h3>
-                            <p>Unknown</p>
-                            <hr>
+                            <hr />
+                            <h3><strong>Name</strong></h3>
+                            <p>@Model.Name</p>
+                            <hr />
+                            <h3><strong>Breed</strong></h3>
+                            <p>@Model.Breed</p>
+                            <hr />
+                            <h3><strong>Color</strong></h3>
+                            <p>@Model.Color</p>
+                            <hr />
                             <h3><strong>Birthday</strong></h3>
-                            <p>January 01 1901</p>
+                            <p>@Model.BirthDay</p>
+                            @if (Model.FavoriteFood != null)
+                            {
+                                <hr />
+                                <h3><strong>Favorite Food</strong></h3>
+                                <p>@Model.FavoriteFood</p>
+                            }
                         </div>
                     </div>
                 </div>
