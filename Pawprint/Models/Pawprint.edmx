@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PawprintModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Pawprint.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -127,30 +127,6 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <Association Name="FK_Comments_PostID">
-          <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
-          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Posts">
-              <PropertyRef Name="PostID" />
-            </Principal>
-            <Dependent Role="Comments">
-              <PropertyRef Name="PostID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Comments_UserID">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Comments">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -205,42 +181,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_FollowList_UserID">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="FollowList" Type="Self.FollowList" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="FollowList">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Likes_PostID">
-          <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
-          <End Role="Likes" Type="Self.Likes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Posts">
-              <PropertyRef Name="PostID" />
-            </Principal>
-            <Dependent Role="Likes">
-              <PropertyRef Name="PostID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Likes_UserID">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Likes" Type="Self.Likes" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Likes">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Pets_OwnerID">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="Pets" Type="Self.Pets" Multiplicity="*" />
@@ -265,7 +205,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PawprintModelStoreContainer">
+        <EntityContainer Name="PawprintStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -278,14 +218,6 @@
           <EntitySet Name="Pets" EntityType="Self.Pets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Posts" EntityType="Self.Posts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Comments_PostID" Association="Self.FK_Comments_PostID">
-            <End Role="Posts" EntitySet="Posts" />
-            <End Role="Comments" EntitySet="Comments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Comments_UserID" Association="Self.FK_Comments_UserID">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Comments" EntitySet="Comments" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -302,18 +234,6 @@
             <End Role="Pets" EntitySet="Pets" />
             <End Role="FollowList" EntitySet="FollowList" />
           </AssociationSet>
-          <AssociationSet Name="FK_FollowList_UserID" Association="Self.FK_FollowList_UserID">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="FollowList" EntitySet="FollowList" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Likes_PostID" Association="Self.FK_Likes_PostID">
-            <End Role="Posts" EntitySet="Posts" />
-            <End Role="Likes" EntitySet="Likes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Likes_UserID" Association="Self.FK_Likes_UserID">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Likes" EntitySet="Likes" />
-          </AssociationSet>
           <AssociationSet Name="FK_Pets_OwnerID" Association="Self.FK_Pets_OwnerID">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Pets" EntitySet="Pets" />
@@ -323,10 +243,11 @@
             <End Role="Posts" EntitySet="Posts" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="PawprintModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Pawprint" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -396,10 +317,7 @@
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="AspNetUserRoles" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserRoles" />
-          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_UserID" FromRole="AspNetUsers" ToRole="Comments" />
           <NavigationProperty Name="Pets" Relationship="Self.FK_Pets_OwnerID" FromRole="AspNetUsers" ToRole="Pets" />
-          <NavigationProperty Name="Pets1" Relationship="Self.FollowList" FromRole="AspNetUsers" ToRole="Pets" />
-          <NavigationProperty Name="Posts" Relationship="Self.Likes" FromRole="AspNetUsers" ToRole="Posts" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -410,8 +328,23 @@
           <Property Name="PostID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CommentID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Comments_UserID" FromRole="Comments" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Post" Relationship="Self.FK_Comments_PostID" FromRole="Comments" ToRole="Posts" />
+        </EntityType>
+        <EntityType Name="FollowList">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="PetID" />
+          </Key>
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PetID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Pet" Relationship="Self.FK_FollowList_PetID" FromRole="FollowList" ToRole="Pets" />
+        </EntityType>
+        <EntityType Name="Like">
+          <Key>
+            <PropertyRef Name="PostID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="PostID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="Pet">
           <Key>
@@ -425,8 +358,8 @@
           <Property Name="OwnerID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FavoriteFood" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Pets_OwnerID" FromRole="Pets" ToRole="AspNetUsers" />
+          <NavigationProperty Name="FollowLists" Relationship="Self.FK_FollowList_PetID" FromRole="Pets" ToRole="FollowList" />
           <NavigationProperty Name="Posts" Relationship="Self.FK_Posts_PetID" FromRole="Pets" ToRole="Posts" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FollowList" FromRole="Pets" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -437,9 +370,7 @@
           <Property Name="FilePath" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PetID" Type="Int32" Nullable="false" />
           <Property Name="Caption" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_PostID" FromRole="Posts" ToRole="Comments" />
           <NavigationProperty Name="Pet" Relationship="Self.FK_Posts_PetID" FromRole="Posts" ToRole="Pets" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.Likes" FromRole="Posts" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -493,18 +424,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Comments_UserID">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
-          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Comments">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Pets_OwnerID">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
           <End Role="Pets" Type="Self.Pet" Multiplicity="*" />
@@ -517,15 +436,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Comments_PostID">
-          <End Role="Posts" Type="Self.Post" Multiplicity="1" />
-          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+        <Association Name="FK_FollowList_PetID">
+          <End Role="Pets" Type="Self.Pet" Multiplicity="1" />
+          <End Role="FollowList" Type="Self.FollowList" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Posts">
-              <PropertyRef Name="PostID" />
+            <Principal Role="Pets">
+              <PropertyRef Name="PetID" />
             </Principal>
-            <Dependent Role="Comments">
-              <PropertyRef Name="PostID" />
+            <Dependent Role="FollowList">
+              <PropertyRef Name="PetID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -541,14 +460,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FollowList">
-          <End Role="Pets" Type="Self.Pet" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
-        </Association>
-        <Association Name="Likes">
-          <End Role="Posts" Type="Self.Post" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="PawprintEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
@@ -557,6 +468,8 @@
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRole" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="FollowLists" EntityType="Self.FollowList" />
+          <EntitySet Name="Likes" EntityType="Self.Like" />
           <EntitySet Name="Pets" EntityType="Self.Pet" />
           <EntitySet Name="Posts" EntityType="Self.Post" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
@@ -572,29 +485,17 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_Comments_UserID" Association="Self.FK_Comments_UserID">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Comments" EntitySet="Comments" />
-          </AssociationSet>
           <AssociationSet Name="FK_Pets_OwnerID" Association="Self.FK_Pets_OwnerID">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Pets" EntitySet="Pets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Comments_PostID" Association="Self.FK_Comments_PostID">
-            <End Role="Posts" EntitySet="Posts" />
-            <End Role="Comments" EntitySet="Comments" />
+          <AssociationSet Name="FK_FollowList_PetID" Association="Self.FK_FollowList_PetID">
+            <End Role="Pets" EntitySet="Pets" />
+            <End Role="FollowList" EntitySet="FollowLists" />
           </AssociationSet>
           <AssociationSet Name="FK_Posts_PetID" Association="Self.FK_Posts_PetID">
             <End Role="Pets" EntitySet="Pets" />
             <End Role="Posts" EntitySet="Posts" />
-          </AssociationSet>
-          <AssociationSet Name="FollowList" Association="Self.FollowList">
-            <End Role="Pets" EntitySet="Pets" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-          <AssociationSet Name="Likes" Association="Self.Likes">
-            <End Role="Posts" EntitySet="Posts" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -602,9 +503,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PawprintModelStoreContainer" CdmEntityContainer="PawprintEntities">
+        <EntityContainerMapping StorageEntityContainer="PawprintStoreContainer" CdmEntityContainer="PawprintEntities">
           <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="PawprintModel.C__MigrationHistory">
+            <EntityTypeMapping TypeName="Pawprint.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
@@ -614,7 +515,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="PawprintModel.AspNetRole">
+            <EntityTypeMapping TypeName="Pawprint.AspNetRole">
               <MappingFragment StoreEntitySet="AspNetRoles">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -622,7 +523,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="PawprintModel.AspNetUserClaim">
+            <EntityTypeMapping TypeName="Pawprint.AspNetUserClaim">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -632,7 +533,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="PawprintModel.AspNetUserLogin">
+            <EntityTypeMapping TypeName="Pawprint.AspNetUserLogin">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
@@ -641,7 +542,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserRoles">
-            <EntityTypeMapping TypeName="PawprintModel.AspNetUserRole">
+            <EntityTypeMapping TypeName="Pawprint.AspNetUserRole">
               <MappingFragment StoreEntitySet="AspNetUserRoles">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
@@ -649,7 +550,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="PawprintModel.AspNetUser">
+            <EntityTypeMapping TypeName="Pawprint.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -670,7 +571,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Comments">
-            <EntityTypeMapping TypeName="PawprintModel.Comment">
+            <EntityTypeMapping TypeName="Pawprint.Comment">
               <MappingFragment StoreEntitySet="Comments">
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -680,8 +581,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="FollowLists">
+            <EntityTypeMapping TypeName="Pawprint.FollowList">
+              <MappingFragment StoreEntitySet="FollowList">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="PetID" ColumnName="PetID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Likes">
+            <EntityTypeMapping TypeName="Pawprint.Like">
+              <MappingFragment StoreEntitySet="Likes">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Pets">
-            <EntityTypeMapping TypeName="PawprintModel.Pet">
+            <EntityTypeMapping TypeName="Pawprint.Pet">
               <MappingFragment StoreEntitySet="Pets">
                 <ScalarProperty Name="PetID" ColumnName="PetID" />
                 <ScalarProperty Name="Breed" ColumnName="Breed" />
@@ -694,7 +611,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Posts">
-            <EntityTypeMapping TypeName="PawprintModel.Post">
+            <EntityTypeMapping TypeName="Pawprint.Post">
               <MappingFragment StoreEntitySet="Posts">
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
@@ -705,7 +622,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="PawprintModel.sysdiagram">
+            <EntityTypeMapping TypeName="Pawprint.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -715,22 +632,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="FollowList" TypeName="PawprintModel.FollowList" StoreEntitySet="FollowList">
-            <EndProperty Name="Pets">
-              <ScalarProperty Name="PetID" ColumnName="PetID" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="ID" ColumnName="UserID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="Likes" TypeName="PawprintModel.Likes" StoreEntitySet="Likes">
-            <EndProperty Name="Posts">
-              <ScalarProperty Name="PostID" ColumnName="PostID" />
-            </EndProperty>
-            <EndProperty Name="AspNetUsers">
-              <ScalarProperty Name="ID" ColumnName="UserID" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

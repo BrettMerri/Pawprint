@@ -203,14 +203,22 @@
     <Compile Include="Models\AspNetUserLogin.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AspNetUserRole.cs" />
+    <Compile Include="Models\AspNetUserRole.cs">
+      <DependentUpon>Pawprint.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Comment.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C__MigrationHistory.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\FollowList.cs">
+      <DependentUpon>Pawprint.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Like.cs">
+      <DependentUpon>Pawprint.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Pawprint.Context.cs">
       <AutoGen>True</AutoGen>
@@ -334,6 +342,10 @@
     <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <Content Include="obj\Debug\Pawprint.csproj.GenerateResource.Cache" />
     <Content Include="obj\Debug\Pawprint.csprojResolveAssemblyReference.cache" />
+    <Content Include="bin\Pawprint.dll.config" />
+    <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
+    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
+    <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
     <EntityDeploy Include="Models\Pawprint.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Pawprint.Designer.cs</LastGenOutput>
@@ -341,10 +353,6 @@
     <Content Include="Models\Pawprint.edmx.diagram">
       <DependentUpon>Pawprint.edmx</DependentUpon>
     </Content>
-    <Content Include="bin\Pawprint.dll.config" />
-    <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
-    <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
-    <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

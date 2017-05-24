@@ -32,6 +32,8 @@ namespace Pawprint.Models
         public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<FollowList> FollowLists { get; set; }
+        public virtual DbSet<Like> Likes { get; set; }
         public virtual DbSet<Pet> Pets { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }

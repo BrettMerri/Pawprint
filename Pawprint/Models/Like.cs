@@ -12,14 +12,9 @@ namespace Pawprint.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Post
+    public partial class Like
     {
         public int PostID { get; set; }
-        public System.DateTime Date { get; set; }
-        public string FilePath { get; set; }
-        public int PetID { get; set; }
-        public string Caption { get; set; }
-    
-        public virtual Pet Pet { get; set; }
+        public string UserID { get; set; }
     }
 }

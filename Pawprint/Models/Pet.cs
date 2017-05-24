@@ -17,8 +17,8 @@ namespace Pawprint.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Pet()
         {
+            this.FollowLists = new HashSet<FollowList>();
             this.Posts = new HashSet<Post>();
-            this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
         public int PetID { get; set; }
@@ -31,8 +31,8 @@ namespace Pawprint.Models
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<FollowList> FollowLists { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }
