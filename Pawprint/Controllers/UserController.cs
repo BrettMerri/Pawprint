@@ -21,7 +21,10 @@ namespace Pawprint.Controllers
             AspNetUser UserProfile = DB.AspNetUsers.FirstOrDefault(x => x.DisplayName == DisplayName);
             if (UserProfile == null)
             {
-                return RedirectToAction("Index", "Home");
+
+                // Display Error Message When There's Invalid Display Name
+                ViewBag.Message = "Invalid Display Name";
+                return View("Error");
             }
 
             if (Request.IsAuthenticated)
@@ -50,6 +53,7 @@ namespace Pawprint.Controllers
         }
 
 
+
         [Authorize]
         public ActionResult AddNewPet()
         {
@@ -58,6 +62,7 @@ namespace Pawprint.Controllers
 
 
 
+        // Your Animals Page - Shows List of Pets
         [Authorize]
         public ActionResult YourAnimals()
         {
@@ -71,6 +76,9 @@ namespace Pawprint.Controllers
             return View();
         }
 
+
+
+        // Saves The New Pet
         [HttpPost]
         public ActionResult SaveNewPet(Pet NewPet)
         {
@@ -87,8 +95,9 @@ namespace Pawprint.Controllers
         }
 
 
-        public ActionResult DeletePet(int PetID)
 
+        // Delete a Pet
+        public ActionResult DeletePet(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
             Pet SelectedPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
@@ -97,6 +106,10 @@ namespace Pawprint.Controllers
             return RedirectToAction("YourAnimals");
         }
 
+
+        
+
+        // Update a Pet
         public ActionResult UpdatePet(int PetID)
         {
             PawprintEntities PE = new PawprintEntities();
@@ -104,6 +117,10 @@ namespace Pawprint.Controllers
             return View("UpdatePet");
         }
 
+
+
+
+        // Save Updates for Pet
         public ActionResult SaveUpdates(Pet ToBeUpdated)
         {
             PawprintEntities PE = new PawprintEntities();
@@ -117,12 +134,7 @@ namespace Pawprint.Controllers
 
             PE.SaveChanges();
             return RedirectToAction("YourAnimals");
-
-
-
         }
-
-
     }
 }
 
