@@ -15,6 +15,8 @@ namespace Pawprint.Controllers
 
             List<Post> PostList = PE.Posts.ToList();
 
+            PostList.Reverse();
+
             ViewBag.PostList = PostList;
 
             return View();
