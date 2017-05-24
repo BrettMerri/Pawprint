@@ -3,10 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<br />
-<a href="/Pets/AddNewPost">Add a new Post!</a>
-<br />
-
 <link rel="stylesheet" href="~/Content/Profile.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 <div class="mainbody container-fluid">
@@ -18,6 +14,10 @@
                         <div align="center">
                             <img class="thumbnail img-responsive" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" />
                         </div>
+                        @if (ViewBag.EditProfile == true)
+                        {
+                            <h3 class="small-header"><a href="#">Change avatar</a></h3>
+                        }
                         <div class="media-body">
                             <hr />
                             <h3><strong>Name</strong></h3>
@@ -37,17 +37,27 @@
                                 <h3><strong>Favorite Food</strong></h3>
                                 <p>@Model.FavoriteFood</p>
                             }
+                            @if (ViewBag.EditProfile == true)
+                            {
+                                <hr class="small-hr" />
+                                <h4 class="small-header"><a href="#">Edit Profile</a></h4>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+            
             @if (ViewBag.PostList.Count == 0)
             {
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h4>This pet has no posts! :(</h4>
+                        @if (ViewBag.EditProfile == true)
+                        {
+                            <h4><a href="/Pets/AddNewPost">Add your first Post!</a></h4>
+                        }
                     </div>
                 </div>
             }

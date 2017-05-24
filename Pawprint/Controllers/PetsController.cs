@@ -21,9 +21,25 @@ namespace Pawprint.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            List<Post> PostList = DB.Posts.Where(x => x.PetID == PetProfile.PetID).ToList();
+            if (Request.IsAuthenticated)
+            {
+                if (User.Identity.GetUserId() == PetProfile.OwnerID)
+                {
+                    ViewBag.EditProfile = true;
+                }
+                else
+                {
+                    ViewBag.EditProfile = false;
+                }
+            }
+            else
+            {
+                ViewBag.EditProfile = false;
+            }
 
-            PostList.Reverse();
+            List<Post> PostList = DB.Posts.Where(x => x.PetID == PetProfile.PetID)
+                                          .OrderByDescending(x => x.Date)
+                                          .ToList();
 
             ViewBag.PostList = PostList;
 
