@@ -76,6 +76,33 @@ namespace Pawprint.Controllers
             DB.SaveChanges();
             return RedirectToAction("YourAnimals");
         }
+
+        public ActionResult UpdatePet(int PetID)
+        {
+            PawprintEntities PE = new PawprintEntities();
+            Pet ToFind = PE.Pets.Find(PetID);
+            return View("UpdatePet");
+        }
+
+        public ActionResult SaveUpdates(Pet ToBeUpdated)
+        {
+            PawprintEntities PE = new PawprintEntities();
+            Pet ToFind = PE.Pets.Find(ToBeUpdated.PetID);
+            ToFind.Breed = ToBeUpdated.Breed;
+            ToFind.Name = ToBeUpdated.Name;
+            ToFind.Color = ToBeUpdated.Color;
+            ToFind.BirthDay = ToBeUpdated.BirthDay;
+            ToFind.FavoriteFood = ToBeUpdated.FavoriteFood;
+
+
+            PE.SaveChanges();
+            return RedirectToAction("YourAnimals");
+
+
+
+        }
+
+
     }
 }
 

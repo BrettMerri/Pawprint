@@ -19,15 +19,16 @@
         </thead>
         @foreach (var element in ViewBag.PetList)
         {
-        <tr>
+            <tr>
             
             <td>@element.PetID</td>
             <td><a href="/Pets/Profile?PetID=@element.PetID">@element.Name</a></td>
             <td>@element.Breed</td>
             <td><a href="/User/DeletePet?PetID=@element.PetID" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-remove"></span></a></td>
+            <td><a href="/User/UpdatePet?PetID=@element.PetID"><span class="glyphicon glyphicon-edit"></span></a></td>
+    
 
-
-        </tr>
+            </tr>
         }
 
     </table>
