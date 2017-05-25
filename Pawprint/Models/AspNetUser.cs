@@ -38,6 +38,10 @@ namespace Pawprint.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string DisplayName { get; set; }
+        public string Bio { get; set; }
+        public string Location { get; set; }
+        public string Gender { get; set; }
+        public Nullable<System.DateTime> BirthDay { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }

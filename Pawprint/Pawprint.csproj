@@ -189,6 +189,10 @@
     <Compile Include="Migrations\201705221649129_AddDisplayName.Designer.cs">
       <DependentUpon>201705221649129_AddDisplayName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705242019426_UserProfile.cs" />
+    <Compile Include="Migrations\201705242019426_UserProfile.Designer.cs">
+      <DependentUpon>201705242019426_UserProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRole.cs">
@@ -406,6 +410,8 @@
     <Content Include="Views\Pets\AddNewPost.cshtml" />
     <Content Include="Views\User\AddNewPet.cshtml" />
     <Content Include="Views\User\YourAnimals.cshtml" />
+    <Content Include="Views\User\UpdatePet.cshtml" />
+    <Content Include="Views\User\EditUserProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -434,6 +440,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705221649129_AddDisplayName.resx">
       <DependentUpon>201705221649129_AddDisplayName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705242019426_UserProfile.resx">
+      <DependentUpon>201705242019426_UserProfile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="obj\Debug\Pawprint.Migrations.AddName.resources" />
     <EmbeddedResource Include="obj\Debug\Pawprint.Migrations.InitialCreate.resources" />

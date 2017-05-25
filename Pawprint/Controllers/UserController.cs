@@ -134,6 +134,34 @@ namespace Pawprint.Controllers
 
             PE.SaveChanges();
             return RedirectToAction("YourAnimals");
+<<<<<<< Updated upstream
+||||||| merged common ancestors
+
+
+
+=======
+
+        }
+
+        public ActionResult EditUserProfile(string ID)
+        {
+            PawprintEntities PE = new PawprintEntities();
+            AspNetUser ToFind = PE.AspNetUsers.Find(ID);
+            return View("EditUserProfile");
+        }
+
+        public ActionResult SaveEditUserProfile(AspNetUser ToBeUpdated)
+        {
+            PawprintEntities PE = new PawprintEntities();
+            AspNetUser ToFind = PE.AspNetUsers.Find(ToBeUpdated.ID);
+            ToFind.Bio = ToBeUpdated.Bio;
+            ToFind.Location = ToBeUpdated.Location;
+            ToFind.Gender = ToBeUpdated.Gender;
+            ToFind.BirthDay = ToBeUpdated.BirthDay;
+
+            PE.SaveChanges();
+            return RedirectToAction("Profile");
+>>>>>>> Stashed changes
         }
     }
 }

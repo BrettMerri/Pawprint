@@ -134,5 +134,16 @@ namespace Pawprint.Controllers
             }
             return View("Index");
         }
+
+        public ActionResult EditPetProfile(int PetID)
+        {
+            
+            return View("YourAnimals", "User" );
+
+        }
+
+       
+
+
     }
 }
