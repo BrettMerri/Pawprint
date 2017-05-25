@@ -49,28 +49,33 @@
         </div>
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             
-            @if (ViewBag.PostList.Count == 0)
+            @if (ViewBag.EditProfile == true)
             {
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <h4>This pet has no posts! :(</h4>
-                        @if (ViewBag.EditProfile == true)
+                        
+                        @if (ViewBag.PostList.Count == 0)
                         {
-                            <h4><a href="/Pets/AddNewPost?PetID=@Model.PetID">Add your first Post!</a></h4>
+                            <h4>Your pet has no posts! :(</h4>
+                            <h4><a href="/Pets/AddNewPost?PetID=@Model.PetID">Add your pet's first Post!</a></h4>
+                        }
+                        else
+                        {
+                            <h4><a href="/Pets/AddNewPost?PetID=@Model.PetID">Add new post!</a></h4>
                         }
                     </div>
                 </div>
             }
-            else
+            @if (ViewBag.EditProfile == false && ViewBag.PostList.Count == 0)
             {
-                if (ViewBag.EditProfile == true)
-                {
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                           <h4><a href="/Pets/AddNewPost?PetID=@Model.PetID">Add your first Post!</a></h4>
-                        </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h4>This pet has no posts! :(</h4>
                     </div>
-                }
+                </div>
+            }
+            @if (ViewBag.PostList.Count != 0)
+            {
                 foreach (var item in ViewBag.PostList)
                 {
                     <div class="panel panel-default">

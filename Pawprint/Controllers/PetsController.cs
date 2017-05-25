@@ -11,14 +11,15 @@ namespace Pawprint.Controllers
 {
     public class PetsController : Controller
     {
-        public ActionResult Profile(int PetID)
+        public ActionResult Profile(int? PetID)
         {
             PawprintEntities DB = new PawprintEntities();
             Pet PetProfile = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
 
             if (PetProfile == null)
             {
-                return RedirectToAction("Index", "Home");
+                ViewBag.Message = "Invalid PetID";
+                return View("Error");
             }
 
             if (Request.IsAuthenticated)
