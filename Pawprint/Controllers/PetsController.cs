@@ -24,18 +24,32 @@ namespace Pawprint.Controllers
 
             if (Request.IsAuthenticated)
             {
-                if (User.Identity.GetUserId() == PetProfile.OwnerID)
+                string CurrentUserID = User.Identity.GetUserId();
+                bool IsUserAlreadyFollowingThisPet = DB.FollowLists.Any(x => x.PetID == PetProfile.PetID &&
+                                                                    x.UserID == CurrentUserID);
+
+                if (CurrentUserID == PetProfile.OwnerID)
                 {
                     ViewBag.EditProfile = true;
                 }
                 else
                 {
                     ViewBag.EditProfile = false;
+
+                    if (IsUserAlreadyFollowingThisPet)
+                    {
+                        ViewBag.AlreadyFollowing = true;
+                    }
+                    else
+                    {
+                        ViewBag.AlreadyFollowing = false;
+                    }
                 }
             }
             else
             {
                 ViewBag.EditProfile = false;
+                ViewBag.AlreadyFollowing = false;
             }
 
             List<Post> PostList = DB.Posts.Where(x => x.PetID == PetProfile.PetID)
@@ -44,12 +58,110 @@ namespace Pawprint.Controllers
 
             ViewBag.PostList = PostList;
 
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             return View(PetProfile);
         }
 
+        [Authorize]
+        public ActionResult Follow(int PetID)
+        {
+            PawprintEntities DB = new PawprintEntities();
+            Pet FollowPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
 
+            string CurrentUserID = User.Identity.GetUserId();
+
+            if (FollowPet == null)
+            {
+                ViewBag.Message = "Invalid PetID!";
+                return View("Error");
+            }
+
+            bool IsUserAlreadyFollowingThisPet = DB.FollowLists.Any(x => x.PetID == FollowPet.PetID &&
+                                                                    x.UserID == CurrentUserID);
+
+            //Checks if the user owns the pet OR if the user is already following this pet
+            if (CurrentUserID == FollowPet.OwnerID || IsUserAlreadyFollowingThisPet)
+            {
+                TempData["Message"] = $"You are already following {FollowPet.Name}!";
+                return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+            }
+
+            FollowList NewFollow = new FollowList();
+            NewFollow.UserID = CurrentUserID;
+            NewFollow.PetID = FollowPet.PetID;
+
+            DB.FollowLists.Add(NewFollow);
+
+            try
+            {
+                DB.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Something odd just happened! " + ex.ToString();
+                return View("Error");
+            }
+
+            TempData["Message"] = $"You have successfully followed {FollowPet.Name}!";
+
+            return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+        }
+
+        [Authorize]
+        public ActionResult Unfollow(int PetID)
+        {
+            PawprintEntities DB = new PawprintEntities();
+            Pet FollowPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
+
+            string CurrentUserID = User.Identity.GetUserId();
+
+            if (FollowPet == null)
+            {
+                ViewBag.Message = "Invalid PetID!";
+                return View("Error");
+            }
+
+            bool IsUserAlreadyFollowingThisPet = DB.FollowLists.Any(x => x.PetID == FollowPet.PetID &&
+                                                                    x.UserID == CurrentUserID);
+
+            //Checks if the user owns the pet
+            if (CurrentUserID == FollowPet.OwnerID)
+            {
+                TempData["Message"] = $"You are cannot unfollow your own pet!";
+                return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+            }
+
+            //Checks if user does not currently follow this pet
+            if (!IsUserAlreadyFollowingThisPet)
+            {
+                TempData["Message"] = $"You are already not following {FollowPet.Name}!";
+                return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+            }
+
+            FollowList Unfollow = DB.FollowLists.Find(CurrentUserID, FollowPet.PetID);
+            DB.FollowLists.Remove(Unfollow);
+
+            try
+            {
+                DB.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Something odd just happened! " + ex.ToString();
+                return View("Error");
+            }
+
+            TempData["Message"] = $"You have successfully unfollowed {FollowPet.Name}!";
+
+            return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+        }
 
         // Add a New Post
+        [Authorize]
         public ActionResult AddNewPost(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -70,6 +182,7 @@ namespace Pawprint.Controllers
 
         // Save New Post
         [HttpPost]
+        [Authorize]
         public ActionResult SaveNewPost(Post NewPost, HttpPostedFileBase uploadFile)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -110,6 +223,7 @@ namespace Pawprint.Controllers
 
         // Upload Photo
         [HttpPost]
+        [Authorize]
         public ActionResult Upload(HttpPostedFileBase file, string filePath)
         {
             if (file != null && file.ContentLength > 0)
@@ -136,6 +250,7 @@ namespace Pawprint.Controllers
             return View("Index");
         }
 
+        [Authorize]
         public ActionResult EditPetProfile(int PetID)
         {
             
