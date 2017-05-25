@@ -258,7 +258,79 @@ namespace Pawprint.Controllers
 
         }
 
-       
+        public ActionResult UploadPetAvatar(int PetID)
+        {
+            PawprintEntities DB = new PawprintEntities();
+            Pet AddAvatar = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
+
+            if (User.Identity.GetUserId() != AddAvatar.OwnerID)
+            {
+                ViewBag.Message = "Can Not Change Avatar for a Pet That is Not Your Own";
+                return View("Error");
+            }
+
+            ViewBag.PetID = PetID;
+            
+            return View();
+        }
+
+        public ActionResult UploadAvatar(HttpPostedFileBase file, string filePath)
+        {
+            if (file != null && file.ContentLength > 0)
+                try
+                {
+                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));
+                    if (!dir.Exists)
+                    {
+                        dir.Create();
+                    }
+
+                    string path = Path.Combine(Server.MapPath(filePath),
+                                               Path.GetFileName(file.FileName));
+                    file.SaveAs(path);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                }
+            else
+            {
+                ViewBag.Message = "You Have Not Specified a File.";
+            }
+            return View("Index");
+        }
+
+        [HttpPost]
+        public ActionResult SavePetAvatar(Pet AddAvatar, HttpPostedFileBase uploadFile)
+        {
+            PawprintEntities DB = new PawprintEntities();
+            Pet AddPet = DB.Pets.Find(AddAvatar.PetID);
+
+            if (User.Identity.GetUserId() != AddPet.OwnerID)
+            {
+                ViewBag.Message = "Can Not Change Avatar for a Pet That is Not Your Own";
+                return View("Error");
+            }
+
+            //Create Unique Identifier
+            string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
+
+            AddPet.FilePath = $"{AddAvatar.PetID}/{UniqueID}/{uploadFile.FileName}";
+
+
+            string FilePath = $"~/img/pets/{AddAvatar.PetID}/{UniqueID}";
+
+            UploadAvatar(uploadFile, FilePath);
+
+            DB.SaveChanges();
+
+            
+
+            return RedirectToAction("Profile", new { PetID = AddPet.PetID });
+
+        }
+
+
 
 
     }

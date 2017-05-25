@@ -162,7 +162,6 @@ namespace Pawprint.Controllers
 
         }
 
-        //[HttpPost]
         public ActionResult UploadUserAvatar()
         {
             
