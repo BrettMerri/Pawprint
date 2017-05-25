@@ -7,7 +7,6 @@
 
 <h2>EditUserProfile</h2>
 
-
 @using (Html.BeginForm("SaveEditUserProfile", "User"))
 {
     @Html.AntiForgeryToken()
@@ -29,10 +28,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Location)
-                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
-                </div>
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -47,7 +44,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BirthDay, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BirthDay, new { htmlAttributes = new {type="date", @class = "form-control" } })
+                @Html.EditorFor(model => model.BirthDay, new { htmlAttributes = new { type="date", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.BirthDay, "", new { @class = "text-danger" })
             </div>
         </div>
