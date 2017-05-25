@@ -155,7 +155,9 @@ namespace Pawprint.Controllers
             ToFind.BirthDay = ToBeUpdated.BirthDay;
 
             PE.SaveChanges();
-            return RedirectToAction("Profile");
+            ApplicationDbContext UserDB = new ApplicationDbContext();
+            ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
+            return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
 
         }
     }
