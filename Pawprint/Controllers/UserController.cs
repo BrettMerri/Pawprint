@@ -134,12 +134,7 @@ namespace Pawprint.Controllers
 
             PE.SaveChanges();
             return RedirectToAction("YourAnimals");
-<<<<<<< Updated upstream
-||||||| merged common ancestors
 
-
-
-=======
 
         }
 
@@ -161,7 +156,7 @@ namespace Pawprint.Controllers
 
             PE.SaveChanges();
             return RedirectToAction("Profile");
->>>>>>> Stashed changes
+
         }
     }
 }
