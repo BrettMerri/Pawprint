@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity;
 using System.Data.SqlClient;
 using Microsoft.Owin.Security.Google;
 using Owin;
+using System.IO;
 
 namespace Pawprint.Controllers
 {
@@ -156,5 +157,70 @@ namespace Pawprint.Controllers
 
             return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
         }
+
+        //[HttpPost]
+        public ActionResult UploadUserAvatar()
+        {
+            
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult SaveUserAvatar(HttpPostedFileBase uploadFile)
+        {
+            string CurrentUserID = User.Identity.GetUserId();
+            PawprintEntities DB = new PawprintEntities();
+            AspNetUser AddAvatar = DB.AspNetUsers.Find(CurrentUserID);
+
+            //Create Unique Identifier
+            string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
+
+            
+            AddAvatar.FilePath = $"{AddAvatar.ID}/{UniqueID}/{uploadFile.FileName}";
+
+
+            string FilePath = $"~/img/users/{AddAvatar.ID}/{UniqueID}";
+
+            UploadAvatar(uploadFile, FilePath);
+
+            DB.SaveChanges();
+
+            ApplicationDbContext UserDB = new ApplicationDbContext();
+            ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
+
+            return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
+
+        }
+
+        public ActionResult UploadAvatar(HttpPostedFileBase file, string filePath)
+        {
+            if (file != null && file.ContentLength > 0)
+                try
+                {
+                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));
+                    if (!dir.Exists)
+                    {
+                        dir.Create();
+                    }
+
+                    string path = Path.Combine(Server.MapPath(filePath),
+                                               Path.GetFileName(file.FileName));
+                    file.SaveAs(path);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                }
+            else
+            {
+                ViewBag.Message = "You Have Not Specified a File.";
+            }
+            return View("Index");
+        }
+
+
+
+
     }
 }
