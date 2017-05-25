@@ -12,11 +12,18 @@
                 <div class="panel-body">
                     <div class="media">
                         <div align="center">
-                            <img class="thumbnail img-responsive" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" />
+                            @if (Model.FilePath == null)
+                            {
+                                <img class="thumbnail img-responsive" src="~/img/users/default_avatar.png" />
+                            }
+                            else
+                            {
+                                <img class="thumbnail img-responsive" src="~/img/users/@Model.FilePath" />
+                            }
                         </div>
                         @if (ViewBag.EditProfile == true)
                         {
-                            <h3 class="small-header"><a href="#">Change avatar</a></h3>
+                            <h3 class="small-header"><a href="/User/UploadUserAvatar?ID=@Model.ID">Change avatar</a></h3>
                         }
                         <div class="media-body">
                             <hr class="small-hr">
