@@ -1,9 +1,17 @@
 ﻿<div class="row">
     <div class="col-sm-8">
+        @if (ViewBag.PostList.Count == 0)
+        {
+            <div class="page-header">
+                <h2>Oh no! There are no posts in your feed!</h2>
+                <h3>Go <a href="/Home/Explore" alt="Explore">Explore</a> to find pets to follow!</h3>
+
+            </div>
+        }
         @foreach (var item in ViewBag.PostList)
         {
             <div class="page-header">
-                <p>Posted by <span class="glyphicon glyphicon-user"></span> <a href="/Pets/Profile?PetID=@item.PetID">@item.PetID</a> on <span class="glyphicon glyphicon-time"></span> @item.Date</p>
+                <p>Posted by <span class="glyphicon glyphicon-user"></span> <a href="/Pets/Profile?PetID=@item.PetID">@item.Pet.Name</a> on <span class="glyphicon glyphicon-time"></span> @item.Date</p>
             </div>
             <figure class="margin-b-2">
                 <img class="img-responsive" src="~/img/posts/@item.FilePath" alt="">

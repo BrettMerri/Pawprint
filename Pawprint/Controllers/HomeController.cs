@@ -4,12 +4,26 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Pawprint.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Pawprint.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public ActionResult Index()
+        {
+            string CurrentUserID = User.Identity.GetUserId();
+            PawprintEntities PE = new PawprintEntities();
+            List<int> FollowedPets = PE.FollowLists.Where(x => x.UserID == CurrentUserID).Select(x=> x.PetID).ToList();
+            List<Post> PostList = PE.Posts.Where(x => FollowedPets.Any(y => x.PetID == y)).OrderByDescending(x => x.Date).ToList();
+
+            ViewBag.PostList = PostList;
+
+            return View();
+        }
+
+        public ActionResult Explore()
         {
             PawprintEntities PE = new PawprintEntities();
 
@@ -17,7 +31,7 @@ namespace Pawprint.Controllers
 
             ViewBag.PostList = PostList;
 
-            return View();
+            return View("Index");
         }
 
         public ActionResult Developers()
