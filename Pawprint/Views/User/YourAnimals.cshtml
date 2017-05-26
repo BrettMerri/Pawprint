@@ -4,30 +4,67 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Your Animals</h2>
+<style type="text/css">
+    .thumbnail
+    {
+        width:100px;
+        height:auto;
+    }
+    .PetName a
+    {
+        font-size: 30px;
+        margin-top:30px;
+        margin-left:15px;
+    }
+    .PetName a, .PetName img
+    {
+        float:left;
+    }
+    .PetIcon
+    {
+        vertical-align:middle !important;
+    }
+    .PetIcon a
+    {
+        margin-top:30px;
+        font-size:30px;
+    }
+    .PetHeader th
+    {
+        font-size:20px;
+    }
+</style>
+
+<h2>Manage Your Pets</h2>
 
 
     <table class="table">
         
 
         <thead>
-            <tr>
-                <th>Pet ID</th>
+            <tr class="PetHeader">
                 <th>Name</th>
-                <th>Breed</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
         @foreach (var element in ViewBag.PetList)
         {
             <tr>
-            
-            <td>@element.PetID</td>
-            <td><a href="/Pets/Profile?PetID=@element.PetID">@element.Name</a></td>
-            <td>@element.Breed</td>
-            <td><a href="/User/DeletePet?PetID=@element.PetID" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-remove"></span></a></td>
-            <td><a href="/User/UpdatePet?PetID=@element.PetID"><span class="glyphicon glyphicon-edit"></span></a></td>
-    
+                <td class="PetName">
+                    @if (element.FilePath == null)
+                    {
+                        <img class="thumbnail img-responsive" src="~/img/pets/default_avatar.png" />
+                    }
+                    else
 
+                    {
+                        <img class="thumbnail img-responsive" src="~/img/pets/@element.FilePath" />
+                    }
+                    <a href="/Pets/Profile?PetID=@element.PetID">@element.Name</a>
+                </td> 
+                <td class="PetIcon"><a href="/User/UpdatePet?PetID=@element.PetID"><span class="glyphicon glyphicon-edit"></span></a></td> 
+                <td class="PetIcon"><a href="/User/DeletePet?PetID=@element.PetID" onclick="return confirm('Are you sure?')"><span class="glyphicon glyphicon-remove"></span></a></td>
             </tr>
         }
 
