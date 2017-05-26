@@ -80,15 +80,21 @@ namespace Pawprint.Controllers
         [Authorize]
         public ActionResult SaveNewPet(Pet NewPet)
         {
-            NewPet.OwnerID = User.Identity.GetUserId();
+            string CurrentUserID = User.Identity.GetUserId();
+            NewPet.OwnerID = CurrentUserID;
 
             PawprintEntities PE = new PawprintEntities();
 
-            // to DO: Validation!!
+            FollowList FollowYourNewPet = new FollowList();
 
             try
             {
                 PE.Pets.Add(NewPet);
+
+                FollowYourNewPet.PetID = NewPet.PetID;
+                FollowYourNewPet.UserID = CurrentUserID;
+                PE.FollowLists.Add(FollowYourNewPet);
+
                 PE.SaveChanges();
             }
             catch (Exception ex)
@@ -98,7 +104,7 @@ namespace Pawprint.Controllers
             }
 
             ApplicationDbContext UserDB = new ApplicationDbContext();
-            ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
+            ApplicationUser CurrentUserInfo = UserDB.Users.Find(CurrentUserID);
 
             return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
         }
