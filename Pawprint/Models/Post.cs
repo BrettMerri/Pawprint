@@ -19,6 +19,7 @@ namespace Pawprint.Models
         public string FilePath { get; set; }
         public int PetID { get; set; }
         public string Caption { get; set; }
+        public Nullable<int> LikeCounts { get; set; }
     
         public virtual Pet Pet { get; set; }
     }

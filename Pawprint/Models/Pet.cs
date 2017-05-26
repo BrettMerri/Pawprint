@@ -28,6 +28,7 @@ namespace Pawprint.Models
         public string Color { get; set; }
         public string OwnerID { get; set; }
         public string FavoriteFood { get; set; }
+        public string FilePath { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

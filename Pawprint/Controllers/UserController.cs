@@ -108,7 +108,13 @@ namespace Pawprint.Controllers
             PawprintEntities PE = new PawprintEntities();
             Pet ToFind = PE.Pets.Find(PetID);
 
-            return View("UpdatePet");
+            if (ToFind.OwnerID != User.Identity.GetUserId())
+            {
+                ViewBag.Message = "You cannot edit another user's pet";
+                return View("Error");
+            }
+
+            return View(ToFind);
         }
 
         // Save Updates for Pet
@@ -116,6 +122,12 @@ namespace Pawprint.Controllers
         {
             PawprintEntities PE = new PawprintEntities();
             Pet ToFind = PE.Pets.Find(ToBeUpdated.PetID);
+
+            if (ToFind.OwnerID != User.Identity.GetUserId())
+            {
+                ViewBag.Message = "You cannot edit another user's pet";
+                return View("Error");
+            }
 
             ToFind.Breed = ToBeUpdated.Breed;
             ToFind.Name = ToBeUpdated.Name;
