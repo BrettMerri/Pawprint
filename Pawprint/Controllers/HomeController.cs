@@ -12,18 +12,29 @@ namespace Pawprint.Controllers
     {
         public ActionResult Index()
         {
-            string CurrentUserID = User.Identity.GetUserId();
-
+            //If user is not logged in, redirect them to the Welcome page.
             if (!Request.IsAuthenticated)
             {
                 return RedirectToAction("Welcome");
             }
 
+            string CurrentUserID = User.Identity.GetUserId();
+
             PawprintEntities PE = new PawprintEntities();
-            List<int> FollowedPets = PE.FollowLists.Where(x => x.UserID == CurrentUserID).Select(x=> x.PetID).ToList();
+
+            //Get distinct int list of PetID's that the user follows
+            List<int> FollowedPets = PE.FollowLists.Where(x => x.UserID == CurrentUserID).Select(x=> x.PetID).Distinct().ToList();
+
+            //Get all posts where Posts.PetID == any PetID that the user follows
             List<Post> PostList = PE.Posts.Where(x => FollowedPets.Any(y => x.PetID == y)).OrderByDescending(x => x.Date).ToList();
 
             ViewBag.PostList = PostList;
+
+            //TempData["Message"] exists when the user follows/unfollows the pet
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
 
             return View();
         }
@@ -32,6 +43,7 @@ namespace Pawprint.Controllers
         {
             PawprintEntities PE = new PawprintEntities();
 
+            //Returns list of all posts
             List<Post> PostList = PE.Posts.OrderByDescending(x => x.Date).ToList();
 
             ViewBag.PostList = PostList;

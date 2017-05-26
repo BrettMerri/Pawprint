@@ -1,4 +1,12 @@
-﻿<div class="row">
+﻿@if (ViewBag.Message != null)
+{
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>@ViewBag.Message</h2>
+        </div>
+    </div>
+}
+<div class="row">
     <div class="col-sm-8">
         @if (ViewBag.PostList.Count == 0)
         {
