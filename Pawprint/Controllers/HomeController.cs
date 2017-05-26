@@ -10,10 +10,15 @@ namespace Pawprint.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize]
         public ActionResult Index()
         {
             string CurrentUserID = User.Identity.GetUserId();
+
+            if (!Request.IsAuthenticated)
+            {
+                return RedirectToAction("Welcome");
+            }
+
             PawprintEntities PE = new PawprintEntities();
             List<int> FollowedPets = PE.FollowLists.Where(x => x.UserID == CurrentUserID).Select(x=> x.PetID).ToList();
             List<Post> PostList = PE.Posts.Where(x => FollowedPets.Any(y => x.PetID == y)).OrderByDescending(x => x.Date).ToList();
@@ -39,9 +44,7 @@ namespace Pawprint.Controllers
             return View();
         }
 
-
-
-        public ActionResult HomePage()
+        public ActionResult Welcome()
         {
             return View();
         }
