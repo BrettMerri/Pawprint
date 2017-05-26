@@ -158,7 +158,6 @@ namespace Pawprint.Controllers
             return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
         }
 
-        //[HttpPost]
         public ActionResult UploadUserAvatar()
         {
             
