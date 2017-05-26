@@ -20,7 +20,6 @@ namespace Pawprint.Controllers
             AspNetUser UserProfile = DB.AspNetUsers.FirstOrDefault(x => x.DisplayName == DisplayName);
             if (UserProfile == null)
             {
-
                 // Display Error Message When There's Invalid Display Name
                 ViewBag.Message = "Invalid Display Name";
                 return View("Error");
@@ -30,6 +29,12 @@ namespace Pawprint.Controllers
             {
                 ApplicationDbContext UserDB = new ApplicationDbContext();
                 ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
+
+                if (CurrentUserInfo == null)
+                {
+                    ViewBag.Message = "Unable to find current user";
+                    return View("Error");
+                }
 
                 if (CurrentUserInfo.DisplayName == UserProfile.DisplayName)
                 {
@@ -57,7 +62,6 @@ namespace Pawprint.Controllers
             return View();
         }
 
-        // Your Animals Page - Shows List of Pets
         [Authorize]
         public ActionResult YourAnimals()
         {
@@ -73,6 +77,7 @@ namespace Pawprint.Controllers
 
         // Saves The New Pet
         [HttpPost]
+        [Authorize]
         public ActionResult SaveNewPet(Pet NewPet)
         {
             NewPet.OwnerID = User.Identity.GetUserId();
@@ -81,8 +86,16 @@ namespace Pawprint.Controllers
 
             // to DO: Validation!!
 
-            PE.Pets.Add(NewPet);
-            PE.SaveChanges();
+            try
+            {
+                PE.Pets.Add(NewPet);
+                PE.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to save new pet. " + ex.Message.ToString();
+                return View("Error");
+            }
 
             ApplicationDbContext UserDB = new ApplicationDbContext();
             ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
@@ -96,8 +109,22 @@ namespace Pawprint.Controllers
             PawprintEntities DB = new PawprintEntities();
             Pet SelectedPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
 
-            DB.Pets.Remove(SelectedPet);
-            DB.SaveChanges();
+            if (SelectedPet.OwnerID != User.Identity.GetUserId())
+            {
+                ViewBag.Message = "You cannot delete another user's pet!";
+                return View("Error");
+            }
+
+            try
+            {
+                DB.Pets.Remove(SelectedPet);
+                DB.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to delete pet. " + ex.Message.ToString();
+                return View("Error");
+            }
 
             return RedirectToAction("YourAnimals");
         }
@@ -129,15 +156,23 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
-            ToFind.Breed = ToBeUpdated.Breed;
-            ToFind.Name = ToBeUpdated.Name;
-            ToFind.Color = ToBeUpdated.Color;
-            ToFind.BirthDay = ToBeUpdated.BirthDay;
-            ToFind.FavoriteFood = ToBeUpdated.FavoriteFood;
+            try
+            {
+                ToFind.Breed = ToBeUpdated.Breed;
+                ToFind.Name = ToBeUpdated.Name;
+                ToFind.Color = ToBeUpdated.Color;
+                ToFind.BirthDay = ToBeUpdated.BirthDay;
+                ToFind.FavoriteFood = ToBeUpdated.FavoriteFood;
 
-            PE.SaveChanges();
+                PE.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to update pet. " + ex.Message.ToString();
+                return View("Error");
+            }
 
-            return RedirectToAction("YourAnimals");
+            return RedirectToAction("Profile", "Pets", new { PetID = ToFind.PetID });
         }
 
         public ActionResult EditUserProfile()
@@ -146,6 +181,12 @@ namespace Pawprint.Controllers
 
             PawprintEntities PE = new PawprintEntities();
             AspNetUser ToFind = PE.AspNetUsers.Find(CurrentUserID);
+
+            if (ToFind == null)
+            {
+                ViewBag.Message = "Unable to edit profile.";
+                return View("Error");
+            }
 
             return View(ToFind);
         }
@@ -157,12 +198,26 @@ namespace Pawprint.Controllers
             PawprintEntities PE = new PawprintEntities();
             AspNetUser ToFind = PE.AspNetUsers.Find(CurrentUserID);
 
-            ToFind.Bio = ToBeUpdated.Bio;
-            ToFind.Location = ToBeUpdated.Location;
-            ToFind.Gender = ToBeUpdated.Gender;
-            ToFind.BirthDay = ToBeUpdated.BirthDay;
+            if (ToFind == null)
+            {
+                ViewBag.Message = "Unable to edit profile.";
+                return View("Error");
+            }
 
-            PE.SaveChanges();
+            try
+            {
+                ToFind.Bio = ToBeUpdated.Bio;
+                ToFind.Location = ToBeUpdated.Location;
+                ToFind.Gender = ToBeUpdated.Gender;
+                ToFind.BirthDay = ToBeUpdated.BirthDay;
+
+                PE.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to update profile. " + ex.Message.ToString();
+                return View("Error");
+            }
 
             ApplicationDbContext UserDB = new ApplicationDbContext();
             ApplicationUser CurrentUserInfo = UserDB.Users.Find(CurrentUserID);
@@ -172,39 +227,58 @@ namespace Pawprint.Controllers
 
         public ActionResult UploadUserAvatar()
         {
-            
             return View();
         }
 
 
         [HttpPost]
+        [Authorize]
         public ActionResult SaveUserAvatar(HttpPostedFileBase uploadFile)
         {
             string CurrentUserID = User.Identity.GetUserId();
             PawprintEntities DB = new PawprintEntities();
+
             AspNetUser AddAvatar = DB.AspNetUsers.Find(CurrentUserID);
+
+            if (AddAvatar == null)
+            {
+                ViewBag.Message = "Unable to find user.";
+                return View("Error");
+            }
 
             //Create Unique Identifier
             string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
 
-            
+            //This File Path Gets Saved To The Database
             AddAvatar.FilePath = $"{AddAvatar.ID}/{UniqueID}/{uploadFile.FileName}";
 
-
+            //This File Path Will Be Used To Save The File
             string FilePath = $"~/img/users/{AddAvatar.ID}/{UniqueID}";
 
-            UploadAvatar(uploadFile, FilePath);
+            try
+            {
+                //Saves post to database
+                DB.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to save avatar " + ex.Message.ToString();
+                return View("Error");
+            }
 
-            DB.SaveChanges();
+            //Uploads file to project folder
+            Upload(uploadFile, FilePath);
 
             ApplicationDbContext UserDB = new ApplicationDbContext();
             ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
 
             return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
-
         }
 
-        public ActionResult UploadAvatar(HttpPostedFileBase file, string filePath)
+        // Upload Photo
+        [HttpPost]
+        [Authorize]
+        public ActionResult Upload(HttpPostedFileBase file, string filePath)
         {
             if (file != null && file.ContentLength > 0)
                 try
@@ -222,16 +296,14 @@ namespace Pawprint.Controllers
                 catch (Exception ex)
                 {
                     ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                    return View("Error");
                 }
             else
             {
                 ViewBag.Message = "You Have Not Specified a File.";
+                return View("Error");
             }
             return View("Index");
         }
-
-
-
-
     }
 }

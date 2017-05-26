@@ -16,18 +16,23 @@ namespace Pawprint.Controllers
             PawprintEntities DB = new PawprintEntities();
             Pet PetProfile = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
 
+            //If there are no pets found with that PetID
             if (PetProfile == null)
             {
                 ViewBag.Message = "Invalid PetID";
                 return View("Error");
             }
 
+            //If user is logged in
             if (Request.IsAuthenticated)
             {
                 string CurrentUserID = User.Identity.GetUserId();
+
+                //If user is following this pet
                 bool IsUserAlreadyFollowingThisPet = DB.FollowLists.Any(x => x.PetID == PetProfile.PetID &&
                                                                     x.UserID == CurrentUserID);
 
+                //If user owns this pet
                 if (CurrentUserID == PetProfile.OwnerID)
                 {
                     ViewBag.EditProfile = true;
@@ -36,6 +41,7 @@ namespace Pawprint.Controllers
                 {
                     ViewBag.EditProfile = false;
 
+                    //If user is following this pet
                     if (IsUserAlreadyFollowingThisPet)
                     {
                         ViewBag.AlreadyFollowing = true;
@@ -48,16 +54,19 @@ namespace Pawprint.Controllers
             }
             else
             {
+                //If user is not logged in
                 ViewBag.EditProfile = false;
                 ViewBag.AlreadyFollowing = false;
             }
 
+            //Get all of this pet's posts
             List<Post> PostList = DB.Posts.Where(x => x.PetID == PetProfile.PetID)
                                           .OrderByDescending(x => x.Date)
                                           .ToList();
 
             ViewBag.PostList = PostList;
 
+            //TempData["Message"] exists when the user follows/unfollows the pet
             if (TempData["Message"] != null)
             {
                 ViewBag.Message = TempData["Message"];
@@ -74,12 +83,14 @@ namespace Pawprint.Controllers
 
             string CurrentUserID = User.Identity.GetUserId();
 
+            //If there are no pets found with that PetID
             if (FollowPet == null)
             {
                 ViewBag.Message = "Invalid PetID!";
                 return View("Error");
             }
 
+            //If user is following this pet
             bool IsUserAlreadyFollowingThisPet = DB.FollowLists.Any(x => x.PetID == FollowPet.PetID &&
                                                                     x.UserID == CurrentUserID);
 
@@ -102,11 +113,11 @@ namespace Pawprint.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "Something odd just happened! " + ex.ToString();
+                ViewBag.Message = "Something odd just happened! " + ex.Message.ToString();
                 return View("Error");
             }
 
-            TempData["Message"] = $"You have successfully followed {FollowPet.Name}!";
+            TempData["Message"] = $"You are now following {FollowPet.Name}!";
 
             return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
         }
@@ -119,12 +130,14 @@ namespace Pawprint.Controllers
 
             string CurrentUserID = User.Identity.GetUserId();
 
+            //If there are no pets found with that PetID
             if (FollowPet == null)
             {
                 ViewBag.Message = "Invalid PetID!";
                 return View("Error");
             }
 
+            //If user is following this pet
             bool IsUserAlreadyFollowingThisPet = DB.FollowLists.Any(x => x.PetID == FollowPet.PetID &&
                                                                     x.UserID == CurrentUserID);
 
@@ -138,11 +151,18 @@ namespace Pawprint.Controllers
             //Checks if user does not currently follow this pet
             if (!IsUserAlreadyFollowingThisPet)
             {
-                TempData["Message"] = $"You are already not following {FollowPet.Name}!";
+                TempData["Message"] = $"You are no longer following {FollowPet.Name}!";
                 return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
             }
 
             FollowList Unfollow = DB.FollowLists.Find(CurrentUserID, FollowPet.PetID);
+
+            if (Unfollow == null)
+            {
+                ViewBag.Message = "Invalid PetID!";
+                return View("Error");
+            }
+
             DB.FollowLists.Remove(Unfollow);
 
             try
@@ -151,7 +171,7 @@ namespace Pawprint.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Message = "Something odd just happened! " + ex.ToString();
+                ViewBag.Message = "Something odd just happened! " + ex.Message.ToString();
                 return View("Error");
             }
 
@@ -178,8 +198,6 @@ namespace Pawprint.Controllers
             return View();
         }
 
-
-
         // Save New Post
         [HttpPost]
         [Authorize]
@@ -195,31 +213,38 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
-
             // Time Stamp for Post
             NewPost.Date = DateTime.Now;
-
 
             //Create Unique Identifier
             string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
 
-
             //This File Path Gets Saved To The Database
             NewPost.FilePath = $"{NewPost.PetID}/{UniqueID}/{uploadFile.FileName}";
-
 
             //This File Path Will Be Used To Save The File
             string FilePath = $"~/img/posts/{NewPost.PetID}/{UniqueID}";
 
+            //Saves post to database
+            DB.Posts.Add(NewPost);
+
+            try
+            {
+                DB.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to save post " + ex.Message.ToString();
+                return View("Error");
+            }
+
+            //Uploads file to project folder
             Upload(uploadFile, FilePath);
 
-                DB.Posts.Add(NewPost);
-                DB.SaveChanges();
+            TempData["Message"] = "Post uploaded successfully!";
 
             return RedirectToAction("Index", "Home");
         }
-
-
 
         // Upload Photo
         [HttpPost]
@@ -242,22 +267,17 @@ namespace Pawprint.Controllers
                 catch (Exception ex)
                 {
                     ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                    return View("Error");
                 }
             else
             {
                 ViewBag.Message = "You Have Not Specified a File.";
+                return View("Error");
             }
             return View("Index");
         }
 
         [Authorize]
-        public ActionResult EditPetProfile(int PetID)
-        {
-            
-            return View("YourAnimals", "User" );
-
-        }
-
         public ActionResult UploadPetAvatar(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -274,33 +294,8 @@ namespace Pawprint.Controllers
             return View();
         }
 
-        public ActionResult UploadAvatar(HttpPostedFileBase file, string filePath)
-        {
-            if (file != null && file.ContentLength > 0)
-                try
-                {
-                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));
-                    if (!dir.Exists)
-                    {
-                        dir.Create();
-                    }
-
-                    string path = Path.Combine(Server.MapPath(filePath),
-                                               Path.GetFileName(file.FileName));
-                    file.SaveAs(path);
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Message = "ERROR:" + ex.Message.ToString();
-                }
-            else
-            {
-                ViewBag.Message = "You Have Not Specified a File.";
-            }
-            return View("Index");
-        }
-
         [HttpPost]
+        [Authorize]
         public ActionResult SavePetAvatar(Pet AddAvatar, HttpPostedFileBase uploadFile)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -315,23 +310,28 @@ namespace Pawprint.Controllers
             //Create Unique Identifier
             string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
 
+            //This File Path Gets Saved To The Database
             AddPet.FilePath = $"{AddAvatar.PetID}/{UniqueID}/{uploadFile.FileName}";
 
-
+            //This File Path Will Be Used To Save The File
             string FilePath = $"~/img/pets/{AddAvatar.PetID}/{UniqueID}";
 
-            UploadAvatar(uploadFile, FilePath);
+            try
+            {
+                //Saves post to database
+                DB.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to save avatar " + ex.Message.ToString();
+                return View("Error");
+            }
 
-            DB.SaveChanges();
+            Upload(uploadFile, FilePath);
 
-            
+            TempData["Message"] = "Avatar uploaded successfully!";
 
             return RedirectToAction("Profile", new { PetID = AddPet.PetID });
-
         }
-
-
-
-
     }
 }
