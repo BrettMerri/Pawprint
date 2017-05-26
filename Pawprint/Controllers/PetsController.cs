@@ -28,6 +28,9 @@ namespace Pawprint.Controllers
             {
                 string CurrentUserID = User.Identity.GetUserId();
 
+                AspNetUser CurrentUser = DB.AspNetUsers.Find(CurrentUserID);
+                ViewBag.CurrentUser = CurrentUser;
+                
                 //If user is following this pet
                 bool IsUserAlreadyFollowingThisPet = DB.FollowLists.Any(x => x.PetID == PetProfile.PetID &&
                                                                     x.UserID == CurrentUserID);
