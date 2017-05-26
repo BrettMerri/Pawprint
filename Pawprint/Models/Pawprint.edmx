@@ -72,6 +72,7 @@
           <Property Name="Location" Type="nvarchar(max)" />
           <Property Name="Gender" Type="nvarchar(max)" />
           <Property Name="BirthDay" Type="date" />
+          <Property Name="FilePath" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Comments">
           <Key>
@@ -110,16 +111,18 @@
           <Property Name="Color" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="OwnerID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="FavoriteFood" Type="varchar" MaxLength="50" />
+          <Property Name="FilePath" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Posts">
           <Key>
             <PropertyRef Name="PostID" />
           </Key>
-          <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PostID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Date" Type="datetime" Nullable="false" />
           <Property Name="FilePath" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PetID" Type="int" Nullable="false" />
           <Property Name="Caption" Type="varchar" MaxLength="1000" />
+          <Property Name="LikeCounts" Type="int" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -325,6 +328,7 @@
           <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="BirthDay" Type="DateTime" Precision="0" />
+          <Property Name="FilePath" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -367,6 +371,7 @@
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Pets_OwnerID" FromRole="Pets" ToRole="AspNetUsers" />
           <NavigationProperty Name="FollowLists" Relationship="Self.FK_FollowList_PetID" FromRole="Pets" ToRole="FollowList" />
           <NavigationProperty Name="Posts" Relationship="Self.FK_Posts_PetID" FromRole="Pets" ToRole="Posts" />
+          <Property Name="FilePath" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -378,6 +383,7 @@
           <Property Name="PetID" Type="Int32" Nullable="false" />
           <Property Name="Caption" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Pet" Relationship="Self.FK_Posts_PetID" FromRole="Posts" ToRole="Pets" />
+          <Property Name="LikeCounts" Type="Int32" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -559,6 +565,7 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="Pawprint.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
                 <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="Location" ColumnName="Location" />
@@ -611,6 +618,7 @@
           <EntitySetMapping Name="Pets">
             <EntityTypeMapping TypeName="Pawprint.Pet">
               <MappingFragment StoreEntitySet="Pets">
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
                 <ScalarProperty Name="PetID" ColumnName="PetID" />
                 <ScalarProperty Name="Breed" ColumnName="Breed" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -624,6 +632,7 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="Pawprint.Post">
               <MappingFragment StoreEntitySet="Posts">
+                <ScalarProperty Name="LikeCounts" ColumnName="LikeCounts" />
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="FilePath" ColumnName="FilePath" />
