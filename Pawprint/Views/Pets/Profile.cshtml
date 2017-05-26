@@ -5,7 +5,11 @@
 
 <link rel="stylesheet" href="~/Content/Profile.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-
+<style type="text/css">
+    .liked {
+        background-color:blue;
+    }
+</style>
 <div class="mainbody container-fluid">
     @if (ViewBag.Message != null)
     {
@@ -153,3 +157,11 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $('.btn').click(function () {
+        if ($(this).hasClass("liked"))
+            $(this).removeClass("liked");
+        else
+            $(this).addClass("liked");
+    });
+</script>
