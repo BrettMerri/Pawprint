@@ -37,7 +37,15 @@
                             <p>@Model.Gender</p>
                             <hr class="small-hr">
                             <h3><strong>Birthday</strong></h3>
+                            @if (@Model.BirthDay == null)
+                            {
+                                <h4></h4>
+                            }
+                            else
+                            {
+
                             <p>@Model.BirthDay.ToString("MM/dd/yyyy")</p>
+                            }
                             @if (ViewBag.EditProfile == true)
                             {
                                 <hr class="small-hr" />
