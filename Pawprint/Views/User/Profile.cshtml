@@ -3,6 +3,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style type="text/css">
+    .PetImage
+    {
+        width:auto;
+        height:100px;
+        opacity:0.8;
+    }
+    .Petdiv a:hover .PetImage
+    {
+        opacity:1.0;
+    }
+    .Petdiv
+    {
+        float:left;
+        margin-right:25px;
+    }
+    .Petdiv h4
+    {
+        text-align:center;
+    }
+    .panel-body .Petdiv:last-child
+    {
+        margin-right:0px;
+    }
+</style>
 <link rel="stylesheet" href="~/Content/Profile.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 <div class="mainbody container-fluid">
@@ -75,7 +100,19 @@
                     {
                         foreach (var pet in ViewBag.PetList)
                         {
-                            <h4><a href="/Pets/Profile?PetID=@pet.PetID">@pet.Name</a></h4>
+                            <div class="Petdiv">
+                                <a href="/Pets/Profile?PetID=@pet.PetID">
+                                    @if (pet.FilePath == null)
+                                    {
+                                        <img class="PetImage" src="~/img/pets/default_avatar.png" />
+                                    }
+                                    else
+                                    {
+                                        <img class="PetImage" src="~/img/pets/@pet.FilePath" />
+                                    }
+                                    <h4>@pet.Name</h4>
+                                </a>
+                            </div>
                         }
                     }
                 </div>
