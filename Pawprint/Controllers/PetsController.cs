@@ -280,6 +280,8 @@ namespace Pawprint.Controllers
             return View("Index");
         }
 
+
+
         [Authorize]
         public ActionResult UploadPetAvatar(int PetID)
         {
