@@ -23,10 +23,12 @@ namespace Pawprint.Controllers
             PawprintEntities PE = new PawprintEntities();
 
             //Get distinct int list of PetID's that the user follows
-            List<int> FollowedPets = PE.FollowLists.Where(x => x.UserID == CurrentUserID).Select(x=> x.PetID).Distinct().ToList();
+            List<int> FollowedPets = PE.FollowLists.Where(x => x.UserID == CurrentUserID)
+                .Select(x=> x.PetID).Distinct().ToList();
 
             //Get all posts where Posts.PetID == any PetID that the user follows
-            List<Post> PostList = PE.Posts.Where(x => FollowedPets.Any(y => x.PetID == y)).OrderByDescending(x => x.Date).ToList();
+            List<Post> PostList = PE.Posts.Where(x => FollowedPets.Any(y => x.PetID == y))
+                .OrderByDescending(x => x.Date).ToList();
 
             ViewBag.PostList = PostList;
 
@@ -47,6 +49,27 @@ namespace Pawprint.Controllers
             List<Post> PostList = PE.Posts.OrderByDescending(x => x.Date).ToList();
 
             ViewBag.PostList = PostList;
+
+            return View("Index");
+        }
+
+        public ActionResult Search(string SearchInput)
+        {
+            if (string.IsNullOrWhiteSpace(SearchInput))
+            {
+                return RedirectToAction("Explore");
+            }
+
+            PawprintEntities PE = new PawprintEntities();
+
+            List<Post> SearchResults = PE.Posts.Where(x => x.Pet.Name.Contains(SearchInput) ||
+                                                           x.Pet.Breed.Contains(SearchInput) ||
+                                                           x.Pet.Color.Contains(SearchInput) ||
+                                                           x.Pet.AspNetUser.DisplayName.Contains(SearchInput) ||
+                                                           x.Caption.Contains(SearchInput)).ToList();
+            ViewBag.PostList = SearchResults;
+
+            ViewBag.SearchInput = SearchInput;
 
             return View("Index");
         }
