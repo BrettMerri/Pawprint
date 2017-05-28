@@ -140,24 +140,24 @@
                                 <p>@item.Caption</p>
                             </div>
                             
-                            <hr>
-
-                            <div>
-                                <div class="pull-left">
-                                    <a href="#">
-                                        <img class="media-object img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" style="margin-left:3px; margin-right:-5px; width:auto; height:40px;" />
-                                    </a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <hr />
+                                <div>
+                                    <div class="pull-left">
+                                        <a href="#">
+                                            <img class="media-object img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" style="margin-left:3px; margin-right:-5px; width:auto; height:40px;" />
+                                        </a>
+                                    </div>
+                                    <textarea class="form-control pull-left" style="height:36px" rows="1" placeholder="Comment"></textarea>
+                                    <div class="pull-right btn-group-xs">
+                                        <a class="btn btn-default btn-xs"><i class="fa fa-paw" aria-hidden="true"></i> Like</a>
+                                        <a class="btn btn-default btn-xs"><i class="fa fa-comment" aria-hidden="true"></i> Comment</a>
+                                        <a class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
+                                    </div>
+                                    <br>
                                 </div>
-                                <textarea class="form-control pull-left" style="height:36px" rows="1" placeholder="Comment"></textarea>
-                                <div class="pull-right btn-group-xs">
-                                    <a class="btn btn-default btn-xs"><i class="fa fa-paw" aria-hidden="true"></i> Like</a>
-                                    <a class="btn btn-default btn-xs"><i class="fa fa-comment" aria-hidden="true"></i> Comment</a>
-                                    <a class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
-                                </div>
-
-
-                                <br>
-                            </div>
+                            }
                             <hr>
                         </div>
                     </div>
