@@ -67,6 +67,7 @@ namespace Pawprint.Controllers
                                                            x.Pet.Color.Contains(SearchInput) ||
                                                            x.Pet.AspNetUser.DisplayName.Contains(SearchInput) ||
                                                            x.Caption.Contains(SearchInput)).ToList();
+
             ViewBag.PostList = SearchResults;
 
             ViewBag.SearchInput = SearchInput;

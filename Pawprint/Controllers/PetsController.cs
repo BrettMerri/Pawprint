@@ -9,9 +9,11 @@ using System.Web.Mvc;
 
 namespace Pawprint.Controllers
 {
+    [Authorize]
     public class PetsController : Controller
     {
-        public ActionResult Profile(int? PetID)
+        [AllowAnonymous]
+        public new ActionResult Profile(int? PetID)
         {
             PawprintEntities DB = new PawprintEntities();
             Pet PetProfile = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
@@ -78,7 +80,6 @@ namespace Pawprint.Controllers
             return View(PetProfile);
         }
 
-        [Authorize]
         public ActionResult Follow(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -125,7 +126,6 @@ namespace Pawprint.Controllers
             return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
         }
 
-        [Authorize]
         public ActionResult Unfollow(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -183,8 +183,6 @@ namespace Pawprint.Controllers
             return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
         }
 
-        // Add a New Post
-        [Authorize]
         public ActionResult AddNewPost(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -201,9 +199,7 @@ namespace Pawprint.Controllers
             return View();
         }
 
-        // Save New Post
         [HttpPost]
-        [Authorize]
         public ActionResult SaveNewPost(Post NewPost, HttpPostedFileBase uploadFile)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -216,16 +212,27 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
+            //Validates that the file uploaded is an image
+            if (!HttpPostedFileBaseExtensions.IsImage(uploadFile))
+            {
+                ViewBag.Message = "File uploaded is not an image";
+                return View("Error");
+            }
+
             // Time Stamp for Post
             NewPost.Date = DateTime.Now;
 
             //Create Unique Identifier
+            //This will be used as a folder name that the image will be saved to
+            //Prevents images with the same name being saved in the same location
             string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
 
             //This File Path Gets Saved To The Database
+            //[PetID]/[UniqueID]/[Filename]
             NewPost.FilePath = $"{NewPost.PetID}/{UniqueID}/{uploadFile.FileName}";
 
             //This File Path Will Be Used To Save The File
+            //~/img/users/[PetID]/[UniqueID]
             string FilePath = $"~/img/posts/{NewPost.PetID}/{UniqueID}";
 
             //Saves post to database
@@ -249,12 +256,9 @@ namespace Pawprint.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // Upload Photo
         [HttpPost]
-        [Authorize]
         public ActionResult Upload(HttpPostedFileBase file, string filePath)
         {
-            if (file != null && file.ContentLength > 0)
                 try
                 {
                     DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));
@@ -263,8 +267,7 @@ namespace Pawprint.Controllers
                         dir.Create();
                     }
 
-                    string path = Path.Combine(Server.MapPath(filePath),
-                                               Path.GetFileName(file.FileName));
+                    string path = Path.Combine(Server.MapPath(filePath), Path.GetFileName(file.FileName));
                     file.SaveAs(path);
                 }
                 catch (Exception ex)
@@ -272,17 +275,10 @@ namespace Pawprint.Controllers
                     ViewBag.Message = "ERROR:" + ex.Message.ToString();
                     return View("Error");
                 }
-            else
-            {
-                ViewBag.Message = "You Have Not Specified a File.";
-                return View("Error");
-            }
+
             return View("Index");
         }
 
-
-
-        [Authorize]
         public ActionResult UploadPetAvatar(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -300,7 +296,6 @@ namespace Pawprint.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public ActionResult SavePetAvatar(Pet AddAvatar, HttpPostedFileBase uploadFile)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -312,13 +307,24 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
+            //Validates that the file uploaded is an image
+            if (!HttpPostedFileBaseExtensions.IsImage(uploadFile))
+            {
+                ViewBag.Message = "File uploaded is not an image";
+                return View("Error");
+            }
+
             //Create Unique Identifier
+            //This will be used as a folder name that the image will be saved to
+            //Prevents images with the same name being saved in the same location
             string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
 
             //This File Path Gets Saved To The Database
+            //[PetID]/[UniqueID]/[Filename]
             AddPet.FilePath = $"{AddAvatar.PetID}/{UniqueID}/{uploadFile.FileName}";
 
             //This File Path Will Be Used To Save The File
+            //~/img/users/[PetID]/[UniqueID]
             string FilePath = $"~/img/pets/{AddAvatar.PetID}/{UniqueID}";
 
             try

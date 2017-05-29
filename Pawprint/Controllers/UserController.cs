@@ -12,9 +12,11 @@ using System.IO;
 
 namespace Pawprint.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
-        public ActionResult Profile(string DisplayName)
+        [AllowAnonymous]
+        public new ActionResult Profile(string DisplayName)
         {
             PawprintEntities DB = new PawprintEntities();
             AspNetUser UserProfile = DB.AspNetUsers.FirstOrDefault(x => x.DisplayName == DisplayName);
@@ -56,13 +58,6 @@ namespace Pawprint.Controllers
             return View(UserProfile);
         }
 
-        [Authorize]
-        public ActionResult AddNewPet()
-        {
-            return View();
-        }
-
-        [Authorize]
         public ActionResult YourAnimals()
         {
             PawprintEntities DB = new PawprintEntities();
@@ -75,9 +70,12 @@ namespace Pawprint.Controllers
             return View();
         }
 
-        // Saves The New Pet
+        public ActionResult AddNewPet()
+        {
+            return View();
+        }
+
         [HttpPost]
-        [Authorize]
         public ActionResult SaveNewPet(Pet NewPet)
         {
             string CurrentUserID = User.Identity.GetUserId();
@@ -109,7 +107,6 @@ namespace Pawprint.Controllers
             return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
         }
 
-        // Delete a Pet
         public ActionResult DeletePet(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -135,7 +132,6 @@ namespace Pawprint.Controllers
             return RedirectToAction("YourAnimals");
         }
 
-        // Update a Pet
         public ActionResult UpdatePet(int PetID)
         {
             PawprintEntities PE = new PawprintEntities();
@@ -150,7 +146,7 @@ namespace Pawprint.Controllers
             return View(ToFind);
         }
 
-        // Save Updates for Pet
+        [HttpPost]
         public ActionResult SaveUpdates(Pet ToBeUpdated)
         {
             PawprintEntities PE = new PawprintEntities();
@@ -197,6 +193,7 @@ namespace Pawprint.Controllers
             return View(ToFind);
         }
 
+        [HttpPost]
         public ActionResult SaveEditUserProfile(AspNetUser ToBeUpdated)
         {
             string CurrentUserID = User.Identity.GetUserId();
@@ -236,9 +233,7 @@ namespace Pawprint.Controllers
             return View();
         }
 
-
         [HttpPost]
-        [Authorize]
         public ActionResult SaveUserAvatar(HttpPostedFileBase uploadFile)
         {
             string CurrentUserID = User.Identity.GetUserId();
@@ -252,13 +247,24 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
+            //Validates that the file uploaded is an image
+            if (!HttpPostedFileBaseExtensions.IsImage(uploadFile))
+            {
+                ViewBag.Message = "File uploaded is not an image";
+                return View("Error");
+            }
+
             //Create Unique Identifier
+            //This will be used as a folder name that the image will be saved to
+            //Prevents images with the same name being saved in the same location
             string UniqueID = Guid.NewGuid().ToString().Replace("-", "");
 
             //This File Path Gets Saved To The Database
+            //[UserID]/[UniqueID]/[Filename]
             AddAvatar.FilePath = $"{AddAvatar.ID}/{UniqueID}/{uploadFile.FileName}";
 
             //This File Path Will Be Used To Save The File
+            //~/img/users/[UserID]/[UniqueID]
             string FilePath = $"~/img/users/{AddAvatar.ID}/{UniqueID}";
 
             try
@@ -276,39 +282,34 @@ namespace Pawprint.Controllers
             Upload(uploadFile, FilePath);
 
             ApplicationDbContext UserDB = new ApplicationDbContext();
-            ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
+            ApplicationUser CurrentUserInfo = UserDB.Users.Find(CurrentUserID);
+
+            TempData["Message"] = "Avatar uploaded successfully!";
 
             return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
         }
 
-        // Upload Photo
         [HttpPost]
-        [Authorize]
         public ActionResult Upload(HttpPostedFileBase file, string filePath)
         {
-            if (file != null && file.ContentLength > 0)
-                try
-                {
-                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));
-                    if (!dir.Exists)
-                    {
-                        dir.Create();
-                    }
-
-                    string path = Path.Combine(Server.MapPath(filePath),
-                                               Path.GetFileName(file.FileName));
-                    file.SaveAs(path);
-                }
-                catch (Exception ex)
-                {
-                    ViewBag.Message = "ERROR:" + ex.Message.ToString();
-                    return View("Error");
-                }
-            else
+            try
             {
-                ViewBag.Message = "You Have Not Specified a File.";
+                DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));
+                if (!dir.Exists)
+                {
+                    dir.Create();
+                }
+
+                string path = Path.Combine(Server.MapPath(filePath), Path.GetFileName(file.FileName));
+
+                file.SaveAs(path);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "An unexpected error occurred while uploading your image. " + ex.Message.ToString();
                 return View("Error");
             }
+
             return View("Index");
         }
     }
