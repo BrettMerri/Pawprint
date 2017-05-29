@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using FluentValidation;
+using FluentValidation.Attributes;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.Identity;
+using Pawprint.Models;
+using System.Linq;
 
 namespace Pawprint.Models
 {
+    [Validator(typeof(DisplayNameValidator))]
     public class ExternalLoginConfirmationViewModel
     {
-        [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -74,6 +79,7 @@ namespace Pawprint.Models
         public bool RememberMe { get; set; }
     }
 
+    [Validator(typeof(DisplayNameValidator))]
     public class RegisterViewModel
     {
         [Required]
@@ -103,6 +109,22 @@ namespace Pawprint.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+    }
+
+    public class DisplayNameValidator : AbstractValidator<ApplicationUser>
+    {
+        public DisplayNameValidator()
+        {
+            RuleFor(x => x.DisplayName).NotEmpty().WithMessage("Display Name is required").Length(0, 25);
+            RuleFor(x => x.DisplayName).Must(BeUniqueDisplayName).WithMessage("Display Name already exists");
+        }
+
+        // Returns true if DisplayName is unique
+        private bool BeUniqueDisplayName(string DisplayName)
+        {
+            return new ApplicationDbContext().Users.FirstOrDefault(x => x.DisplayName == DisplayName) == null;
+        }
     }
 
     public class ResetPasswordViewModel

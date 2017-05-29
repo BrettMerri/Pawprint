@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Pawprint.Models;
+using FluentValidation.Results;
+using System.Collections.Generic;
 
 namespace Pawprint.Controllers
 {
@@ -151,6 +153,17 @@ namespace Pawprint.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser ValidateUser = new ApplicationUser();
+                ValidateUser.DisplayName = model.DisplayName;
+
+                DisplayNameValidator DisplayNamevalidator = new DisplayNameValidator();
+                ValidationResult DisplayNameresults = DisplayNamevalidator.Validate(ValidateUser);
+
+                if (!DisplayNameresults.IsValid)
+                {
+                    ViewBag.Message = "Display name is taken. Please try a new one";
+                    return View(model);
+                }
                 var user = new ApplicationUser { UserName = model.Email,
                                                  Email = model.Email,
                                                  DisplayName = model.DisplayName,
@@ -346,6 +359,12 @@ namespace Pawprint.Controllers
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
+                    ApplicationDbContext UserDB = new ApplicationDbContext();
+                    if (UserDB.Users.Any(x => x.Email == loginInfo.Email))
+                    {
+                        ViewBag.Message = loginInfo.Email + " Already exists!";
+                        return View("Error");
+                    }
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
@@ -366,6 +385,20 @@ namespace Pawprint.Controllers
 
             if (ModelState.IsValid)
             {
+
+                ApplicationUser ValidateUser = new ApplicationUser();
+                ValidateUser.DisplayName = model.DisplayName;
+
+                DisplayNameValidator DisplayNamevalidator = new DisplayNameValidator();
+                ValidationResult DisplayNameresults = DisplayNamevalidator.Validate(ValidateUser);
+
+                if (!DisplayNameresults.IsValid)
+                {
+                    ViewBag.Message = "Display name is taken. Please try a new one";
+                    ViewBag.ReturnUrl = returnUrl;
+                    return View(model);
+                }
+
                 // Get the information about the user from the external login provider
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
