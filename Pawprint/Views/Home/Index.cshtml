@@ -10,11 +10,20 @@
     <div class="col-sm-8">
         @if (ViewBag.PostList.Count == 0)
         {
-            <div class="page-header">
-                <h2>Oh no! There are no posts in your feed!</h2>
-                <h3>Go <a href="/Home/Explore" alt="Explore">Explore</a> to find pets to follow!</h3>
+            if (ViewBag.SearchInput != null)
+            {
+                <div class="page-header">
+                    <h3>We are unable to find any posts using the Search Query: "@ViewBag.SearchInput".</h3>
+                </div>
+            }
+            else
+            {
+                <div class="page-header">
+                    <h2>Oh no! There are no posts in your feed!</h2>
+                    <h3>Go <a href="/Home/Explore" alt="Explore">Explore</a> to find pets to follow!</h3>
+                </div>
+            }
 
-            </div>
         }
         @foreach (var item in ViewBag.PostList)
         {
@@ -34,7 +43,7 @@
             <form action="/Home/Search">
                 <div class="input-group">
                     <label class="sr-only" for="search-form">Search the site</label>
-                    <input type="text" class="form-control" id="search-form" >
+                    <input type="text" class="form-control" id="search-form" name="SearchInput" >
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
