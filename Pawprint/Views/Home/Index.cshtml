@@ -47,8 +47,11 @@
                     <div class="pull-right btn-group-xs">
                         <a class="btn btn-default btn-xs"><i class="fa fa-paw" aria-hidden="true"></i> Like</a>
                         <a class="btn btn-default btn-xs"><i class="fa fa-comment" aria-hidden="true"></i> Comment</a>
-                        <a class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
-                    </div>
+                            @if (item.Pet.OwnerID == ViewBag.CurrentUser.ID)
+                            {
+                                <a href="/Pets/DeletePost?PostID=@item.PostID" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
+                            }
+                      </div>
                     <form action="/Home/Comment">
                         <div class="input-group" style="width:363px;">
                             <a href="~/Users/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" style="" /></a>
