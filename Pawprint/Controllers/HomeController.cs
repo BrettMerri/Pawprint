@@ -22,6 +22,9 @@ namespace Pawprint.Controllers
 
             PawprintEntities PE = new PawprintEntities();
 
+            AspNetUser CurrentUser = PE.AspNetUsers.Find(CurrentUserID);
+            ViewBag.CurrentUser = CurrentUser;
+
             //Get distinct int list of PetID's that the user follows
             List<int> FollowedPets = PE.FollowLists.Where(x => x.UserID == CurrentUserID)
                 .Select(x=> x.PetID).Distinct().ToList();
@@ -43,14 +46,25 @@ namespace Pawprint.Controllers
 
         public ActionResult Explore()
         {
+            string CurrentUserID = User.Identity.GetUserId();
+
             PawprintEntities PE = new PawprintEntities();
+
+            AspNetUser CurrentUser = PE.AspNetUsers.Find(CurrentUserID);
+            ViewBag.CurrentUser = CurrentUser;
 
             //Returns list of all posts
             List<Post> PostList = PE.Posts.OrderByDescending(x => x.Date).ToList();
+            
 
             ViewBag.PostList = PostList;
 
             return View("Index");
+        }
+
+        public ActionResult Comment(string CommentInput)
+        {
+            return RedirectToAction("Index");
         }
 
         public ActionResult Search(string SearchInput)
