@@ -38,7 +38,7 @@
                 <p>Posted by <span class="glyphicon glyphicon-user"></span> <a href="/Pets/Profile?PetID=@item.PetID">@item.Pet.Name</a> on <span class="glyphicon glyphicon-time"></span> @item.Date</p>
             </div>
             <figure class="margin-b-2">
-                <img class="img-responsive" src="~/img/posts/@item.FilePath" alt="">
+                <img class="img-responsive" style="border:1px solid black;" src="~/img/posts/@item.FilePath" alt="">
             </figure>
             <p class="lead">@item.Caption</p>
             if (User.Identity.IsAuthenticated)
