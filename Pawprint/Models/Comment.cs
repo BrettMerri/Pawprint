@@ -18,6 +18,7 @@ namespace Pawprint.Models
         public string UserID { get; set; }
         public int CommentID { get; set; }
         public string Text { get; set; }
+        public System.DateTime CreationDate { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Post Post { get; set; }

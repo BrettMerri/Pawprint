@@ -72,6 +72,7 @@
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CommentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="FollowList">
           <Key>
@@ -101,6 +102,7 @@
           <Property Name="OwnerID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="FavoriteFood" Type="varchar" MaxLength="50" />
           <Property Name="FilePath" Type="varchar(max)" />
+          <Property Name="CreationDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Posts">
           <Key>
@@ -113,20 +115,10 @@
           <Property Name="Caption" Type="varchar" MaxLength="1000" />
           <Property Name="LikeCounts" Type="int" />
         </EntityType>
-        <Association Name="FK_Comments_Post">
-          <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
-          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Posts">
-              <PropertyRef Name="PostID" />
-            </Principal>
-            <Dependent Role="Comments">
-              <PropertyRef Name="PostID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Comments_UserID">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+        <Association Name="FK_Comments_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -134,6 +126,20 @@
             </Principal>
             <Dependent Role="Comments">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_PostID">
+          <End Role="Posts" Type="Self.Posts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Posts">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="PostID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -179,20 +185,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_FollowList_PetID">
-          <End Role="Pets" Type="Self.Pets" Multiplicity="1" />
+        <Association Name="FK_FollowList_User">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FollowList" Type="Self.FollowList" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Pets">
-              <PropertyRef Name="PetID" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="FollowList">
-              <PropertyRef Name="PetID" />
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Likes_Post">
-          <End Role="Posts" Type="Self.Posts" Multiplicity="1" />
+        <Association Name="FK_Likes_PostID">
+          <End Role="Posts" Type="Self.Posts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Likes" Type="Self.Likes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Posts">
@@ -203,8 +213,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Likes_User">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+        <Association Name="FK_Likes_UserID">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Likes" Type="Self.Likes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -216,7 +228,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Pets_OwnerID">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Pets" Type="Self.Pets" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -250,12 +264,12 @@
           <EntitySet Name="Likes" EntityType="Self.Likes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pets" EntityType="Self.Pets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Posts" EntityType="Self.Posts" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Comments_Post" Association="Self.FK_Comments_Post">
-            <End Role="Posts" EntitySet="Posts" />
+          <AssociationSet Name="FK_Comments_AspNetUsers" Association="Self.FK_Comments_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
-          <AssociationSet Name="FK_Comments_UserID" Association="Self.FK_Comments_UserID">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          <AssociationSet Name="FK_Comments_PostID" Association="Self.FK_Comments_PostID">
+            <End Role="Posts" EntitySet="Posts" />
             <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -270,15 +284,15 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_FollowList_PetID" Association="Self.FK_FollowList_PetID">
-            <End Role="Pets" EntitySet="Pets" />
+          <AssociationSet Name="FK_FollowList_User" Association="Self.FK_FollowList_User">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="FollowList" EntitySet="FollowList" />
           </AssociationSet>
-          <AssociationSet Name="FK_Likes_Post" Association="Self.FK_Likes_Post">
+          <AssociationSet Name="FK_Likes_PostID" Association="Self.FK_Likes_PostID">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Likes" EntitySet="Likes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Likes_User" Association="Self.FK_Likes_User">
+          <AssociationSet Name="FK_Likes_UserID" Association="Self.FK_Likes_UserID">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Likes" EntitySet="Likes" />
           </AssociationSet>
@@ -360,8 +374,9 @@
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="AspNetUserRoles" Relationship="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserRoles" />
-          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_UserID" FromRole="AspNetUsers" ToRole="Comments" />
-          <NavigationProperty Name="Likes" Relationship="Self.FK_Likes_User" FromRole="AspNetUsers" ToRole="Likes" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_AspNetUsers" FromRole="AspNetUsers" ToRole="Comments" />
+          <NavigationProperty Name="FollowLists" Relationship="Self.FK_FollowList_User" FromRole="AspNetUsers" ToRole="FollowList" />
+          <NavigationProperty Name="Likes" Relationship="Self.FK_Likes_UserID" FromRole="AspNetUsers" ToRole="Likes" />
           <NavigationProperty Name="Pets" Relationship="Self.FK_Pets_OwnerID" FromRole="AspNetUsers" ToRole="Pets" />
         </EntityType>
         <EntityType Name="Comment">
@@ -372,8 +387,9 @@
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CommentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Comments_UserID" FromRole="Comments" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Post" Relationship="Self.FK_Comments_Post" FromRole="Comments" ToRole="Posts" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Comments_AspNetUsers" FromRole="Comments" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_Comments_PostID" FromRole="Comments" ToRole="Posts" />
         </EntityType>
         <EntityType Name="FollowList">
           <Key>
@@ -382,7 +398,7 @@
           </Key>
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="PetID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Pet" Relationship="Self.FK_FollowList_PetID" FromRole="FollowList" ToRole="Pets" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_FollowList_User" FromRole="FollowList" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="Like">
           <Key>
@@ -391,8 +407,8 @@
           <Property Name="PostID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="LikeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Likes_User" FromRole="Likes" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Post" Relationship="Self.FK_Likes_Post" FromRole="Likes" ToRole="Posts" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Likes_UserID" FromRole="Likes" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_Likes_PostID" FromRole="Likes" ToRole="Posts" />
         </EntityType>
         <EntityType Name="Pet">
           <Key>
@@ -406,8 +422,8 @@
           <Property Name="OwnerID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FavoriteFood" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="FilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Pets_OwnerID" FromRole="Pets" ToRole="AspNetUsers" />
-          <NavigationProperty Name="FollowLists" Relationship="Self.FK_FollowList_PetID" FromRole="Pets" ToRole="FollowList" />
           <NavigationProperty Name="Posts" Relationship="Self.FK_Posts_PetID" FromRole="Pets" ToRole="Posts" />
         </EntityType>
         <EntityType Name="Post">
@@ -420,8 +436,8 @@
           <Property Name="PetID" Type="Int32" Nullable="false" />
           <Property Name="Caption" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="LikeCounts" Type="Int32" />
-          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Post" FromRole="Posts" ToRole="Comments" />
-          <NavigationProperty Name="Likes" Relationship="Self.FK_Likes_Post" FromRole="Posts" ToRole="Likes" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_PostID" FromRole="Posts" ToRole="Comments" />
+          <NavigationProperty Name="Likes" Relationship="Self.FK_Likes_PostID" FromRole="Posts" ToRole="Likes" />
           <NavigationProperty Name="Pet" Relationship="Self.FK_Posts_PetID" FromRole="Posts" ToRole="Pets" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
@@ -466,8 +482,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Comments_UserID">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+        <Association Name="FK_Comments_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -478,8 +496,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Likes_User">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+        <Association Name="FK_FollowList_User">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="FollowList" Type="Self.FollowList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="FollowList">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Likes_UserID">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Likes" Type="Self.Like" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -491,7 +525,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Pets_OwnerID">
-          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Pets" Type="Self.Pet" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -502,8 +538,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Comments_Post">
-          <End Role="Posts" Type="Self.Post" Multiplicity="1" />
+        <Association Name="FK_Comments_PostID">
+          <End Role="Posts" Type="Self.Post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Posts">
@@ -514,20 +552,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_FollowList_PetID">
-          <End Role="Pets" Type="Self.Pet" Multiplicity="1" />
-          <End Role="FollowList" Type="Self.FollowList" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Pets">
-              <PropertyRef Name="PetID" />
-            </Principal>
-            <Dependent Role="FollowList">
-              <PropertyRef Name="PetID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Likes_Post">
-          <End Role="Posts" Type="Self.Post" Multiplicity="1" />
+        <Association Name="FK_Likes_PostID">
+          <End Role="Posts" Type="Self.Post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Likes" Type="Self.Like" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Posts">
@@ -573,11 +601,15 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_Comments_UserID" Association="Self.FK_Comments_UserID">
+          <AssociationSet Name="FK_Comments_AspNetUsers" Association="Self.FK_Comments_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
-          <AssociationSet Name="FK_Likes_User" Association="Self.FK_Likes_User">
+          <AssociationSet Name="FK_FollowList_User" Association="Self.FK_FollowList_User">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="FollowList" EntitySet="FollowLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Likes_UserID" Association="Self.FK_Likes_UserID">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Likes" EntitySet="Likes" />
           </AssociationSet>
@@ -585,15 +617,11 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Pets" EntitySet="Pets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Comments_Post" Association="Self.FK_Comments_Post">
+          <AssociationSet Name="FK_Comments_PostID" Association="Self.FK_Comments_PostID">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
-          <AssociationSet Name="FK_FollowList_PetID" Association="Self.FK_FollowList_PetID">
-            <End Role="Pets" EntitySet="Pets" />
-            <End Role="FollowList" EntitySet="FollowLists" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Likes_Post" Association="Self.FK_Likes_Post">
+          <AssociationSet Name="FK_Likes_PostID" Association="Self.FK_Likes_PostID">
             <End Role="Posts" EntitySet="Posts" />
             <End Role="Likes" EntitySet="Likes" />
           </AssociationSet>
@@ -676,6 +704,7 @@
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CommentID" ColumnName="CommentID" />
                 <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -707,6 +736,7 @@
                 <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
                 <ScalarProperty Name="FavoriteFood" ColumnName="FavoriteFood" />
                 <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

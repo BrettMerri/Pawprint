@@ -71,7 +71,19 @@
                     @foreach (var comment in item.Comments)
                     {
                         <div class="comment">
-                            <a href="/User/Profile?DisplayName=@comment.AspNetUser.DisplayName"><img class="comment-avatar img-thumbnail" src="~/img/users/@comment.AspNetUser.FilePath" /><span class="commentDisplayName"> @comment.AspNetUser.DisplayName</span></a>: <span>@comment.Text</span>
+                            @if (comment.AspNetUser.FilePath == null)
+                            {
+                                <a href="/User/Profile?DisplayName=@comment.AspNetUser.DisplayName">
+                                    <img class="comment-avatar img-thumbnail" src="~/img/users/default_avatar.png" /><span class="commentDisplayName"> @comment.AspNetUser.DisplayName</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="/User/Profile?DisplayName=@comment.AspNetUser.DisplayName">
+                                    <img class="comment-avatar img-thumbnail" src="~/img/users/@comment.AspNetUser.FilePath" /><span class="commentDisplayName"> @comment.AspNetUser.DisplayName</span>
+                                </a>
+                            }
+                            <span>: @comment.Text</span>
                             @if (comment.UserID == ViewBag.CurrentUser.ID)
                             {
                                 <a href="/User/DeleteComment?CommentID=@comment.CommentID" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
@@ -80,7 +92,14 @@
                     }
                     <form action="/User/Comment">
                         <div class="input-group" style="width:363px;">
-                            <a href="~/Users/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" style="" /></a>
+                            @if (ViewBag.CurrentUser.FilePath == null)
+                            {
+                                <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/default_avatar.png" style="" /></a>
+                            }
+                            else
+                            {
+                                <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" style="" /></a>
+                            }
                             <label class="sr-only" for="commentInput">Comment</label>
                             <input type="hidden" name="PostID" value="@item.PostID" />
                             <input type="text" class="form-control" id="commentInput" name="CommentInput" placeholder="Comment" />
@@ -112,28 +131,25 @@
                 </div>
             </form>
         </div>
-        <!-- list group -->
-        <div class="list-group margin-b-3">
-            <a href="#" class="active list-group-item">Category 1</a>
-            <a href="#" class="list-group-item">Category 2</a>
-            <a href="#" class="list-group-item">Category 3</a>
+        <!-- Panel -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Newest pets!</h4>
+            </div>
+            <div class="panel-body">
+                @foreach (var pet in ViewBag.NewestPets)
+                {
+                    <p>@pet.Name</p>
+                }
+            </div>
         </div>
         <!-- Panel -->
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">Sidebar panel widget</h4>
+                <h4 class="panel-title">Something else</h4>
             </div>
             <div class="panel-body">
-                <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
-            </div>
-        </div>
-        <!-- Panel -->
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Sidebar panel widget</h4>
-            </div>
-            <div class="panel-body">
-                <p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+                <p>test</p>
             </div>
         </div>
     </div>

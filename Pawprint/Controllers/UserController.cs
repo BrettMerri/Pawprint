@@ -60,16 +60,17 @@ namespace Pawprint.Controllers
 
         public ActionResult Comment(int PostID, string CommentInput)
         {
-            Comment NewComment = new Comment();
-
             string CurrentUserID = User.Identity.GetUserId();
             ApplicationDbContext UserDB = new ApplicationDbContext();
             ApplicationUser CurrentUser = UserDB.Users.Find(CurrentUserID);
 
             PawprintEntities PE = new PawprintEntities();
 
+            Comment NewComment = new Comment();
+
             try
             {
+                NewComment.CreationDate = DateTime.Now;
                 NewComment.UserID = CurrentUserID;
                 NewComment.Text = CommentInput;
                 NewComment.PostID = PostID;
@@ -138,6 +139,7 @@ namespace Pawprint.Controllers
         {
             string CurrentUserID = User.Identity.GetUserId();
             NewPet.OwnerID = CurrentUserID;
+            NewPet.CreationDate = DateTime.Now;
 
             PawprintEntities PE = new PawprintEntities();
 
@@ -147,15 +149,24 @@ namespace Pawprint.Controllers
             {
                 PE.Pets.Add(NewPet);
 
-                FollowYourNewPet.PetID = NewPet.PetID;
-                FollowYourNewPet.UserID = CurrentUserID;
-                PE.FollowLists.Add(FollowYourNewPet);
-
                 PE.SaveChanges();
             }
             catch (Exception ex)
             {
                 ViewBag.Message = "Unable to save new pet. " + ex.Message.ToString();
+                return View("Error");
+            }
+
+            try
+            {
+                FollowYourNewPet.PetID = NewPet.PetID;
+                FollowYourNewPet.UserID = CurrentUserID;
+                PE.FollowLists.Add(FollowYourNewPet);
+                PE.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to follow your pet. " + ex.Message.ToString();
                 return View("Error");
             }
 

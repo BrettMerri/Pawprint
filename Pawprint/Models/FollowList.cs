@@ -17,6 +17,6 @@ namespace Pawprint.Models
         public string UserID { get; set; }
         public int PetID { get; set; }
     
-        public virtual Pet Pet { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

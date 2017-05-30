@@ -35,11 +35,9 @@ namespace Pawprint.Controllers
 
             ViewBag.PostList = PostList;
 
-            //TempData["Message"] exists when the user follows/unfollows the pet
-            if (TempData["Message"] != null)
-            {
-                ViewBag.Message = TempData["Message"];
-            }
+            List<Pet> NewestPets = PE.Pets.OrderByDescending(x => x.CreationDate).Take(4).ToList();
+
+            ViewBag.NewestPets = NewestPets;
 
             return View();
         }
@@ -57,6 +55,10 @@ namespace Pawprint.Controllers
             List<Post> PostList = PE.Posts.OrderByDescending(x => x.Date).ToList();
 
             ViewBag.PostList = PostList;
+
+            List<Pet> NewestPets = PE.Pets.OrderByDescending(x => x.CreationDate).Take(4).ToList();
+
+            ViewBag.NewestPets = NewestPets;
 
             return View("Index");
         }
