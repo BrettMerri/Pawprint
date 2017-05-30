@@ -1,18 +1,15 @@
 ﻿$(document).ready(function () {
 
-    $('.like').click(function () {
-        if ($(this).hasClass('liked'))
-            $(this).removeClass('liked');
+    $('#followButton').on('click', function () {
+        if ($(this).text() == 'Follow')
+        {
+            Follow();
+        }
         else
-            $(this).addClass('liked');
+        {
+            Unfollow();
+        }
     });
-
-    //$('#followButton').on('click', function () {
-        
-    //});
-    //$('#followButton').on('click', function () {
-        
-    //});
 
     function Follow() {
         $.ajax({
@@ -22,11 +19,11 @@
             cache: false,
             success: function (data) {
                 if (data === "Success") {
-                    alert(data);
-                    $('.follow').text("Unfollow").off('click').on('click', Unfollow);
+                    $('#followButton').text("Unfollow").off('click').on('click', Unfollow);
+                    $('#followButton-status').text('You are now following ' + PetName);
                 }
                 else {
-                    alert(data);
+                    $('#followButton-status').text(data);
                 }
             },
             error: function (data) {
@@ -44,11 +41,11 @@
             dataType: "text",
             success: function (data) {
                 if (data === "Success") {
-                    alert(data);
-                    $('.follow').text("Follow").off('click').on('click', Follow);
+                    $('#followButton').text("Follow").off('click').on('click', Follow);
+                    $('#followButton-status').text('You are no longer following ' + PetName);
                 }
                 else {
-                    alert(data);
+                    $('#followButton-status').text(data);
                 }
             },
             error: function (data) {
