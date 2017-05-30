@@ -187,6 +187,24 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
+            List<Post> PetPosts = DB.Posts.Where(x => x.PetID == SelectedPet.PetID).ToList();
+
+            try
+            {
+                //Remove all pets posts
+                foreach (var post in PetPosts)
+                {
+                    DB.Posts.Remove(post);
+                }
+
+                DB.SaveChanges(); 
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to delete pet's posts. " + ex.Message.ToString();
+                return View("Error");
+            }
+
             try
             {
                 DB.Pets.Remove(SelectedPet);
