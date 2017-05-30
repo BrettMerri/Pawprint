@@ -58,6 +58,64 @@ namespace Pawprint.Controllers
             return View(UserProfile);
         }
 
+        public ActionResult Comment(int PostID, string CommentInput)
+        {
+            Comment NewComment = new Comment();
+
+            string CurrentUserID = User.Identity.GetUserId();
+            ApplicationDbContext UserDB = new ApplicationDbContext();
+            ApplicationUser CurrentUser = UserDB.Users.Find(CurrentUserID);
+
+            PawprintEntities PE = new PawprintEntities();
+
+            try
+            {
+                NewComment.UserID = CurrentUserID;
+                NewComment.Text = CommentInput;
+                NewComment.PostID = PostID;
+                PE.Comments.Add(NewComment);
+                PE.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Something went wrong! " + ex.Message.ToString();
+                return View("Error");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult DeleteComment(int CommentID)
+        {
+            PawprintEntities PE = new PawprintEntities();
+            Comment CommentToDelete = PE.Comments.Find(CommentID);
+
+            if (CommentToDelete == null)
+            {
+                ViewBag.Message = "Unable to find comment to delete!";
+                return View("Error");
+            }
+
+            if (CommentToDelete.UserID != User.Identity.GetUserId())
+            {
+                ViewBag.Message = "You cannot delete other user's comments!";
+                return View("Error");
+            }
+
+            try
+            {
+                PE.Comments.Remove(CommentToDelete);
+                PE.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Something went wrong! " + ex.Message.ToString();
+                return View("Error");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult YourAnimals()
         {
             PawprintEntities DB = new PawprintEntities();

@@ -61,33 +61,6 @@ namespace Pawprint.Controllers
             return View("Index");
         }
 
-        public ActionResult Comment(int PostID, string CommentInput)
-        {
-            Comment NewComment = new Comment();
-
-            string CurrentUserID = User.Identity.GetUserId();
-            ApplicationDbContext UserDB = new ApplicationDbContext();
-            ApplicationUser CurrentUser = UserDB.Users.Find(CurrentUserID);
-
-            PawprintEntities PE = new PawprintEntities();
-
-            try
-            {
-                NewComment.UserID = CurrentUserID;
-                NewComment.Text = CommentInput;
-                NewComment.PostID = PostID;
-                PE.Comments.Add(NewComment);
-                PE.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = "Something went wrong! " + ex.Message.ToString();
-                return View("Error");
-            }
-
-            return RedirectToAction("Index");
-        }
-
         public ActionResult Search(string SearchInput)
         {
             if (string.IsNullOrWhiteSpace(SearchInput))
