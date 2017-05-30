@@ -55,14 +55,13 @@ namespace Pawprint.Controllers
 
             //Returns list of all posts
             List<Post> PostList = PE.Posts.OrderByDescending(x => x.Date).ToList();
-            
 
             ViewBag.PostList = PostList;
 
             return View("Index");
         }
 
-        public ActionResult Comment(string CommentInput)
+        public ActionResult Comment(int PostID, string CommentInput)
         {
             Comment NewComment = new Comment();
 
@@ -70,10 +69,21 @@ namespace Pawprint.Controllers
             ApplicationDbContext UserDB = new ApplicationDbContext();
             ApplicationUser CurrentUser = UserDB.Users.Find(CurrentUserID);
 
-            NewComment.UserID = CurrentUserID;
-            NewComment.PostID = 1;
-
             PawprintEntities PE = new PawprintEntities();
+
+            try
+            {
+                NewComment.UserID = CurrentUserID;
+                NewComment.Text = CommentInput;
+                NewComment.PostID = PostID;
+                PE.Comments.Add(NewComment);
+                PE.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Something went wrong! " + ex.Message.ToString();
+                return View("Error");
+            }
 
             return RedirectToAction("Index");
         }
@@ -94,7 +104,6 @@ namespace Pawprint.Controllers
                                                            x.Caption.Contains(SearchInput)).ToList();
 
             ViewBag.PostList = SearchResults;
-
             ViewBag.SearchInput = SearchInput;
 
             return View("Index");
