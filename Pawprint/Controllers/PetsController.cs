@@ -80,7 +80,7 @@ namespace Pawprint.Controllers
             return View(PetProfile);
         }
 
-        public ActionResult Follow(int PetID)
+        public string Follow(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
             Pet FollowPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
@@ -90,8 +90,7 @@ namespace Pawprint.Controllers
             //If there are no pets found with that PetID
             if (FollowPet == null)
             {
-                ViewBag.Message = "Invalid PetID!";
-                return View("Error");
+                return "No pets found with that PetID!";
             }
 
             //If user is following this pet
@@ -101,8 +100,7 @@ namespace Pawprint.Controllers
             //Checks if the user owns the pet OR if the user is already following this pet
             if (CurrentUserID == FollowPet.OwnerID || IsUserAlreadyFollowingThisPet)
             {
-                TempData["Message"] = $"You are already following {FollowPet.Name}!";
-                return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+                return "You are already following this pet!";
             }
 
             FollowList NewFollow = new FollowList();
@@ -115,18 +113,14 @@ namespace Pawprint.Controllers
             {
                 DB.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ViewBag.Message = "Something odd just happened! " + ex.Message.ToString();
-                return View("Error");
+                return "Something odd happened while trying to follow this pet";
             }
-
-            TempData["Message"] = $"You are now following {FollowPet.Name}!";
-
-            return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+            return "Success";
         }
 
-        public ActionResult Unfollow(int PetID)
+        public string Unfollow(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
             Pet FollowPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
@@ -136,8 +130,7 @@ namespace Pawprint.Controllers
             //If there are no pets found with that PetID
             if (FollowPet == null)
             {
-                ViewBag.Message = "Invalid PetID!";
-                return View("Error");
+                return "No pets found with that PetID!";
             }
 
             //If user is following this pet
@@ -147,41 +140,29 @@ namespace Pawprint.Controllers
             //Checks if the user owns the pet
             if (CurrentUserID == FollowPet.OwnerID)
             {
-                TempData["Message"] = $"You are cannot unfollow your own pet!";
-                return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+                return "You cannot unfollow your own pet!";
             }
 
             //Checks if user does not currently follow this pet
             if (!IsUserAlreadyFollowingThisPet)
             {
-                TempData["Message"] = $"You are no longer following {FollowPet.Name}!";
-                return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+                return "You are already not following this pet!";
             }
-
-            FollowList Unfollow = DB.FollowLists.Find(CurrentUserID, FollowPet.PetID);
-
-            if (Unfollow == null)
-            {
-                ViewBag.Message = "Invalid PetID!";
-                return View("Error");
-            }
-
-            DB.FollowLists.Remove(Unfollow);
 
             try
             {
+                FollowList Unfollow = DB.FollowLists.Find(CurrentUserID, FollowPet.PetID);
+                DB.FollowLists.Remove(Unfollow);
                 DB.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ViewBag.Message = "Something odd just happened! " + ex.Message.ToString();
-                return View("Error");
+                return "Something odd happened while trying to unfollow this pet!";
             }
 
-            TempData["Message"] = $"You have successfully unfollowed {FollowPet.Name}!";
-
-            return RedirectToAction("Profile", new { PetID = FollowPet.PetID });
+            return "Success";
         }
+
 
         public ActionResult AddNewPost(int PetID)
         {

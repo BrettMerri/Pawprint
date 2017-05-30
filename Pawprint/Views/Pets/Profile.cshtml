@@ -12,10 +12,10 @@
     .hover { 
         background-color: mediumslateblue;
     }
-
+    .follow, .unfollow {
+        margin-top: 10px;
+    }
 </style>
-
-
 
 <div class="mainbody container-fluid">
     @if (ViewBag.Message != null)
@@ -49,11 +49,11 @@
                         {
                             if (ViewBag.AlreadyFollowing == true)
                             {
-                                <a href="/Pets/Unfollow?PetID=@Model.PetID" class="btn btn-default btn-lg" role="button" style="margin-top: 10px">Unfollow</a>
+                                <button type="button" id="followButton" class="btn btn-default btn-lg">Unfollow</button>
                             }
                             else
                             {
-                                <a href="/Pets/Follow?PetID=@Model.PetID" class="btn btn-default btn-lg" role="button" style="margin-top: 10px">Follow</a>
+                                <button type="button" id="followButton" class="btn btn-default btn-lg">Follow</button>
                             }
                         }
                         <div class="media-body">
@@ -167,10 +167,6 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('.btn').click(function () {
-        if ($(this).hasClass("liked"))
-            $(this).removeClass("liked");
-        else
-            $(this).addClass("liked");
-    });
+    var PetID = @(Model.PetID)
 </script>
+<script type="text/javascript" src="~/Scripts/FollowPet.js"></script>
