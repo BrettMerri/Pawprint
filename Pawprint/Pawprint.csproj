@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.7.0.2\lib\net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -177,23 +181,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705191908381_InitialCreate.cs" />
-    <Compile Include="Migrations\201705191908381_InitialCreate.Designer.cs">
-      <DependentUpon>201705191908381_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201705192024318_AddName.cs" />
-    <Compile Include="Migrations\201705192024318_AddName.Designer.cs">
-      <DependentUpon>201705192024318_AddName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201705221649129_AddDisplayName.cs" />
-    <Compile Include="Migrations\201705221649129_AddDisplayName.Designer.cs">
-      <DependentUpon>201705221649129_AddDisplayName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201705242019426_UserProfile.cs" />
-    <Compile Include="Migrations\201705242019426_UserProfile.Designer.cs">
-      <DependentUpon>201705242019426_UserProfile.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
@@ -219,6 +206,7 @@
     <Compile Include="Models\FollowList.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HttpPostedFileBaseExtensions.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Like.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
@@ -248,9 +236,6 @@
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
     </Compile>
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -324,6 +309,23 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\developers\Abe.png" />
+    <Content Include="img\developers\Brett.jpg" />
+    <Content Include="img\developers\GitHubIcon.jpg" />
+    <Content Include="img\developers\Lanna.jpg" />
+    <Content Include="img\developers\LinkedInIcon.jpg" />
+    <Content Include="img\homepage\pawprints.png" />
+    <Content Include="img\pets\16\86e1e0ba92fe4dc1a9525de3f15039eb\chicken.jpg" />
+    <Content Include="img\pets\18\8336f24b812b45dcb6c59046a77efd91\GOT2.jpeg" />
+    <Content Include="img\pets\default_avatar.png" />
+    <Content Include="img\posts\11\b5d011bec45249b2a667e4d029efd2d3\detroit.jpeg" />
+    <Content Include="img\posts\13\c2c5f0c072d5482bbf16bccea69b67af\Puppy.JPG" />
+    <Content Include="img\posts\16\b7103d6988a8466cab093f412204f6e1\example.jpg" />
+    <Content Include="img\posts\9\fe3a76811e6e431abd3e780e983c8911\chicken.jpg" />
+    <Content Include="img\posts\pistons.jpeg" />
+    <Content Include="img\users\905c49f4-db55-4e97-981a-7c1ca53a1074\11d1be286a0d420d9d594959cd0bd7ae\Brett-Merrifield.jpg" />
+    <Content Include="img\users\c1c17bee-f4b8-4c70-8a9f-a6012e85e382\41d89dcc2a82449ab6fae94c2f08fc28\pistons.jpeg" />
+    <Content Include="img\users\default_avatar.png" />
     <Content Include="Models\Pawprint.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Pawprint.edmx</DependentUpon>
@@ -334,18 +336,8 @@
       <DependentUpon>Pawprint.edmx</DependentUpon>
       <LastGenOutput>Pawprint.cs</LastGenOutput>
     </Content>
-    <Content Include="obj\Debug\Pawprint.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\Pawprint.dll" />
-    <Content Include="obj\Debug\Pawprint.pdb" />
-    <Content Include="obj\Debug\TempPE\Models.Pawprint.cs.dll" />
-    <Content Include="obj\Debug\TempPE\Models.Pawprint.Designer.cs.dll" />
-    <Content Include="obj\Debug\TempPE\Models.Pawprint1.cs.dll" />
-    <Content Include="obj\Debug\TempPE\Models.Pawprint1.Designer.cs.dll" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="obj\Debug\Pawprint.csproj.GenerateResource.Cache" />
-    <Content Include="obj\Debug\Pawprint.csprojResolveAssemblyReference.cache" />
     <Content Include="bin\Pawprint.dll.config" />
     <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
     <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
@@ -412,6 +404,10 @@
     <Content Include="Views\User\YourAnimals.cshtml" />
     <Content Include="Views\User\UpdatePet.cshtml" />
     <Content Include="Views\User\EditUserProfile.cshtml" />
+    <Content Include="Views\Home\Welcome.cshtml" />
+    <Content Include="Views\Home\Developers.cshtml" />
+    <Content Include="Views\User\UploadUserAvatar.cshtml" />
+    <Content Include="Views\Pets\UploadPetAvatar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -421,7 +417,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="img\posts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -430,22 +425,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705191908381_InitialCreate.resx">
-      <DependentUpon>201705191908381_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705192024318_AddName.resx">
-      <DependentUpon>201705192024318_AddName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705221649129_AddDisplayName.resx">
-      <DependentUpon>201705221649129_AddDisplayName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705242019426_UserProfile.resx">
-      <DependentUpon>201705242019426_UserProfile.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="obj\Debug\Pawprint.Migrations.AddName.resources" />
-    <EmbeddedResource Include="obj\Debug\Pawprint.Migrations.InitialCreate.resources" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
