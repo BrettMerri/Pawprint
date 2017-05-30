@@ -16,5 +16,9 @@ namespace Pawprint.Models
     {
         public int PostID { get; set; }
         public string UserID { get; set; }
+        public int LikeID { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

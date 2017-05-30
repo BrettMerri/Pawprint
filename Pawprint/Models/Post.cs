@@ -14,6 +14,13 @@ namespace Pawprint.Models
     
     public partial class Post
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Post()
+        {
+            this.Comments = new HashSet<Comment>();
+            this.Likes = new HashSet<Like>();
+        }
+    
         public int PostID { get; set; }
         public System.DateTime Date { get; set; }
         public string FilePath { get; set; }
@@ -21,6 +28,10 @@ namespace Pawprint.Models
         public string Caption { get; set; }
         public Nullable<int> LikeCounts { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Comment> Comments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Like> Likes { get; set; }
         public virtual Pet Pet { get; set; }
     }
 }

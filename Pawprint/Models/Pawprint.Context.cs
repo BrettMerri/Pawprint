@@ -25,7 +25,6 @@ namespace Pawprint.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
@@ -36,6 +35,5 @@ namespace Pawprint.Models
         public virtual DbSet<Like> Likes { get; set; }
         public virtual DbSet<Pet> Pets { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

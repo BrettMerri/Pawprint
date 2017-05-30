@@ -14,10 +14,12 @@ namespace Pawprint.Models
     
     public partial class Comment
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public int PostID { get; set; }
         public string UserID { get; set; }
-        public string CommentID { get; set; }
+        public int CommentID { get; set; }
+        public string Text { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

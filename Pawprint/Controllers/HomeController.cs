@@ -64,6 +64,17 @@ namespace Pawprint.Controllers
 
         public ActionResult Comment(string CommentInput)
         {
+            Comment NewComment = new Comment();
+
+            string CurrentUserID = User.Identity.GetUserId();
+            ApplicationDbContext UserDB = new ApplicationDbContext();
+            ApplicationUser CurrentUser = UserDB.Users.Find(CurrentUserID);
+
+            NewComment.UserID = CurrentUserID;
+            NewComment.PostID = 1;
+
+            PawprintEntities PE = new PawprintEntities();
+
             return RedirectToAction("Index");
         }
 

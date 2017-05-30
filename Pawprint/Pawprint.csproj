@@ -200,9 +200,6 @@
     <Compile Include="Models\Comment.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\C__MigrationHistory.cs">
-      <DependentUpon>Pawprint.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\FollowList.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
     </Compile>
@@ -231,9 +228,6 @@
       <DependentUpon>Pawprint.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Post.cs">
-      <DependentUpon>Pawprint.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Pawprint.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -350,6 +344,7 @@
       <DependentUpon>Pawprint.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\FollowPet.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
