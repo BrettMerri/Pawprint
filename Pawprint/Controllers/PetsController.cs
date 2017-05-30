@@ -33,6 +33,7 @@ namespace Pawprint.Controllers
                 AspNetUser CurrentUser = DB.AspNetUsers.Find(CurrentUserID);
                 ViewBag.CurrentUser = CurrentUser;
                 
+                
                 //If user is following this pet
                 bool IsUserAlreadyFollowingThisPet = DB.FollowLists.Any(x => x.PetID == PetProfile.PetID &&
                                                                     x.UserID == CurrentUserID);
@@ -324,6 +325,42 @@ namespace Pawprint.Controllers
             TempData["Message"] = "Avatar uploaded successfully!";
 
             return RedirectToAction("Profile", new { PetID = AddPet.PetID });
+        }
+
+
+
+        public ActionResult DeletePost(int PostID)
+        {
+            PawprintEntities DB = new PawprintEntities();
+            Post SelectedPost = DB.Posts.SingleOrDefault(x => x.PostID == PostID);
+            if (SelectedPost == null)
+            {
+                ViewBag.Message = "Unable to find post";
+                return View("Error");
+
+            }
+
+
+            if (SelectedPost.Pet.OwnerID != User.Identity.GetUserId())
+            {
+                ViewBag.Message = "You cannot delete another pets post!";
+                return View("Error");
+            }
+
+            try
+            {
+                DB.Posts.Remove(SelectedPost);
+                DB.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Unable to delete post. " + ex.Message.ToString();
+                return View("Error");
+            }
+
+            return RedirectToAction("Profile", new { PetID = SelectedPost.PetID });
+
+
         }
     }
 }
