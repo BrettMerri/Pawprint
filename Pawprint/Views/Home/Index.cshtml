@@ -1,4 +1,12 @@
-﻿@if (ViewBag.Message != null)
+﻿<style type="text/css">
+    .currentUserCommentAvatar {
+        width:auto;
+        height:38px;
+        margin-right:2px;
+    }
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+@if (ViewBag.Message != null)
 {
     <div class="row">
         <div class="col-lg-12">
@@ -33,7 +41,29 @@
                 <img class="img-responsive" src="~/img/posts/@item.FilePath" alt="">
             </figure>
             <p class="lead">@item.Caption</p>
-            <hr>
+            if (User.Identity.IsAuthenticated)
+            {
+                <div class="post-content">
+                    <div class="pull-right btn-group-xs">
+                        <a class="btn btn-default btn-xs"><i class="fa fa-paw" aria-hidden="true"></i> Like</a>
+                        <a class="btn btn-default btn-xs"><i class="fa fa-comment" aria-hidden="true"></i> Comment</a>
+                        <a class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
+                    </div>
+                    <form action="/Home/Comment">
+                        <div class="input-group" style="width:363px;">
+                            <a href="~/Users/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" style="" /></a>
+                            <label class="sr-only" for="commentInput">Comment</label>
+                            <input type="text" class="form-control" id="commentInput" name="CommentInput" placeholder="Comment">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                    <span class="sr-only">Comment</span>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            }
         }
     </div>
     <div class="col-sm-4">
