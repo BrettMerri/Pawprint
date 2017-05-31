@@ -19,16 +19,25 @@
         width:auto;
     }
 
-    .PetImage
+    img.PetImage
     {
         width:auto;
         height:100px;
-        opacity:0.8;
+        opacity:0.85;
         display:block;
-        margin:0 auto;
+    }
+    .Petdiv {
+        text-align: center;
+    }
+    .Petinnerdiv {
+        display: inline-block;
+    }
+    .Petinnerdiv a:hover img.PetImage {
+        opacity:1;
     }
     .PetdivText
     {
+        font-size:18px;
         text-align:center;
     }
 
@@ -164,19 +173,22 @@
                 @foreach (var pet in ViewBag.NewestPets)
                 {
                     <div class="Petdiv">
-                        <a href="/Pets/Profile?PetID=@pet.PetID">
-                            @if (pet.FilePath == null)
-                            {
-                                <img class="PetImage" src="~/img/pets/default_avatar.png" />
-                            }
-                            else
-                            {
-                                <img class="PetImage" src="~/img/pets/@pet.FilePath" />
-                            }
-                            <h4 class="PetdivText">@pet.Name</h4>
-                            <hr />
-                        </a>
+                        <div class="Petinnerdiv">
+                            <a href="/Pets/Profile?PetID=@pet.PetID">
+                                @if (pet.FilePath == null)
+                                {
+                                    <img class="PetImage" src="~/img/pets/default_avatar.png" />
+                                }
+                                else
+                                {
+                                    <img class="PetImage" src="~/img/pets/@pet.FilePath" />
+                                }
+                                <span class="PetdivText">@pet.Name</span>
+
+                            </a>
+                        </div>
                     </div>
+                    <hr />
 
                 }
             </div>
