@@ -65,21 +65,24 @@
                                 <img class="thumbnail img-responsive" src="~/img/pets/@Model.FilePath" />
                             }
                         </div>
-                        @if (ViewBag.EditProfile == true)
+                        @if (User.Identity.IsAuthenticated)
                         {
-                            <h3 class="small-header"><a href="/Pets/UploadPetAvatar?PetID=@Model.PetID">Change avatar</a></h3>
-                        }
-                        else
-                        {
-                            if (ViewBag.AlreadyFollowing == true)
+                            if (ViewBag.EditProfile == true)
                             {
-                                <button type="button" id="followButton" class="btn btn-default btn-lg">Unfollow</button>
+                                <h3 class="small-header"><a href="/Pets/UploadPetAvatar?PetID=@Model.PetID">Change avatar</a></h3>
                             }
                             else
                             {
-                                <button type="button" id="followButton" class="btn btn-default btn-lg">Follow</button>
+                                if (ViewBag.AlreadyFollowing == true)
+                                {
+                                    <button type="button" id="followButton" class="btn btn-default btn-lg">Unfollow</button>
+                                }
+                                else
+                                {
+                                    <button type="button" id="followButton" class="btn btn-default btn-lg">Follow</button>
+                                }
+                                <p><span id="followButton-status"></span></p>
                             }
-                            <p><span id="followButton-status"></span></p>
                         }
                         <div class="media-body">
                             <hr />
