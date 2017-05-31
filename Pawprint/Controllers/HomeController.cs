@@ -106,7 +106,10 @@ namespace Pawprint.Controllers
             ViewBag.PostList = SearchResults;
             ViewBag.SearchInput = SearchInput;
 
-            ViewBag.LikedPostIds = LikedPosts(SearchResults);
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.LikedPostIds = LikedPosts(SearchResults);
+            }
 
             return View("Index");
         }
