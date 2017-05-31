@@ -18,6 +18,20 @@
         height:38px;
         width:auto;
     }
+
+    .PetImage
+    {
+        width:auto;
+        height:100px;
+        opacity:0.8;
+        display:block;
+        margin:0 auto;
+    }
+    .PetdivText
+    {
+        text-align:center;
+    }
+
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 @if (ViewBag.Message != null)
@@ -149,19 +163,25 @@
             <div class="panel-body">
                 @foreach (var pet in ViewBag.NewestPets)
                 {
-                    <p>@pet.Name</p>
+                    <div class="Petdiv">
+                        <a href="/Pets/Profile?PetID=@pet.PetID">
+                            @if (pet.FilePath == null)
+                            {
+                                <img class="PetImage" src="~/img/pets/default_avatar.png" />
+                            }
+                            else
+                            {
+                                <img class="PetImage" src="~/img/pets/@pet.FilePath" />
+                            }
+                            <h4 class="PetdivText">@pet.Name</h4>
+                            <hr />
+                        </a>
+                    </div>
+
                 }
             </div>
         </div>
         <!-- Panel -->
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Something else</h4>
-            </div>
-            <div class="panel-body">
-                <p>test</p>
-            </div>
-        </div>
     </div>
 </div>
 <script type="text/javascript" src="~/Scripts/LikePost.js"></script>
