@@ -33,7 +33,6 @@ namespace Pawprint.Controllers
                 AspNetUser CurrentUser = DB.AspNetUsers.Find(CurrentUserID);
                 ViewBag.CurrentUser = CurrentUser;
                 
-                
                 //If user is following this pet
                 bool IsUserAlreadyFollowingThisPet = DB.FollowLists.Any(x => x.PetID == PetProfile.PetID &&
                                                                     x.UserID == CurrentUserID);
@@ -70,6 +69,11 @@ namespace Pawprint.Controllers
                                           .OrderByDescending(x => x.Date)
                                           .ToList();
 
+            if (User.Identity.IsAuthenticated)
+            {
+                ViewBag.LikedPostIds = LikedPosts(PostList);
+            }
+
             ViewBag.PostList = PostList;
 
             //TempData["Message"] exists when the user follows/unfollows the pet
@@ -79,6 +83,24 @@ namespace Pawprint.Controllers
             }
 
             return View(PetProfile);
+        }
+
+        public List<int> LikedPosts(List<Post> PostList)
+        {
+            List<int> YouLike = new List<int>();
+
+            PawprintEntities PE = new PawprintEntities();
+            string CurrentUserID = User.Identity.GetUserId();
+
+            foreach (Post item in PostList)
+            {
+                Like DoYouLike = PE.Likes.SingleOrDefault(x => x.UserID == CurrentUserID && x.PostID == item.PostID);
+                if (DoYouLike != null)
+                {
+                    YouLike.Add(item.PostID);
+                }
+            }
+            return YouLike;
         }
 
         public string Follow(int PetID)
