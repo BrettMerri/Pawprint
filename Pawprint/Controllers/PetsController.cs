@@ -268,14 +268,14 @@ namespace Pawprint.Controllers
         {
                 try
                 {
-                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));
+                    DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));  
                     if (!dir.Exists)
                     {
-                        dir.Create();
+                        dir.Create();            //creates new directory for uploaded image
                     }
 
                     string path = Path.Combine(Server.MapPath(filePath), Path.GetFileName(file.FileName));
-                    file.SaveAs(path);
+                    file.SaveAs(path);    //saves complete filepath
                 }
                 catch (Exception ex)
                 {
@@ -289,9 +289,9 @@ namespace Pawprint.Controllers
         public ActionResult UploadPetAvatar(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
-            Pet AddAvatar = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
+            Pet AddAvatar = DB.Pets.SingleOrDefault(x => x.PetID == PetID); //gets the petID of the pet you want to upload avatar
 
-            if (User.Identity.GetUserId() != AddAvatar.OwnerID)
+            if (User.Identity.GetUserId() != AddAvatar.OwnerID)  //validation so you cant upload avatar for pet you dont own
             {
                 ViewBag.Message = "Can Not Change Avatar for a Pet That is Not Your Own";
                 return View("Error");
@@ -299,7 +299,7 @@ namespace Pawprint.Controllers
 
             ViewBag.PetID = PetID;
             
-            return View();
+            return View();  //returns the uploadpetavatar view which has the upload form 
         }
 
         [HttpPost]
@@ -308,7 +308,7 @@ namespace Pawprint.Controllers
             PawprintEntities DB = new PawprintEntities();
             Pet AddPet = DB.Pets.Find(AddAvatar.PetID);
 
-            if (User.Identity.GetUserId() != AddPet.OwnerID)
+            if (User.Identity.GetUserId() != AddPet.OwnerID) //makes sure userID is equal to pet ID so no one else can change avatar
             {
                 ViewBag.Message = "Can Not Change Avatar for a Pet That is Not Your Own";
                 return View("Error");
@@ -357,7 +357,7 @@ namespace Pawprint.Controllers
         public ActionResult DeletePost(int PostID)
         {
             PawprintEntities DB = new PawprintEntities();
-            Post SelectedPost = DB.Posts.SingleOrDefault(x => x.PostID == PostID);
+            Post SelectedPost = DB.Posts.SingleOrDefault(x => x.PostID == PostID);  //finds selected post that needs to be removed via lambda expression
             if (SelectedPost == null)
             {
                 ViewBag.Message = "Unable to find post";
@@ -366,7 +366,7 @@ namespace Pawprint.Controllers
             }
 
 
-            if (SelectedPost.Pet.OwnerID != User.Identity.GetUserId())
+            if (SelectedPost.Pet.OwnerID != User.Identity.GetUserId())  //validation so only owner can delete posts
             {
                 ViewBag.Message = "You cannot delete another pets post!";
                 return View("Error");
@@ -375,12 +375,12 @@ namespace Pawprint.Controllers
             try
             {
                 DB.Posts.Remove(SelectedPost);
-                DB.SaveChanges();
+                DB.SaveChanges(); // saves the change
             }
             catch (Exception ex)
             {
                 ViewBag.Message = "Unable to delete post. " + ex.Message.ToString();
-                return View("Error");
+                return View("Error");       //returns error page
             }
 
             return RedirectToAction("Profile", new { PetID = SelectedPost.PetID });
