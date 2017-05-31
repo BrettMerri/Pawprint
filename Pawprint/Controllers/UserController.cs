@@ -190,23 +190,23 @@ namespace Pawprint.Controllers
             PawprintEntities DB = new PawprintEntities();
 
             string UserID = User.Identity.GetUserId();
-            List<Pet> PetList = DB.Pets.Where(x => x.OwnerID == UserID).ToList();
+            List<Pet> PetList = DB.Pets.Where(x => x.OwnerID == UserID).ToList(); //creates list of pets where ownerID is equal to UserID
 
-            ViewBag.PetList = PetList;
+            ViewBag.PetList = PetList;  //viewbag so you can output list to YourAnimals view
 
             return View();
         }
 
         public ActionResult AddNewPet()
         {
-            return View();
+            return View();  //returns the addnewpet view which has the form for user to fill out
         }
 
         [HttpPost]
         public ActionResult SaveNewPet(Pet NewPet)
         {
             string CurrentUserID = User.Identity.GetUserId();
-            NewPet.OwnerID = CurrentUserID;
+            NewPet.OwnerID = CurrentUserID;        //makes sure ownerId = to USerID so only user can save pet for own profile
             NewPet.CreationDate = DateTime.Now;
 
             PawprintEntities PE = new PawprintEntities();
@@ -215,9 +215,9 @@ namespace Pawprint.Controllers
 
             try
             {
-                PE.Pets.Add(NewPet);
+                PE.Pets.Add(NewPet);  //adds new pet to database using entity
 
-                PE.SaveChanges();
+                PE.SaveChanges();     // saves changes to database 
             }
             catch (Exception ex)
             {
@@ -227,7 +227,7 @@ namespace Pawprint.Controllers
 
             try
             {
-                FollowYourNewPet.PetID = NewPet.PetID;
+                FollowYourNewPet.PetID = NewPet.PetID;           //when user creates new pet, pet is now automatically being followed by user.
                 FollowYourNewPet.UserID = CurrentUserID;
                 PE.FollowLists.Add(FollowYourNewPet);
                 PE.SaveChanges();
@@ -239,7 +239,7 @@ namespace Pawprint.Controllers
             }
 
             ApplicationDbContext UserDB = new ApplicationDbContext();
-            ApplicationUser CurrentUserInfo = UserDB.Users.Find(CurrentUserID);
+            ApplicationUser CurrentUserInfo = UserDB.Users.Find(CurrentUserID); //here only to find out which user profile to direct back to, using entity
 
             return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
         }
@@ -247,11 +247,11 @@ namespace Pawprint.Controllers
         public ActionResult DeletePet(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
-            Pet SelectedPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID);
+            Pet SelectedPet = DB.Pets.SingleOrDefault(x => x.PetID == PetID); //select pet youd want to delete 
 
-            if (SelectedPet.OwnerID != User.Identity.GetUserId())
+            if (SelectedPet.OwnerID != User.Identity.GetUserId()) //validation so only owner can delete their own pets
             {
-                ViewBag.Message = "You cannot delete another user's pet!";
+                ViewBag.Message = "You cannot delete another user's pet!"; 
                 return View("Error");
             }
 
@@ -259,13 +259,13 @@ namespace Pawprint.Controllers
 
             try
             {
-                //Remove all pets posts
+                //Remove all pets posts before deleting pet or else app will give you an error
                 foreach (var post in PetPosts)
                 {
                     DB.Posts.Remove(post);
                 }
 
-                DB.SaveChanges(); 
+                DB.SaveChanges(); //saves changes to database
             }
             catch (Exception ex)
             {
@@ -275,8 +275,8 @@ namespace Pawprint.Controllers
 
             try
             {
-                DB.Pets.Remove(SelectedPet);
-                DB.SaveChanges();
+                DB.Pets.Remove(SelectedPet);  //removes pet from database
+                DB.SaveChanges(); //saves change to database
             }
             catch (Exception ex)
             {
@@ -290,22 +290,22 @@ namespace Pawprint.Controllers
         public ActionResult UpdatePet(int PetID)
         {
             PawprintEntities PE = new PawprintEntities();
-            Pet ToFind = PE.Pets.Find(PetID);
+            Pet ToFind = PE.Pets.Find(PetID); //finds pet you need to update
 
-            if (ToFind.OwnerID != User.Identity.GetUserId())
+            if (ToFind.OwnerID != User.Identity.GetUserId()) //validation so only owner can update pet
             {
                 ViewBag.Message = "You cannot edit another user's pet";
                 return View("Error");
             }
 
-            return View(ToFind);
+            return View(ToFind); //pulls pet info from model
         }
 
         [HttpPost]
         public ActionResult SaveUpdates(Pet ToBeUpdated)
         {
             PawprintEntities PE = new PawprintEntities();
-            Pet ToFind = PE.Pets.Find(ToBeUpdated.PetID);
+            Pet ToFind = PE.Pets.Find(ToBeUpdated.PetID); //finds pet using tobeupdated petID
 
             if (ToFind.OwnerID != User.Identity.GetUserId())
             {
@@ -315,13 +315,13 @@ namespace Pawprint.Controllers
 
             try
             {
-                ToFind.Breed = ToBeUpdated.Breed;
+                ToFind.Breed = ToBeUpdated.Breed;  //using entity to update collumn in table
                 ToFind.Name = ToBeUpdated.Name;
                 ToFind.Color = ToBeUpdated.Color;
                 ToFind.BirthDay = ToBeUpdated.BirthDay;
                 ToFind.FavoriteFood = ToBeUpdated.FavoriteFood;
 
-                PE.SaveChanges();
+                PE.SaveChanges(); //saves changes to database
             }
             catch (Exception ex)
             {
@@ -329,7 +329,7 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
-            return RedirectToAction("Profile", "Pets", new { PetID = ToFind.PetID });
+            return RedirectToAction("Profile", "Pets", new { PetID = ToFind.PetID }); //redirects to the pet profile you were updating
         }
 
         public ActionResult EditUserProfile()
@@ -337,7 +337,7 @@ namespace Pawprint.Controllers
             string CurrentUserID = User.Identity.GetUserId();
 
             PawprintEntities PE = new PawprintEntities();
-            AspNetUser ToFind = PE.AspNetUsers.Find(CurrentUserID);
+            AspNetUser ToFind = PE.AspNetUsers.Find(CurrentUserID); //gets the user ID for user that wants to update profile
 
             if (ToFind == null)
             {
@@ -345,7 +345,7 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
-            return View(ToFind);
+            return View(ToFind); //pulls user info from model so form is not empty
         }
 
         [HttpPost]
@@ -354,9 +354,9 @@ namespace Pawprint.Controllers
             string CurrentUserID = User.Identity.GetUserId();
 
             PawprintEntities PE = new PawprintEntities();
-            AspNetUser ToFind = PE.AspNetUsers.Find(CurrentUserID);
+            AspNetUser ToFind = PE.AspNetUsers.Find(CurrentUserID); //finds user using identity
 
-            if (ToFind == null)
+            if (ToFind == null) //if ID = null then unable to edit profile
             {
                 ViewBag.Message = "Unable to edit profile.";
                 return View("Error");
@@ -364,12 +364,12 @@ namespace Pawprint.Controllers
 
             try
             {
-                ToFind.Bio = ToBeUpdated.Bio;
+                ToFind.Bio = ToBeUpdated.Bio;       //using entity to update columns on table
                 ToFind.Location = ToBeUpdated.Location;
                 ToFind.Gender = ToBeUpdated.Gender;
                 ToFind.BirthDay = ToBeUpdated.BirthDay;
 
-                PE.SaveChanges();
+                PE.SaveChanges();  //saves changes to database
             }
             catch (Exception ex)
             {
@@ -380,12 +380,12 @@ namespace Pawprint.Controllers
             ApplicationDbContext UserDB = new ApplicationDbContext();
             ApplicationUser CurrentUserInfo = UserDB.Users.Find(CurrentUserID);
 
-            return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName });
+            return RedirectToAction("Profile", new { DisplayName = CurrentUserInfo.DisplayName }); //redirects to user profile you were updating
         }
 
         public ActionResult UploadUserAvatar()
         {
-            return View();
+            return View();  //returns the view of uploaduseravatar which has the upload link
         }
 
         [HttpPost]
