@@ -204,6 +204,9 @@ namespace Pawprint.Controllers
             // Time Stamp for Post
             NewPost.Date = DateTime.Now;
 
+            // Initiate new post with a like count of 0
+            NewPost.LikeCounts = 0;
+
             //Create Unique Identifier
             //This will be used as a folder name that the image will be saved to
             //Prevents images with the same name being saved in the same location

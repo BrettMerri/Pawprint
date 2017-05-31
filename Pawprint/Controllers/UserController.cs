@@ -58,6 +58,74 @@ namespace Pawprint.Controllers
             return View(UserProfile);
         }
 
+        public string Like(int PostID)
+        {
+            string CurrentUserID = User.Identity.GetUserId();
+            PawprintEntities PE = new PawprintEntities();
+
+            Post PostToLike = PE.Posts.Find(PostID);
+            
+            if (PostToLike == null)
+            {
+                return "Unable to find post!";
+            }
+
+            if (PE.Likes.Any(x => x.AspNetUser.ID == CurrentUserID && x.PostID == PostID))
+            {
+                return "You already like this post!";
+            }
+
+            Like NewLike = new Like();
+            
+            try
+            {
+                PostToLike.LikeCounts++;
+                NewLike.PostID = PostID;
+                NewLike.UserID = CurrentUserID;
+                PE.Likes.Add(NewLike);
+                PE.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return "Something odd just happened! " + ex.Message.ToString();
+            }
+
+            return "Success";
+        }
+
+        public string Unlike(int PostID)
+        {
+            string CurrentUserID = User.Identity.GetUserId();
+            PawprintEntities PE = new PawprintEntities();
+
+            Post PostToUnlike = PE.Posts.Find(PostID);
+
+            if (PostToUnlike == null)
+            {
+                return "Unable to find post!";
+            }
+
+            if (!PE.Likes.Any(x => x.AspNetUser.ID == CurrentUserID && x.PostID == PostID))
+            {
+                return "You already don't like this post!";
+            }
+
+            Like RemoveLike = PE.Likes.SingleOrDefault(x => x.UserID == CurrentUserID && x.PostID == PostID);
+            
+            try
+            {
+                PostToUnlike.LikeCounts--;
+                PE.Likes.Remove(RemoveLike);
+                PE.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                return "Something odd just happened! " + ex.Message.ToString();
+            }
+
+            return "Success";
+        }
+
         public ActionResult Comment(int PostID, string CommentInput)
         {
             string CurrentUserID = User.Identity.GetUserId();

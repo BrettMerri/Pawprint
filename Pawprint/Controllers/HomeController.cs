@@ -39,7 +39,27 @@ namespace Pawprint.Controllers
 
             ViewBag.NewestPets = NewestPets;
 
+            ViewBag.LikedPostIds = LikedPosts(PostList);
+
             return View();
+        }
+
+        public List<int> LikedPosts(List<Post> PostList)
+        {
+            List<int> YouLike = new List<int>();
+
+            PawprintEntities PE = new PawprintEntities();
+            string CurrentUserID = User.Identity.GetUserId();
+
+            foreach (Post item in PostList)
+            {
+                Like DoYouLike = PE.Likes.SingleOrDefault(x => x.UserID == CurrentUserID && x.PostID == item.PostID);
+                if (DoYouLike != null)
+                {
+                    YouLike.Add(item.PostID);
+                }
+            }
+            return YouLike;
         }
 
         public ActionResult Explore()
@@ -59,6 +79,8 @@ namespace Pawprint.Controllers
             List<Pet> NewestPets = PE.Pets.OrderByDescending(x => x.CreationDate).Take(4).ToList();
 
             ViewBag.NewestPets = NewestPets;
+
+            ViewBag.LikedPostIds = LikedPosts(PostList);
 
             return View("Index");
         }
@@ -83,6 +105,8 @@ namespace Pawprint.Controllers
             ViewBag.NewestPets = NewestPets;
             ViewBag.PostList = SearchResults;
             ViewBag.SearchInput = SearchInput;
+
+            ViewBag.LikedPostIds = LikedPosts(SearchResults);
 
             return View("Index");
         }

@@ -48,19 +48,27 @@
         }
         @foreach (var item in ViewBag.PostList)
         {
-            <div class="page-header">
-                <p>Posted by <span class="glyphicon glyphicon-user"></span> <a href="/Pets/Profile?PetID=@item.PetID">@item.Pet.Name</a> on <span class="glyphicon glyphicon-time"></span> @item.Date</p>
-            </div>
-            <figure class="margin-b-2">
-                <img class="img-responsive" style="border:1px solid black;" src="~/img/posts/@item.FilePath" alt="">
-            </figure>
-            <p class="lead">@item.Caption</p>
-            if (User.Identity.IsAuthenticated)
-            {
+            <div class="post">
+                <div class="page-header">
+                    <p>Posted by <span class="glyphicon glyphicon-user"></span> <a href="/Pets/Profile?PetID=@item.PetID">@item.Pet.Name</a> on <span class="glyphicon glyphicon-time"></span> @item.Date</p>
+                </div>
+                <figure class="margin-b-2">
+                    <img class="img-responsive" style="border:1px solid black;" src="~/img/posts/@item.FilePath" alt="">
+                </figure>
+                <p class="lead">@item.Caption</p>
+                <p>Likes: <span class="likeCount">@item.LikeCounts</span></p>
+                @if (User.Identity.IsAuthenticated)
+                {
                 <div class="post-controls">
                     <div class="pull-right btn-group-xs">
-                        <a class="btn btn-default btn-xs"><i class="fa fa-paw" aria-hidden="true"></i> Like</a>
-                        <a class="btn btn-default btn-xs"><i class="fa fa-comment" aria-hidden="true"></i> Comment</a>
+                        @if (ViewBag.LikedPostIds.IndexOf(item.PostID) == -1)
+                        {
+                            <button class="like btn btn-default btn-xs" value="@item.PostID" onclick="LikePost.call(this);"><i class="fa fa-paw" aria-hidden="true"></i> <span class="likeText">Like</span></button>
+                        }
+                        else
+                        {
+                            <button class="like btn btn-default btn-xs" value="@item.PostID" onclick="UnlikePost.call(this);"><i class="fa fa-paw" aria-hidden="true"></i> <span class="likeText">Unlike</span></button>
+                        }
                         @if (item.Pet.OwnerID == ViewBag.CurrentUser.ID)
                         {
                             <a href="/Pets/DeletePost?PostID=@item.PostID" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
@@ -112,7 +120,9 @@
                         </div>
                     </form>
                 </div>
-            }
+
+                }
+            </div>
         }
     </div>
     <div class="col-sm-4">
@@ -154,3 +164,4 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="~/Scripts/LikePost.js"></script>
