@@ -100,6 +100,14 @@ namespace Pawprint.Controllers
                                                            x.Pet.AspNetUser.DisplayName.Contains(SearchInput) ||
                                                            x.Caption.Contains(SearchInput)).ToList();
 
+            if (User.Identity.IsAuthenticated)
+            {
+                string CurrentUserID = User.Identity.GetUserId();
+                AspNetUser CurrentUser = PE.AspNetUsers.Find(CurrentUserID);
+                ViewBag.CurrentUser = CurrentUser;
+            }
+
+
             List<Pet> NewestPets = PE.Pets.OrderByDescending(x => x.CreationDate).Take(4).ToList();
 
             ViewBag.NewestPets = NewestPets;
