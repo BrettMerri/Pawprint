@@ -9,8 +9,8 @@
         success: function (data) {
             if (data === "Success") {
                 $this.attr('onclick', 'UnlikePost.call(this)').children('.likeText').text('Unlike');
-                var LikeCount = parseInt($this.parent().parent().parent().find('.likeCount').text()) + 1;
-                $this.parent().parent().parent().find('.likeCount').text(LikeCount);
+                var LikeCount = parseInt($this.closest('.post').find('.likeCount').text()) + 1;
+                $this.closest('.post').find('.likeCount').text(LikeCount);
             }
             else {
                 alert(data);
@@ -33,8 +33,8 @@ function UnlikePost() {
         success: function (data) {
             if (data === "Success") {
                 $this.attr('onclick', 'LikePost.call(this)').children('.likeText').text('Like');
-                var LikeCount = parseInt($this.parent().parent().parent().find('.likeCount').text()) - 1;
-                $this.parent().parent().parent().find('.likeCount').text(LikeCount);
+                var LikeCount = parseInt($this.closest('.post').find('.likeCount').text()) - 1;
+                $this.closest('.post').find('.likeCount').text(LikeCount);
             }
             else {
                 alert(data);
