@@ -53,7 +53,7 @@ namespace Pawprint.Controllers
 
             foreach (Post item in PostList)
             {
-                Like DoYouLike = PE.Likes.SingleOrDefault(x => x.UserID == CurrentUserID && x.PostID == item.PostID);
+                Like DoYouLike = PE.Likes.FirstOrDefault(x => x.UserID == CurrentUserID && x.PostID == item.PostID);
                 if (DoYouLike != null)
                 {
                     YouLike.Add(item.PostID);
