@@ -240,6 +240,8 @@
     <Content Include="bin\EntityFramework.SqlServer.dll" />
     <Content Include="bin\EntityFramework.SqlServer.xml" />
     <Content Include="bin\EntityFramework.xml" />
+    <Content Include="bin\FluentValidation.dll" />
+    <Content Include="bin\FluentValidation.xml" />
     <Content Include="bin\Microsoft.AspNet.Identity.Core.dll" />
     <Content Include="bin\Microsoft.AspNet.Identity.Core.xml" />
     <Content Include="bin\Microsoft.AspNet.Identity.EntityFramework.dll" />
@@ -296,6 +298,8 @@
     <Content Include="bin\System.Web.WebPages.Razor.xml" />
     <Content Include="bin\System.Web.WebPages.xml" />
     <Content Include="bin\WebGrease.dll" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Profile.css" />
@@ -303,22 +307,49 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="img\developers\Abe.png" />
+    <Content Include="img\developers\Abe.jpg" />
     <Content Include="img\developers\Brett.jpg" />
     <Content Include="img\developers\GitHubIcon.jpg" />
     <Content Include="img\developers\Lanna.jpg" />
     <Content Include="img\developers\LinkedInIcon.jpg" />
+    <Content Include="img\homepage\logo.png" />
+    <Content Include="img\homepage\navbarlogoresized.png" />
     <Content Include="img\homepage\pawprints.png" />
-    <Content Include="img\pets\16\86e1e0ba92fe4dc1a9525de3f15039eb\chicken.jpg" />
-    <Content Include="img\pets\18\8336f24b812b45dcb6c59046a77efd91\GOT2.jpeg" />
+    <Content Include="img\homepage\pets.png" />
+    <Content Include="img\pets\10\18016efaad9844d5a113926c9a57513f\lab7.jpg" />
+    <Content Include="img\pets\11\a3f08f3cc76d48e89aae23cdc6cb2ffd\GermanShepard2.jpg" />
+    <Content Include="img\pets\12\49e23daab9014a3dacb880eb460a771d\pet.png" />
+    <Content Include="img\pets\13\6bd4fad80aaf4dbb8eef74700c9cfef3\trixbow.jpg" />
+    <Content Include="img\pets\33\7de6bc2c89944e189621cb3b34a4c9c0\pexels-photo.jpg" />
+    <Content Include="img\pets\7\46c1d87e6b57446488655f9b0bc82349\mox.jpg" />
+    <Content Include="img\pets\8\1f647af493024d06b7395c341eb227f5\kitten.PNG" />
+    <Content Include="img\pets\9\e32f297554154251be9e4531ee34d31e\hedgehog.png" />
     <Content Include="img\pets\default_avatar.png" />
-    <Content Include="img\posts\11\b5d011bec45249b2a667e4d029efd2d3\detroit.jpeg" />
-    <Content Include="img\posts\13\c2c5f0c072d5482bbf16bccea69b67af\Puppy.JPG" />
-    <Content Include="img\posts\16\b7103d6988a8466cab093f412204f6e1\example.jpg" />
-    <Content Include="img\posts\9\fe3a76811e6e431abd3e780e983c8911\chicken.jpg" />
-    <Content Include="img\posts\pistons.jpeg" />
-    <Content Include="img\users\905c49f4-db55-4e97-981a-7c1ca53a1074\11d1be286a0d420d9d594959cd0bd7ae\Brett-Merrifield.jpg" />
-    <Content Include="img\users\c1c17bee-f4b8-4c70-8a9f-a6012e85e382\41d89dcc2a82449ab6fae94c2f08fc28\pistons.jpeg" />
+    <Content Include="img\posts\10\27ed656ef10a4d76a262c11172983447\lab8.jpg" />
+    <Content Include="img\posts\11\64e32b1d7a5f4c0a932e2b2e98c20e16\GermanShepard6.jpg" />
+    <Content Include="img\posts\12\8cb3c8c4ffce498ab3859f9c0abc7b05\precious.jpg" />
+    <Content Include="img\posts\12\98964e09938f4f9cb546230e22885b81\cutepets.png" />
+    <Content Include="img\posts\12\a83cb851352d4d8ab46922cef20d07e5\precious2.jpg" />
+    <Content Include="img\posts\13\b8e40747670c4ed2a8b40bbb46fd2576\trix.jpg" />
+    <Content Include="img\posts\13\bc749937b53a4c55bc765ea57de13dbd\trix2.jpg" />
+    <Content Include="img\posts\33\49fc31769bbc4279aa56aaf87c9e314c\animal-brown-horse.jpg" />
+    <Content Include="img\posts\33\a74bcaaae5824ef393d01aef999d68f5\animal-brown-horse.jpg" />
+    <Content Include="img\posts\3\65cb577dc0544e718406532f843e45ba\example.jpg" />
+    <Content Include="img\posts\3\a5146d116f5e48a098af87e8fffd6b88\example.jpg" />
+    <Content Include="img\posts\5\be2a37a029b24bc9a919f5567405aea4\example.jpg" />
+    <Content Include="img\posts\6\60b000e5e70e4261987f8339d7b90c0e\example.jpg" />
+    <Content Include="img\posts\6\c27dca37c71d431f85fadfe5d7a176b9\example.jpg" />
+    <Content Include="img\posts\6\eb0a53ee68fd4cb69014a5f952dd89b8\chicken.jpg" />
+    <Content Include="img\posts\7\0f18845efad94b8bb99318eab0637e26\Moxie.jpg" />
+    <Content Include="img\posts\7\2191eac2878849a6823c412f69259826\tinymoxie.jpg" />
+    <Content Include="img\posts\7\2944189625004985b9e327048f467af2\moxieBird.jpg" />
+    <Content Include="img\posts\7\3e5c43dfabb141dba9a6e6922f766aaa\badmox.JPG" />
+    <Content Include="img\posts\7\c6532d54a87c4fb29b71ee9492cdcf0c\moxievaca.jpg" />
+    <Content Include="img\posts\8\0a140522cb2b4954873f9666a70dd2ab\meow.jpg" />
+    <Content Include="img\posts\8\49f205ba44e84e5981127f1495fe1fe1\goldenkitty.jpg" />
+    <Content Include="img\posts\8\a5686ba374cd48a485b5633987e44b4f\Puppy.JPG" />
+    <Content Include="img\users\2699fa63-2891-4e8a-b479-afc011a53c7d\0ad2b5cb150d4f8ca344fa616fb26b92\Snapchat-107984616 %281%29.jpg" />
+    <Content Include="img\users\52e2991e-9e78-427f-b8b7-da2b96dd0d8c\3806f2abbd474d54a3b0cfa34bde3553\Lanna Brasure.JPG" />
     <Content Include="img\users\default_avatar.png" />
     <Content Include="Models\Pawprint.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -330,8 +361,6 @@
       <DependentUpon>Pawprint.edmx</DependentUpon>
       <LastGenOutput>Pawprint.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="bin\Pawprint.dll.config" />
     <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
     <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
@@ -343,7 +372,18 @@
     <Content Include="Models\Pawprint.edmx.diagram">
       <DependentUpon>Pawprint.edmx</DependentUpon>
     </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <None Include="Properties\PublishProfiles\Instapaw - Web Deploy %282%29.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\FollowPet.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -352,6 +392,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\LikePost.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -368,8 +409,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -414,9 +453,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
