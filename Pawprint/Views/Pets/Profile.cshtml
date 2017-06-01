@@ -17,8 +17,9 @@
     }
     .currentUserCommentAvatar {
         width:auto;
-        height:38px;
+        height:35px;
         margin-right:2px;
+        float:left;
     }
     .lead {
         margin-bottom:0px;
@@ -167,27 +168,37 @@
                                 <div class="post-content">
                                     <img class="img-responsive" style="border:1px solid black" src="~/img/posts/@item.FilePath" alt="" />
                                     <p class="lead">@item.Caption</p>
-                                    <p>Likes: <span class="likeCount">@item.LikeCounts</span></p>
-                                </div>
+                                    <div class="row" style="margin-bottom:10px;">
+                                        <div class="col-xs-9">
+                                            <p>Likes: <span class="likeCount">@item.LikeCounts</span></p>
+                                        </div>
 
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <div class="post-controls">
-                                        <div class="pull-right btn-group-xs">
-                                            @if (ViewBag.LikedPostIds.IndexOf(item.PostID) == -1)
+                                        <div class="col-xs-3">
+                                            @if (User.Identity.IsAuthenticated)
                                             {
-                                                <button class="like btn btn-default btn-xs" value="@item.PostID" onclick="LikePost.call(this);"><i class="fa fa-paw" aria-hidden="true"></i> <span class="likeText">Like</span></button>
-                                            }
-                                            else
-                                            {
-                                                <button class="like btn btn-default btn-xs" value="@item.PostID" onclick="UnlikePost.call(this);"><i class="fa fa-paw" aria-hidden="true"></i> <span class="likeText">Unlike</span></button>
-                                            }
-                                            @if (item.Pet.OwnerID == ViewBag.CurrentUser.ID)
-                                            {
-                                                <a href="/Pets/DeletePost?PostID=@item.PostID" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
+                                                <div class="post-controls">
+                                                    <div class="btn-group-sm">
+                                                        @if (ViewBag.LikedPostIds.IndexOf(item.PostID) == -1)
+                                                        {
+                                                            <button class="like btn btn-default btn-sm" value="@item.PostID" onclick="LikePost.call(this);"><i class="fa fa-paw" aria-hidden="true"></i> <span class="likeText">Like</span></button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <button class="like btn btn-default btn-sm" value="@item.PostID" onclick="UnlikePost.call(this);"><i class="fa fa-paw" aria-hidden="true"></i> <span class="likeText">Unlike</span></button>
+                                                        }
+                                                        @if (item.Pet.OwnerID == ViewBag.CurrentUser.ID)
+                                                        {
+                                                            <a href="/Pets/DeletePost?PostID=@item.PostID" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
+                                                        }
+                                                    </div>
+                                                </div>
                                             }
                                         </div>
                                     </div>
+                                </div>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    
                                     <div class="post-content">
                                         @foreach (var comment in item.Comments)
                                         {
@@ -212,7 +223,7 @@
                                             </div>
                                         }
                                         <form action="/User/Comment">
-                                            <div class="input-group" style="max-width:363px;">
+                                            <div class="row" style="margin:0;">
                                                 @if (ViewBag.CurrentUser.FilePath == null)
                                                 {
                                                     <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/default_avatar.png" style="" /></a>
@@ -224,7 +235,10 @@
                                                 <label class="sr-only" for="commentInput">Comment</label>
                                                 <input type="hidden" name="PostID" value="@item.PostID" />
                                                 <input type="hidden" name="returnUrl" value="@Model.PetID" />
-                                                <input type="text" class="form-control" id="commentInput" name="CommentInput" placeholder="Comment">
+                                                <div class="col-xs-8" style="padding-left:0; padding-right:0; max-width:250px;">
+                                                    <input type="text" class="form-control" id="commentInput" name="CommentInput" placeholder="Comment" style="max-width:none;">
+                                                </div>
+
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-default" type="submit">
                                                         <span class="glyphicon glyphicon-comment"></span>
