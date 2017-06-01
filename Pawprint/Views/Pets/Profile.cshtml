@@ -177,7 +177,7 @@
                                             @if (User.Identity.IsAuthenticated)
                                             {
                                                 <div class="post-controls">
-                                                    <div class="btn-group-sm">
+                                                    <div class="btn-group-sm" style="float:right;">
                                                         @if (ViewBag.LikedPostIds.IndexOf(item.PostID) == -1)
                                                         {
                                                             <button class="like btn btn-default btn-sm" value="@item.PostID" onclick="LikePost.call(this);"><i class="fa fa-paw" aria-hidden="true"></i> <span class="likeText">Like</span></button>
@@ -188,7 +188,7 @@
                                                         }
                                                         @if (item.Pet.OwnerID == ViewBag.CurrentUser.ID)
                                                         {
-                                                            <a href="/Pets/DeletePost?PostID=@item.PostID" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
+                                                            <a href="/Pets/DeletePost?PostID=@item.PostID" onclick="return confirm('Are you sure?')" class="btn btn-default btn-sm"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
                                                         }
                                                     </div>
                                                 </div>
@@ -226,11 +226,11 @@
                                             <div class="row" style="margin:0;">
                                                 @if (ViewBag.CurrentUser.FilePath == null)
                                                 {
-                                                    <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/default_avatar.png" style="" /></a>
+                                                    <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/default_avatar.png" /></a>
                                                 }
                                                 else
                                                 {
-                                                    <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" style="" /></a>
+                                                    <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" /></a>
                                                 }
                                                 <label class="sr-only" for="commentInput">Comment</label>
                                                 <input type="hidden" name="PostID" value="@item.PostID" />
