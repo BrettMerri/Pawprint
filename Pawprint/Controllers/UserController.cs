@@ -217,7 +217,7 @@ namespace Pawprint.Controllers
             {
                 PE.Pets.Add(NewPet);  //adds new pet to database using entity
 
-                PE.SaveChanges();     // saves changes to database 
+                PE.SaveChanges();     // saves pet changes to database 
             }
             catch (Exception ex)
             {
@@ -230,7 +230,7 @@ namespace Pawprint.Controllers
                 FollowYourNewPet.PetID = NewPet.PetID;           //when user creates new pet, pet is now automatically being followed by user.
                 FollowYourNewPet.UserID = CurrentUserID;
                 PE.FollowLists.Add(FollowYourNewPet);
-                PE.SaveChanges();
+                PE.SaveChanges(); // saves followlist changes to database
             }
             catch (Exception ex)
             {
@@ -452,12 +452,12 @@ namespace Pawprint.Controllers
                 DirectoryInfo dir = new DirectoryInfo(HttpContext.Server.MapPath(filePath));
                 if (!dir.Exists)
                 {
-                    dir.Create();
+                    dir.Create(); //Creates new directory if one doesn't exist
                 }
 
                 string path = Path.Combine(Server.MapPath(filePath), Path.GetFileName(file.FileName));
 
-                file.SaveAs(path);
+                file.SaveAs(path); //Saves image to project folder
             }
             catch (Exception ex)
             {

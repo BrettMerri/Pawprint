@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
     $('#followButton').on('click', function () {
-        if ($(this).text() == 'Follow')
+        if ($(this).text() === 'Follow')
         {
             Follow();
         }

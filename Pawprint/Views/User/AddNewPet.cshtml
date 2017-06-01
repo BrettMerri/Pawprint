@@ -4,7 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>AddNewPet</h2>
+@* 
+    This view contains client-side validation via the Pet model on line 1.
+    If a column in the Pet table does not allow nulls, like Name, then the name field in this view will be required.
+*@
+
+<h2>Add New Pet</h2>
 
 <form action="SaveNewPet" method="post">
 
@@ -67,4 +72,3 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
