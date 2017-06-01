@@ -161,7 +161,7 @@ namespace Pawprint.Controllers
             }
         }
 
-        public ActionResult DeleteComment(int CommentID)
+        public ActionResult DeleteComment(int CommentID, string returnUrl)
         {
             PawprintEntities PE = new PawprintEntities();
             Comment CommentToDelete = PE.Comments.Find(CommentID);
@@ -189,7 +189,14 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
-            return RedirectToAction("Index", "Home");
+            if (returnUrl == "Index")
+            {
+                return RedirectToAction(returnUrl, "Home");
+            }
+            else
+            {
+                return RedirectToAction("Profile", "Pets", new { PetID = returnUrl });
+            }
         }
 
         public ActionResult YourAnimals()

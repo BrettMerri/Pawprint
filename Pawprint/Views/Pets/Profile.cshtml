@@ -207,7 +207,7 @@
                                                 <span>: @comment.Text</span>
                                                 @if (comment.UserID == ViewBag.CurrentUser.ID)
                                                 {
-                                                    <a href="/User/DeleteComment?CommentID=@comment.CommentID" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
+                                                    <a href="/User/DeleteComment?CommentID=@comment.CommentID&returnUrl=@Model.PetID" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
                                                 }
                                             </div>
                                         }
