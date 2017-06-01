@@ -32,7 +32,7 @@ namespace Pawprint.Controllers
 
             //Get all posts where Posts.PetID == any PetID that the user follows
             List<Post> PostList = PE.Posts.Where(x => FollowedPets.Any(y => x.PetID == y))
-                .OrderByDescending(x => x.Date).ToList();
+                .OrderByDescending(x => x.Date).Take(10).ToList();
 
             //Send list of posts of pets that you follow to the view
             ViewBag.PostList = PostList;
@@ -80,7 +80,7 @@ namespace Pawprint.Controllers
             ViewBag.CurrentUser = CurrentUser;
 
             // Sends list of all posts to the view
-            List<Post> PostList = PE.Posts.OrderByDescending(x => x.Date).ToList();
+            List<Post> PostList = PE.Posts.OrderByDescending(x => x.Date).Take(10).ToList();
             ViewBag.PostList = PostList;
 
             // Sends list of the last four pets created to the view
