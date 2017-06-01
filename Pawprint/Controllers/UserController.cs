@@ -126,7 +126,7 @@ namespace Pawprint.Controllers
             return "Success";
         }
 
-        public ActionResult Comment(int PostID, string CommentInput)
+        public ActionResult Comment(int PostID, string CommentInput, string returnUrl)
         {
             string CurrentUserID = User.Identity.GetUserId();
             ApplicationDbContext UserDB = new ApplicationDbContext();
@@ -151,7 +151,14 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
-            return RedirectToAction("Index", "Home");
+            if (returnUrl == "Index")
+            {
+                return RedirectToAction(returnUrl, "Home");
+            }
+            else
+            {
+                return RedirectToAction("Profile", "Pets", new { PetID = returnUrl });
+            }
         }
 
         public ActionResult DeleteComment(int CommentID)

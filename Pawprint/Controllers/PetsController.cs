@@ -186,7 +186,6 @@ namespace Pawprint.Controllers
             return "Success";
         }
 
-
         public ActionResult AddNewPost(int PetID)
         {
             PawprintEntities DB = new PawprintEntities();
@@ -351,8 +350,6 @@ namespace Pawprint.Controllers
 
             return RedirectToAction("Profile", new { PetID = AddPet.PetID });
         }
-
-
 
         public ActionResult DeletePost(int PostID)
         {
