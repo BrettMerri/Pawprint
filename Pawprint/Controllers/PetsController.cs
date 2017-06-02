@@ -25,6 +25,8 @@ namespace Pawprint.Controllers
                 return View("Error");
             }
 
+            ViewBag.OwnerDisplayName = DB.AspNetUsers.Find(PetProfile.OwnerID).DisplayName;
+
             //If user is logged in
             if (Request.IsAuthenticated)
             {
