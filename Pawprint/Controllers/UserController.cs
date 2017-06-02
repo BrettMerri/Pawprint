@@ -213,6 +213,12 @@ namespace Pawprint.Controllers
 
         public ActionResult AddNewPet()
         {
+            string CurrentUserID = User.Identity.GetUserId();
+            ApplicationDbContext UserDB = new ApplicationDbContext();
+            ApplicationUser CurrentUserInfo = UserDB.Users.Find(CurrentUserID);
+            ViewBag.DisplayName = CurrentUserInfo.DisplayName;
+
+
             return View();  //returns the addnewpet view which has the form for user to fill out
         }
 
@@ -399,6 +405,11 @@ namespace Pawprint.Controllers
 
         public ActionResult UploadUserAvatar()
         {
+            string CurrentUserID = User.Identity.GetUserId();
+            ApplicationDbContext UserDB = new ApplicationDbContext();
+            ApplicationUser CurrentUserInfo = UserDB.Users.Find(CurrentUserID);
+            ViewBag.DisplayName = CurrentUserInfo.DisplayName;
+
             return View();  //returns the view of uploaduseravatar which has the upload link
         }
 

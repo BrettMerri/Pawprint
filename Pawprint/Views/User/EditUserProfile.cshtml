@@ -57,7 +57,7 @@
 }
 
 <div>
-    @Html.ActionLink("Cancel", "Profile")
+    @Html.ActionLink("Cancel", "Profile", new { DisplayName = Model.DisplayName })
 </div>
  
 @section Scripts {
