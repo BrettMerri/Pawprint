@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Pawprint.Controllers
 {
@@ -93,6 +94,60 @@ namespace Pawprint.Controllers
             return "Success";
         }
 
+
+        public JsonResult Comment(int PostID, string CommentInput)
+        {
+
+
+            string CurrentUserID = User.Identity.GetUserId();
+            ApplicationDbContext UserDB = new ApplicationDbContext();
+
+            PawprintEntities PE = new PawprintEntities();
+
+            AspNetUser CurrentUser = PE.AspNetUsers.Find(CurrentUserID);
+
+            Post PostToCommentOn = PE.Posts.Find(PostID);
+
+            if (PostToCommentOn == null)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            Comment NewComment = new Comment();
+
+            try
+            {
+                NewComment.CreationDate = DateTime.Now;
+                NewComment.UserID = CurrentUserID;
+                NewComment.Text = CommentInput;
+                NewComment.PostID = PostID;
+                PE.Comments.Add(NewComment);
+                PE.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            JsonComment NewJsonComment = new JsonComment();
+            NewJsonComment.DisplayName = CurrentUser.DisplayName;
+            NewJsonComment.Text = NewComment.Text;
+            NewJsonComment.PostID = NewComment.PostID;
+            NewJsonComment.CommentID = NewComment.CommentID;
+
+            if (CurrentUser.FilePath == null)
+            {
+                NewJsonComment.FilePath = "default_avatar.png";
+            }
+            else
+            {
+                NewJsonComment.FilePath = CurrentUser.FilePath;
+            }
+
+            return Json(NewJsonComment, JsonRequestBehavior.AllowGet);
+        }
+
+
         public string Unlike(int PostID)
         {
             string CurrentUserID = User.Identity.GetUserId();
@@ -124,41 +179,6 @@ namespace Pawprint.Controllers
             }
 
             return "Success";
-        }
-
-        public ActionResult Comment(int PostID, string CommentInput, string returnUrl)
-        {
-            string CurrentUserID = User.Identity.GetUserId();
-            ApplicationDbContext UserDB = new ApplicationDbContext();
-            ApplicationUser CurrentUser = UserDB.Users.Find(CurrentUserID);
-
-            PawprintEntities PE = new PawprintEntities();
-
-            Comment NewComment = new Comment();
-
-            try
-            {
-                NewComment.CreationDate = DateTime.Now;
-                NewComment.UserID = CurrentUserID;
-                NewComment.Text = CommentInput;
-                NewComment.PostID = PostID;
-                PE.Comments.Add(NewComment);
-                PE.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Message = "Something went wrong! " + ex.Message.ToString();
-                return View("Error");
-            }
-
-            if (returnUrl == "Index")
-            {
-                return RedirectToAction(returnUrl, "Home");
-            }
-            else
-            {
-                return RedirectToAction("Profile", "Pets", new { PetID = returnUrl });
-            }
         }
 
         public ActionResult DeleteComment(int CommentID, string returnUrl)

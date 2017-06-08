@@ -71,7 +71,7 @@
         }
         @foreach (var item in ViewBag.PostList)
         {
-            <div class="post">
+            <div class="post" data-postid="@item.PostID">
                 <div class="page-header">
                     <p>Posted by <span class="glyphicon glyphicon-user"></span> <a href="/Pets/Profile?PetID=@item.PetID">@item.Pet.Name</a> on <span class="glyphicon glyphicon-time"></span> @item.Date</p>
                 </div>
@@ -108,52 +108,52 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <div class="post-content">
-                        @foreach (var comment in item.Comments)
-                        {
-                            <div class="comment">
-                                @if (comment.AspNetUser.FilePath == null)
-                                {
-                                    <a href="/User/Profile?DisplayName=@comment.AspNetUser.DisplayName">
-                                        <img class="comment-avatar img-thumbnail" src="~/img/users/default_avatar.png" /><span class="commentDisplayName"> @comment.AspNetUser.DisplayName</span>
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a href="/User/Profile?DisplayName=@comment.AspNetUser.DisplayName">
-                                        <img class="comment-avatar img-thumbnail" src="~/img/users/@comment.AspNetUser.FilePath" /><span class="commentDisplayName"> @comment.AspNetUser.DisplayName</span>
-                                    </a>
-                                }
-                                <span>: @comment.Text</span>
-                                @if (comment.UserID == ViewBag.CurrentUser.ID)
-                                {
-                                    <a href="/User/DeleteComment?CommentID=@comment.CommentID&returnUrl=Index" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
-                                }
-                            </div>
-                        }
-                        <form action="/User/Comment">
-                            <div class="row" style="margin:0;">
-                                @if (ViewBag.CurrentUser.FilePath == null)
-                                {
-                                    <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/default_avatar.png" /></a>
-                                }
-                                else
-                                {
-                                    <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" /></a>
-                                }
-                                <label class="sr-only" for="commentInput">Comment</label>
-                                <input type="hidden" name="PostID" value="@item.PostID" />
-                                <input type="hidden" name="returnUrl" value="Index" />
-                                <div class="col-xs-8" style="padding-left:0; padding-right:0; max-width:250px;">
-                                    <input type="text" class="form-control" id="commentInput" name="CommentInput" placeholder="Comment" style="max-width:none;" />
+                        <div class="comment-container">
+                            @foreach (var comment in item.Comments)
+                            {
+                                <div class="comment">
+                                    @if (comment.AspNetUser.FilePath == null)
+                                    {
+                                        <a href="/User/Profile?DisplayName=@comment.AspNetUser.DisplayName">
+                                            <img class="comment-avatar img-thumbnail" src="~/img/users/default_avatar.png" /><span class="commentDisplayName"> @comment.AspNetUser.DisplayName</span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/User/Profile?DisplayName=@comment.AspNetUser.DisplayName">
+                                            <img class="comment-avatar img-thumbnail" src="~/img/users/@comment.AspNetUser.FilePath" /><span class="commentDisplayName"> @comment.AspNetUser.DisplayName</span>
+                                        </a>
+                                    }
+                                    <span>: @comment.Text</span>
+                                    @if (comment.UserID == ViewBag.CurrentUser.ID)
+                                    {
+                                        <a href="/User/DeleteComment?CommentID=@comment.CommentID&returnUrl=Index" onclick="return confirm('Are you sure?')" class="btn btn-default btn-xs"><i class="fa fa-close" aria-hidden="true"></i> Remove</a>
+                                    }
                                 </div>
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">
-                                        <span class="glyphicon glyphicon-comment"></span>
-                                        <span class="sr-only">Comment</span>
-                                    </button>
-                                </span>
+                            }
+                        </div>
+                        <div class="row" style="margin:0;">
+                            @if (ViewBag.CurrentUser.FilePath == null)
+                            {
+                                <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/default_avatar.png" /></a>
+                            }
+                            else
+                            {
+                                <a href="~/User/Profile?DisplayName=@ViewBag.CurrentUser.DisplayName"><img class="currentUserCommentAvatar img-thumbnail" src="~/img/users/@ViewBag.CurrentUser.FilePath" /></a>
+                            }
+                            <label class="sr-only" for="commentInput">Comment</label>
+                            <input type="hidden" name="PostID" value="@item.PostID" />
+                            <input type="hidden" name="returnUrl" value="Index" />
+                            <div class="col-xs-8" style="padding-left:0; padding-right:0; max-width:250px;">
+                                <input type="text" class="form-control" id="commentInput" data-postid="@item.PostID" name="CommentInput" placeholder="Comment" style="max-width:none;" />
                             </div>
-                        </form>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" value="@item.PostID" onclick="CommentPost.call(this);">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                    <span class="sr-only">Comment</span>
+                                </button>
+                            </span>
+                        </div>
                     </div>
                 }
             </div>
@@ -207,3 +207,4 @@
     </div>
 </div>
 <script type="text/javascript" src="~/Scripts/LikePost.js"></script>
+<script type="text/javascript" src="~/Scripts/CommentPost.js"></script>
