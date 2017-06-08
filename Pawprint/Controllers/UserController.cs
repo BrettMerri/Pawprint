@@ -9,7 +9,6 @@ using System.Data.SqlClient;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using System.IO;
-using Newtonsoft.Json;
 
 namespace Pawprint.Controllers
 {
@@ -181,7 +180,7 @@ namespace Pawprint.Controllers
             return "Success";
         }
 
-        public ActionResult DeleteComment(int CommentID, string returnUrl)
+        public string DeleteComment(int CommentID)
         {
             PawprintEntities PE = new PawprintEntities();
             Comment CommentToDelete = PE.Comments.Find(CommentID);
@@ -189,13 +188,12 @@ namespace Pawprint.Controllers
             if (CommentToDelete == null)
             {
                 ViewBag.Message = "Unable to find comment to delete!";
-                return View("Error");
+                return "Error";
             }
 
             if (CommentToDelete.UserID != User.Identity.GetUserId())
             {
-                ViewBag.Message = "You cannot delete other user's comments!";
-                return View("Error");
+                return "Error";
             }
 
             try
@@ -203,20 +201,12 @@ namespace Pawprint.Controllers
                 PE.Comments.Remove(CommentToDelete);
                 PE.SaveChanges();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ViewBag.Message = "Something went wrong! " + ex.Message.ToString();
-                return View("Error");
+                return "Error";
             }
 
-            if (returnUrl == "Index")
-            {
-                return RedirectToAction(returnUrl, "Home");
-            }
-            else
-            {
-                return RedirectToAction("Profile", "Pets", new { PetID = returnUrl });
-            }
+            return "Success";
         }
 
         public ActionResult YourAnimals()
