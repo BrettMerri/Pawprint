@@ -1,0 +1,40 @@
+﻿.currentUserCommentAvatar {
+    width:auto;
+    height:35px;
+    margin-right:2px;
+    float:left;
+}
+.lead {
+    margin-bottom:0px;
+}
+.post-controls {
+    width:100%;
+    height:25px;
+}
+.comment {
+    margin-bottom:10px;
+}
+.comment-avatar {
+    height:38px;
+    width:auto;
+}
+img.PetImage
+{
+    width:auto;
+    height:100px;
+    opacity:0.85;
+    display:block;
+}
+.Petdiv {
+    text-align: center;
+}
+.Petinnerdiv {
+    display: inline-block;
+}
+.Petinnerdiv a:hover img.PetImage {
+    opacity:1;
+}
+.PetdivText {
+    font-size:18px;
+    text-align:center;
+}

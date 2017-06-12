@@ -1,0 +1,48 @@
+﻿.PetImage {
+    width:auto;
+    height:100px;
+    opacity:0.8;
+}
+.Petdiv a:hover .PetImage {
+    opacity:1.0;
+}
+.Petdiv {
+    float:left;
+    margin-right:25px;
+}
+.Petdiv h4 {
+    text-align:center;
+}
+.PetdivVertical {
+    margin: 0 auto 15px;
+    text-align:center;
+}
+.panel-body .Petdiv:last-child {
+    margin-right:0px;
+} 
+img.PetImage {
+    width:auto;
+    height:100px;
+    opacity:0.85;
+    display:block;
+}
+.Petdiv {
+    text-align: center;
+}
+.Petinnerdiv {
+    display: inline-block;
+}
+.Petinnerdiv a:hover img.PetImage {
+    opacity:1;
+}
+.PetdivText {
+    font-size:18px;
+    text-align:center;
+}
+@media (max-width: 990px) {
+    .PetdivVertical {
+        float:left;
+        margin: 0 auto 15px;
+        text-align:center;
+    }
+}

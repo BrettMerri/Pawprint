@@ -1,0 +1,34 @@
+﻿.liked {
+    background-color: mediumslateblue;
+}
+.hover { 
+    background-color: mediumslateblue;
+}
+.follow, .unfollow {
+    margin-top: 10px;
+}
+.currentUserCommentAvatar {
+    width:auto;
+    height:35px;
+    margin-right:2px;
+    float:left;
+}
+.lead {
+    margin-bottom:0px;
+}
+.post-controls {
+    width:100%;
+    height:25px;
+}
+.comment {
+    margin-bottom:10px;
+}
+.comment-avatar {
+    height:38px;
+    width:auto;
+}
+@media (max-width: 600px) {
+    .post-content {
+        margin-left:0px;
+    }
+}
