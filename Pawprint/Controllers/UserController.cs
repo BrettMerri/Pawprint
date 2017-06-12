@@ -32,12 +32,6 @@ namespace Pawprint.Controllers
                 ApplicationDbContext UserDB = new ApplicationDbContext();
                 ApplicationUser CurrentUserInfo = UserDB.Users.Find(User.Identity.GetUserId());
 
-                if (CurrentUserInfo == null)
-                {
-                    ViewBag.Message = "Unable to find current user";
-                    return View("Error");
-                }
-
                 if (CurrentUserInfo.DisplayName == UserProfile.DisplayName)
                 {
                     ViewBag.EditProfile = true;
@@ -52,9 +46,18 @@ namespace Pawprint.Controllers
                 ViewBag.EditProfile = false;
             }
 
-            List<Pet> PetList = DB.Pets.Where(x => x.OwnerID == UserProfile.ID).ToList();
+            List<Pet> PetList = DB.Pets.Where(x => x.OwnerID == UserProfile.ID).ToList(); //Finds all pets that the user owns
+
+            List<Pet> PetsFollowed = (from pets in DB.Pets
+                                join follow in DB.FollowLists on pets.PetID equals follow.PetID
+                                where follow.UserID == UserProfile.ID && pets.OwnerID != UserProfile.ID
+                                select pets).Take(8).ToList(); //Finds all pets that the user follows
+
+            //PetsFollowed.RemoveAll(x => PetList.Contains(x)); //Removes all pets from the list that the user owns
 
             ViewBag.PetList = PetList;
+            ViewBag.PetsFollowed = PetsFollowed;
+
             return View(UserProfile);
         }
 
