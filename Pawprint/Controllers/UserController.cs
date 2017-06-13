@@ -53,8 +53,6 @@ namespace Pawprint.Controllers
                                 where follow.UserID == UserProfile.ID && pets.OwnerID != UserProfile.ID
                                 select pets).Take(8).ToList(); //Finds all pets that the user follows
 
-            //PetsFollowed.RemoveAll(x => PetList.Contains(x)); //Removes all pets from the list that the user owns
-
             ViewBag.PetList = PetList;
             ViewBag.PetsFollowed = PetsFollowed;
 

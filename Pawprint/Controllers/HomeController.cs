@@ -26,42 +26,46 @@ namespace Pawprint.Controllers
             AspNetUser CurrentUser = PE.AspNetUsers.Find(CurrentUserID);
             ViewBag.CurrentUser = CurrentUser;
 
-            //Get distinct int list of PetID's that the user follows
-            List<int> FollowedPets = PE.FollowLists.Where(x => x.UserID == CurrentUserID)
-                .Select(x=> x.PetID).Distinct().ToList();
-
-            //Get all posts where Posts.PetID == any PetID that the user follows
-            List<Post> PostList = PE.Posts.Where(x => FollowedPets.Any(y => x.PetID == y))
-                .OrderByDescending(x => x.Date).Take(10).ToList();
+            //Gets list of posts from pets that you follow
+            List<Post> PostList = GetFollowedPostList(PE, CurrentUserID);
 
             //Send list of posts of pets that you follow to the view
             ViewBag.PostList = PostList;
 
-            List<Pet> NewestPets = PE.Pets.OrderByDescending(x => x.CreationDate).Take(4).ToList();
-
             //Sends list of four newest pets to the view
-            ViewBag.NewestPets = NewestPets;
+            ViewBag.NewestPets = GetNewestPets(PE);
 
             //Sends int list of PostID's that the user likes
-            ViewBag.LikedPostIds = LikedPosts(PostList);
+            ViewBag.LikedPostIds = GetLikedPostIDs(PE, PostList, CurrentUserID);
 
             return View();
         }
 
+        public List<Post> GetFollowedPostList(PawprintEntities PE, string CurrentUserID)
+        {
+            return (from post in PE.Posts
+                    join follow in PE.FollowLists on post.PetID equals follow.PetID
+                    where follow.UserID == CurrentUserID
+                    select post).Take(10).ToList();
+        }
+
+        public List<Pet> GetNewestPets(PawprintEntities PE)
+        {
+            return PE.Pets.OrderByDescending(x => x.CreationDate).Take(4).ToList();
+        }
+
         // Returns integer list of PostID's that the current user likes from a Post list of posts
-        public List<int> LikedPosts(List<Post> PostList)
+        public List<int> GetLikedPostIDs(PawprintEntities PE, List<Post> PostList, string CurrentUserID)
         {
             // Declare new int List
             List<int> YouLike = new List<int>();
-
-            PawprintEntities PE = new PawprintEntities();
-            string CurrentUserID = User.Identity.GetUserId();
 
             // For each post, check if there is a record in the Like table which contains the UserID AND that post's PostID
             // If there is a match, add the post's PostID to the int List, YouLike
             foreach (Post item in PostList)
             {
-                Like DoYouLike = PE.Likes.FirstOrDefault(x => x.UserID == CurrentUserID && x.PostID == item.PostID);
+                Like DoYouLike = PE.Likes.FirstOrDefault(x => x.PostID == item.PostID && x.UserID == CurrentUserID);
+
                 if (DoYouLike != null)
                 {
                     YouLike.Add(item.PostID);
@@ -79,18 +83,17 @@ namespace Pawprint.Controllers
             AspNetUser CurrentUser = PE.AspNetUsers.Find(CurrentUserID);
             ViewBag.CurrentUser = CurrentUser;
 
-            // Sends list of all posts to the view
+            // Sends list of posts to the view regardless of if you are following that pet or not
             List<Post> PostList = PE.Posts.OrderByDescending(x => x.Date).Take(10).ToList();
             ViewBag.PostList = PostList;
 
             // Sends list of the last four pets created to the view
-            List<Pet> NewestPets = PE.Pets.OrderByDescending(x => x.CreationDate).Take(4).ToList();
-            ViewBag.NewestPets = NewestPets;
+            ViewBag.NewestPets = GetNewestPets(PE);
 
             // If user is logged in, send int list of liked Post ID's to the view
             if (User.Identity.IsAuthenticated)
             {
-                ViewBag.LikedPostIds = LikedPosts(PostList);
+                ViewBag.LikedPostIds = GetLikedPostIDs(PE, PostList, CurrentUserID);
             }
 
             return View("Index");
@@ -110,7 +113,8 @@ namespace Pawprint.Controllers
                                                            x.Pet.Breed.Contains(SearchInput) ||
                                                            x.Pet.Color.Contains(SearchInput) ||
                                                            x.Pet.AspNetUser.DisplayName.Contains(SearchInput) ||
-                                                           x.Caption.Contains(SearchInput)).ToList();
+                                                           x.Caption.Contains(SearchInput))
+                                                           .OrderByDescending(x => x.Date).Take(10).ToList();
 
             ViewBag.PostList = SearchResults;
 
@@ -122,16 +126,14 @@ namespace Pawprint.Controllers
                 ViewBag.CurrentUser = CurrentUser;
 
                 // If user is logged in, send an int list of liked Post ID's to the view
-                ViewBag.LikedPostIds = LikedPosts(SearchResults);
+                ViewBag.LikedPostIds = GetLikedPostIDs(PE, SearchResults, CurrentUserID);
             }
 
-            // Sends list of the last four pets created to the view
-            List<Pet> NewestPets = PE.Pets.OrderByDescending(x => x.CreationDate).Take(4).ToList();
-            ViewBag.NewestPets = NewestPets;
+            //Sends list of four newest pets to the view
+            ViewBag.NewestPets = GetNewestPets(PE);
 
             // Sends the search query to the view
             ViewBag.SearchInput = SearchInput;
-
 
             return View("Index");
         }
