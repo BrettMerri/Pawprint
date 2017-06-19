@@ -71,12 +71,18 @@ namespace Pawprint.Controllers
                                           .OrderByDescending(x => x.Date)
                                           .ToList();
 
+            List<AspNetUser> UsersFollowing = (from users in DB.AspNetUsers
+                                      join follow in DB.FollowLists on users.ID equals follow.UserID
+                                      where follow.PetID == PetProfile.PetID && users.ID != PetProfile.OwnerID
+                                      select users).Take(8).ToList(); //Finds all pets that the user follows
+
             if (User.Identity.IsAuthenticated)
             {
                 ViewBag.LikedPostIds = LikedPosts(PostList);
             }
 
             ViewBag.PostList = PostList;
+            ViewBag.UsersFollowing = UsersFollowing;
 
             //TempData["Message"] exists when the user follows/unfollows the pet
             if (TempData["Message"] != null)

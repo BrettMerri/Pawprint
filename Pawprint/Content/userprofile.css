@@ -1,9 +1,4 @@
-﻿.PetImage {
-    width:auto;
-    height:100px;
-    opacity:0.8;
-}
-.Petdiv a:hover .PetImage {
+﻿.Petdiv a:hover .PetImage {
     opacity:1.0;
 }
 .Petdiv {
@@ -23,8 +18,8 @@
 img.PetImage {
     width:auto;
     height:100px;
-    opacity:0.85;
     display:block;
+    opacity:0.8;
 }
 .Petdiv {
     text-align: center;

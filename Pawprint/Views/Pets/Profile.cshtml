@@ -84,6 +84,42 @@
                     </div>
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Followers</h4>
+                </div>
+                <div class="panel-body">
+                    @if (ViewBag.UsersFollowing.Count == 0)
+                    {
+                        if (ViewBag.EditProfile == true)
+                        {
+                            <p class="lead">Your pet has no followers.</p>
+                        }
+                        else
+                        {
+                            <p class="lead">This pet has no followers.</p>
+                        }
+                    }
+                    @foreach (var user in ViewBag.UsersFollowing)
+                    {
+                        <div class="UserdivVertical">
+                            <div class="Userinnerdiv">
+                                <a href="/User/Profile?DisplayName=@user.DisplayName">
+                                    @if (user.FilePath == null)
+                                    {
+                                        <img class="UserImage" src="~/img/pets/default_avatar.png" />
+                                    }
+                                    else
+                                    {
+                                        <img class="UserImage" src="~/img/pets/@user.FilePath" />
+                                    }
+                                    <span class="UserdivText">@user.DisplayName</span>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             

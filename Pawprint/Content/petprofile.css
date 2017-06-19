@@ -27,6 +27,36 @@
     height:38px;
     width:auto;
 }
+img.UserImage {
+    width:auto;
+    height:100px;
+    display:block;
+    opacity:0.8;
+}
+.UserdivVertical {
+    margin: 0 auto 15px;
+    text-align:center;
+}
+.panel-body .Userdiv:last-child {
+    margin-right:0px;
+} 
+.Userinnerdiv {
+    display: inline-block;
+}
+.Userinnerdiv a:hover img.UserImage {
+    opacity:1;
+}
+.UserdivText {
+    font-size:18px;
+    text-align:center;
+}
+@media (max-width: 990px) {
+    .UserdivVertical {
+        float:left;
+        margin: 0 auto 15px;
+        text-align:center;
+    }
+}
 @media (max-width: 600px) {
     .post-content {
         margin-left:0px;
